@@ -103,6 +103,7 @@ Speaker: crazy_eddy
 - [Overclocked Impulse Coils - 250cr](eddy_sold) if credits >= 250 ; costs 250 credits, signal eddy_buy_coils, earns crazy_eddy generous 3
 - [Reinforced Plating, a STEAL - 150cr](eddy_sold) if credits >= 150 ; costs 150 credits, signal eddy_buy_plating, earns crazy_eddy generous 3
 - [Mystery Crate, feeling lucky? - 200cr](eddy_sold) if credits >= 200 ; costs 200 credits, signal eddy_buy_mystery, earns crazy_eddy generous 3
+- [That big giant-tech frame - the Resonance Cradle - 500cr](eddy_cradle_sold) if credits >= 500 ; costs 500 credits, signal eddy_buy_cradle, earns crazy_eddy generous 5
 - [Regulars only - the good stuff](eddy_loyal) if generous > 15
 - [Never mind](eddy_hail)
 
@@ -123,6 +124,17 @@ Speaker: crazy_eddy
 ---
 % Pleasure doing business! Bolt it on and don't come crying to me.
 % Sold! To the captain with more credits than sense.
+
+- [More deals](eddy_shop)
+- [I'm done here](eddy_bye)
+
+### The Cradle (eddy_cradle_sold)
+---
+Speaker: crazy_eddy
+---
+% The big ugly frame? Ha! Knew it'd find a buyer eventually. Never could unload the thing -
+% too heavy, too weird, hums when you look at it wrong. All yours, captain. No refunds!
+% Careful hauling that home. Feels like it's WAITING for something. Gives me the creeps.
 
 - [More deals](eddy_shop)
 - [I'm done here](eddy_bye)
@@ -177,21 +189,23 @@ Speaker: chief_vex
 
 ## Narrative
 
-// The episodes nest under one arc via HEADING LEVELS: the arc is a `###` heading and each
-// step is a `####` heading under it (local keys). quest_grant_amd builds the nested quest
-// keys from the heading depth (`beacon_arc/<step>`, via quest_folder), so the Quests tab
-// renders them as a collapsible tree under "The Beacon Hunt". `Then: reveal` and the mission
-// code reference a step by its FULL path (`beacon_arc/ep1_scan`). (No `Parent:` field - that
-// is the mission-tree COMPLETION flow, not display grouping; the win is on the terminal step.)
+// The Beacon is NOT one relic you find - it is FIVE pieces the giants scattered so no single
+// heir could ever wield it. Four hide in ruins you scan (Voice, Lens, Cipher, Heart); the
+// fifth - the Cradle that seats and resonates them - the giants' heirs looted and lost to the
+// black market, and Crazy Eddy has it. Episodes nest under one arc via HEADING LEVELS (`###`
+// arc, `####` steps -> nested quest keys `beacon_arc/<step>`). Storm hands out leads one at a
+// time (the data-driven `_eps` walker in story.mast); the finale ASSEMBLES the pieces, and
+// scanning ruins alone can't finish it - without the Cradle bought from Eddy the Beacon has
+// nothing to seat. See EPISODE_TEMPLATE.md to add more pieces.
 
 ### The Beacon Hunt (beacon_arc)
 ---
 Scope: shared
 State: active
 ---
-Prof. Storm's search for the Beacon - an ancient signal the old giants left buried in
-their ruins. Hail her for each lead, follow the trail across the frontier, and read what
-the dead stations still remember.
+Prof. Storm's search for the Beacon - which turns out to be no single relic but five pieces
+the giants scattered across their ruins. Hail her for each lead, gather the pieces, and carry
+them to the origin to be made whole.
 
 #### Contact Prof. Storm (briefing)
 ---
@@ -211,16 +225,16 @@ Then: reveal beacon_arc/ep1_scan
 Storm's first heading: an ancient Torgoth channel out at (2, -1), coreward past the old
 marches. Engage the jump drive from your Quests tab and follow it in.
 
-#### The Giant's House (ep1_scan)
+#### The Voice (ep1_scan)
 ---
 Scope: shared
 State: secret
 When: scan 1 derelict
 Pays: 150 credits
 ---
-A Torgoth megastation from the age when the Torgoth were giants - docking throats wide
-enough to swallow your ship. Bring the science array to bear and read what it remembers,
-then hail Storm with what you find.
+A Torgoth megastation from the age when the Torgoth were giants. Deep in its dead heart sits
+the Beacon's VOICE - the transmitter core, first of the five pieces. Scan it to take the
+Voice, then hail Storm.
 
 #### Storm's Next Lead (ep2_go)
 ---
@@ -229,54 +243,123 @@ State: secret
 When: reach 4, 1
 Then: reveal beacon_arc/ep2_scan
 ---
-Storm cross-referenced the megastation's glyphs: the trail runs on to the old Kralien
+Storm cross-referenced the Voice against the old charts: the next piece lies in the Kralien
 marches at (4, 1). Engage and jump.
 
-#### The Kralien Archive (ep2_scan)
+#### The Lens (ep2_scan)
 ---
 Scope: shared
 State: secret
 When: scan 1 derelict
 Pays: 200 credits
 ---
-A cold Kralien ruin, vast and silent, still holding one faint echo of the Beacon in its
-archive. Scan it to pull the fragment from the dark - then hail Storm, because a fragment
-is not the whole, and the trail runs deeper.
+A cold Kralien megastructure holding the Beacon's LENS - the focusing array that aims the
+Voice. A Torgoth reclamation party wants it too. Scan it to take the Lens, then hail Storm.
 
-#### Storm's Last Lead (ep3_go)
+#### Storm's Third Lead (ep3_go)
 ---
 Scope: shared
 State: secret
 When: reach 6, -2
 Then: reveal beacon_arc/ep3_scan
 ---
-Storm ran the Kralien fragment against the Torgoth glyphs and the two agree on one bearing:
-a dead relay at (6, -2), right at the edge of the marches, where the Beacon's signal
-begins. This is the origin. Engage and jump.
+Two pieces in hand and Storm sees the shape of it now: the Beacon is an ARRAY, not a relic,
+and it needs a CRADLE to seat the pieces - one the giants' heirs looted and lost. Of all
+people, Crazy Eddy has it. Meanwhile the third piece, the Cipher, waits in a nebula-wrapped
+relay at (6, -2). Engage and jump - and think about paying Eddy a visit.
 
-#### The Origin (ep3_scan)
+#### The Cipher (ep3_scan)
 ---
 Scope: shared
 State: secret
 When: scan 1 derelict
-Win: true
-Citation: The relay at the edge of the marches gave up the Beacon's origin at last - and Prof. Storm has what she came for. The Beacon is real, its bearing is logged, and this little ship flew home with a story the giants left behind.
+Pays: 200 credits
 ---
-A dead relay adrift at the very edge of the charted marches, older than the ruins that
-pointed here - and still, faintly, the source of it all. Bring the science array to bear
-and read the Beacon's origin from the dark.
+A relay drowned in bruise-violet nebula, holding the Beacon's CIPHER - the key that aligns
+Voice and Lens into one signal. Scan it to take the Cipher, then hail Storm.
+
+#### The Resonance Cradle (get_cradle)
+---
+Scope: shared
+State: secret
+When: signal beacon_cradle
+---
+The pieces are useless loose - they need the CRADLE to seat and resonate them, and Crazy Eddy
+fenced the only one left. Hail Eddy on the Ultra-Beam (no target selected) and buy the
+Resonance Cradle from his deals. Do it any time before the finale - the Beacon can't be lit
+without it.
+
+#### Storm's Fourth Lead (ep4_go)
+---
+Scope: shared
+State: secret
+When: reach -5, -4
+Then: reveal beacon_arc/ep4_scan
+---
+The Cipher named the last ruin-piece and where it went: the HEART, the Beacon's power source -
+and XORN hauled it out to a dead salvage yard at (-5, -4). You'll have to pry it loose from
+under their guns. Engage, and be ready to run.
+
+#### The Heart (ep4_scan)
+---
+Scope: shared
+State: secret
+When: scan 1 derelict
+Pays: 300 credits
+---
+A gutted salvage yard at the edge of the dark, XORN's colors on the wrecks - this is where it
+dragged the Beacon's HEART. Scan the Heart out from under their guns, then break for open
+space and hail Storm. Do not linger here.
+
+#### Storm's Last Lead (origin_go)
+---
+Scope: shared
+State: secret
+When: reach 0, -7
+Then: reveal beacon_arc/origin_scan
+---
+Every ruin-piece in hand - Voice, Lens, Cipher, Heart - and (you did buy the Cradle?) the
+frame to seat them. Storm has the origin at last: (0, -7), the deep dark past every chart,
+where the giants first lit the Beacon. Carry the pieces home. Engage.
+
+#### The Origin (origin_scan)
+---
+Scope: shared
+State: secret
+When: scan 1 derelict
+---
+The place the Beacon was born - a silent array adrift in the deepest dark, waiting a thousand
+years for its pieces to come home. Scan it to bring the array online, then hail Storm to
+assemble the Beacon. XORN will not let this happen quietly.
+
+## Goals
+
+// The win is gated, not automatic: scanning the origin only brings the array online. The
+// actual victory fires on `signal beacon_lit`, which the Storm dispatcher (story.mast) emits
+// ONLY when every piece is present - the four scanned ruins AND the Cradle bought from Eddy.
+// Arrive without the Cradle and Storm sends you back to buy it. That gate is the puzzle.
+
+### Light the Beacon (goal_light)
+---
+Scope: shared
+State: active
+When: signal beacon_lit
+Win: true
+Citation: At the origin, with XORN's guns lighting the dark, Prof. Storm seated the last piece in the Cradle and woke the Beacon. It did what the giants built it to do a thousand years ago - it called. And in its first clear note was their final warning: the thing that unmade the giants and drove them small and hidden, the thing XORN still answers to. The Beacon is whole, its message is logged, and one small ship flew home with a story the giants died to leave. XORN broke off into the dark. It will be back. So will you.
+---
+Gather all five pieces of the Beacon - the four ruin-pieces AND Eddy's Cradle - carry them to
+the origin, and have Prof. Storm assemble and light it while XORN does everything to stop you.
 
 ## Regions
 
-// Geography for the Beacon hunt: the old marches past the last charted buoy, where the
-// giants of an earlier age left their megastations to rot. A nebula-heavy frontier - moody
-// skybox, faint violet map wash, few ports - so the episode systems read as one distinct
-// stretch of dark. Covers both ruin cells ((2,-1) and (4,1)) in one Chebyshev square.
+// Geography for the whole hunt: the old marches and the deep dark beyond, where the giants
+// left their megastations to rot. A nebula-heavy frontier - moody skybox, faint violet map
+// wash, few ports. One big Chebyshev square covering every ruin cell out to the origin.
 
 ### The Old Marches (old_marches)
 ---
-Center: 3, 0
-Radius: 3
+Center: 0, -1
+Radius: 8
 Skybox: sky-neb2-rvb
 Music: Artemis2
 Color: #86c
@@ -284,9 +367,9 @@ Nebula mix: 55%
 Station mix: 5%
 Enemy mix: 10%
 ---
-The frontier past the last charted buoy - the old marches, where the giants of an earlier
-age left their megastations to rot in the drifting cloud. Nebulae everywhere, few ports,
-and something always a jump behind you.
+The frontier past the last charted buoy - the old marches, where the giants of an earlier age
+left their megastations to rot in the drifting cloud, and where the trail runs out into the
+deepest dark. Nebulae everywhere, few ports, and something always a jump behind you.
 
 ## Landmarks
 
@@ -297,10 +380,9 @@ Kind: derelict
 Terrain: nebula violet
 Guards: skaraan 2
 ---
-A derelict from the age of giants - a Torgoth station built to a scale no modern hull
-needs, running dark for a thousand years, and still holding one faint echo of the Beacon.
-Scavengers picked the trail up first - a light bounty-hunter wing loiters in the wreck's
-shadow. (Guards: a skaraan fleet contests the ruin on arrival; clear or slip past to scan.)
+A derelict from the age of giants - a Torgoth station built to a scale no modern hull needs,
+running dark for a thousand years, holding the Beacon's Voice in its dead heart. Scavengers
+picked the trail up first - a light bounty-hunter wing loiters in the wreck's shadow.
 
 ### Kralien Ruin (kralien_ruin)
 ---
@@ -309,18 +391,38 @@ Kind: derelict
 Terrain: asteroids
 Guards: torgoth 3
 ---
-A Kralien megastructure from their own age of giants, adrift and cold - and still
-whispering one eleven-hundred-year-old word into the static. A Torgoth reclamation
-party gutted the outer decks and lingers - they want the archive too. (Guards: a
-torgoth fleet holds the ruin on arrival.)
+A Kralien megastructure from their own age of giants, adrift and cold, holding the Beacon's
+Lens. A Torgoth reclamation party gutted the outer decks and lingers - they want it too.
 
-### The Origin Relay (origin_relay)
+### The Cipher Relay (cipher_relay)
 ---
 At: 6, -2
+Kind: derelict
+Terrain: nebula violet
+Guards: skaraan 4
+---
+A lone relay drowned in bruise-violet nebula, older than the ruins that pointed here, holding
+the Beacon's Cipher. Whatever else hunts the trail got here first: a hard escort loiters in
+the murk.
+
+### XORN Salvage Yard (heart_yard)
+---
+At: -5, -4
+Kind: derelict
+Terrain: asteroids
+Guards: skaraan 5
+---
+Not a ruin - a kill-yard. XORN dragged the Beacon's Heart here and left a heavy screen on it,
+wrecks and mines and a wing that answers to no flag but its own. Scan the Heart and run; this
+is the last place to be caught still.
+
+### The Origin Array (origin_array)
+---
+At: 0, -7
 Kind: derelict
 Terrain: nebula red
 Guards: skaraan 4
 ---
-Older than the ruins that pointed here - a lone relay drifting at the edge of the charted
-marches, wrapped in a bruise-red nebula, still faintly the source of the Beacon. Whatever
-else has been hunting the trail got here first: a hard escort loiters in the murk.
+The deepest dark past every chart - a vast silent array adrift where the giants first lit the
+Beacon a thousand years ago, wrapped in a bruise-red shroud. It has waited this long. XORN
+will arrive fast to see it never sings again.

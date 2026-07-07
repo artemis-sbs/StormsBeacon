@@ -73,27 +73,39 @@ GameCode:
     # stormsbeacon.amd, (2) append one row here. Each row: go/scan are the nested quest
     # keys under beacon_arc; lead = her comms line when she reveals it; nudge = her line
     # while it's active but unscanned. (Multi-line literal wrapped in ~~ per MAST rules.)
+    # The Beacon's PIECES, in order. Each ruin-piece is a go/scan pair; walking this list is
+    # the whole dispatcher, so adding a piece = author its chapters + landmark, then append
+    # one row (see EPISODE_TEMPLATE.md). Optional `also` = a side-objective revealed with that
+    # lead (the Cipher lead also reveals the Cradle-from-Eddy objective). The origin's scan
+    # does NOT auto-win - the assembly branch below gates the win on having every piece.
     _eps = ~~[
         {"go": "ep1_go", "scan": "ep1_scan",
-         "lead": "Got your first lead. An old Torgoth channel out at (2, -1) - it's on your map now. Jump in and scan the ruin, then hail me.",
-         "nudge": "Your lead's already on the map - get to that Torgoth ruin and scan it, then check back with me."},
+         "lead": "Got your first lead. A Torgoth megastation out at (2, -1) - the Beacon's Voice is buried in it. Jump in, scan it, then hail me.",
+         "nudge": "The Voice is still out there at (2, -1), Captain - get to that Torgoth ruin and scan it."},
         {"go": "ep2_go", "scan": "ep2_scan",
-         "lead": "Cross-referenced those glyphs. The trail runs to the old Kralien marches at (4, 1). Marked it - get moving.",
-         "nudge": "The Kralien ruin's on your map at (4, 1) - get out there and scan it."},
-        {"go": "ep3_go", "scan": "ep3_scan",
-         "lead": "The Kralien archive pointed deeper - a dead relay at (6, -2), right at the edge of the marches. That's where the Beacon's signal begins. Go.",
-         "nudge": "That relay at (6, -2) is the origin, Captain - get out there and scan it."}
+         "lead": "The Voice points to the Lens - a Kralien ruin at (4, 1). Torgoth reclaimers are sniffing around it too. Get there first.",
+         "nudge": "The Lens is at (4, 1), in that Kralien ruin - scan it before the Torgoth strip it."},
+        {"go": "ep3_go", "scan": "ep3_scan", "also": "get_cradle",
+         "lead": "Two pieces, and I see it now - the Beacon's an ARRAY, and it needs a Cradle to seat the pieces. Eddy of all people fenced the only one; go buy it off him. Meanwhile the Cipher's in a nebula relay at (6, -2). Go.",
+         "nudge": "The Cipher's at (6, -2), drowned in nebula - and don't forget to buy that Cradle off Eddy."},
+        {"go": "ep4_go", "scan": "ep4_scan",
+         "lead": "Last ruin-piece is the Heart - and XORN took it, out to a kill-yard at (-5, -4). Scan it out from under their guns and RUN. Don't linger.",
+         "nudge": "The Heart's still in XORN's yard at (-5, -4). Scan it and run - that's not a place to dawdle."},
+        {"go": "origin_go", "scan": "origin_scan",
+         "lead": "That's every piece in hand. The origin is (0, -7) - the deep dark where the giants first lit it. Carry the pieces home and I'll make it whole. XORN will be right behind you.",
+         "nudge": "The origin's at (0, -7), Captain. Bring the pieces to the array and hail me to assemble the Beacon."}
     ]~~
-    # Default = the trail's end (every episode scanned). Walk the list; act only on the
-    # FIRST not-yet-scanned episode (the `not _handed` guard stands in for a break).
-    storm_line = "That's the trail's end for now, Captain. Fine work - the Beacon's real, and we've got its bearing."
+    storm_line = "Still working the archive. Sit tight."
     storm_important = False
     _handed = False
     for _idx, _ep in enumerate(_eps):
         if not _handed and quest_shared_state("beacon_arc/" + _ep["scan"]) != 99:
             if quest_shared_state("beacon_arc/" + _ep["go"]) == 2:
-                # Reveal this lead (flips the secret chapter active -> Engage jump).
+                # Reveal this lead (flips the secret chapter active -> Engage jump). An `also`
+                # side-objective (the Cradle) reveals alongside it.
                 quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["go"])
+                if _ep.get("also") is not None:
+                    quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["also"])
                 storm_line = _ep["lead"]
                 storm_important = True
                 # First lead also clears the "Contact Prof. Storm" briefing step, and
@@ -107,6 +119,18 @@ GameCode:
             else:
                 storm_line = _ep["nudge"]
             _handed = True
+    # Every piece scanned and the origin reached: ASSEMBLE. The four ruin-pieces are the
+    # completed scans (guaranteed by the linear walk to the origin); the fifth is the Cradle
+    # bought from Eddy (beacon_cradle flag). If it's missing, Storm sends you back - that gate
+    # is the puzzle. If it's present, emit beacon_lit -> the goal_light Win fires -> game over.
+    if not _handed and quest_shared_state("beacon_arc/origin_scan") == 99:
+        storm_important = True
+        if get_inventory_value(universe_shared_id(), "beacon_cradle", 0) == 1:
+            storm_line = "That's every piece - Voice, Lens, Cipher, Heart, and Eddy's Cradle to seat them. Hold her steady... I'm lighting the Beacon. Listen."
+            set_inventory_value(universe_shared_id(), "beacon_lit", 1)
+            signal_emit("quest_signal", {"SIGNAL_NAME": "beacon_lit"})
+        else:
+            storm_line = "We've got the whole array and nothing to seat it in - we're still missing the Resonance Cradle. Eddy fenced that piece; buy it off him and come straight back."
     # Comms surface preference: a real comms message from Storm is the PRIMARY surface
     # (comms_message pulls her face/name off the lifeform). Add the info-panel card only on
     # IMPORTANT beats (a new lead / the finale), not routine chatter. Then refresh any open
@@ -126,7 +150,7 @@ GameCode:
 # short fuse so the climax always has the confrontation (the "big beat").
 //signal/universe_arrived if UNIVERSE_ACTIVE
     ->END if ARRIVE_I == 0 and ARRIVE_J == 0
-    ->END if quest_shared_state("beacon_arc/ep3_scan") == 99
+    ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
     task_schedule(xorn_pursuit_watch, {"xi": ARRIVE_I, "xj": ARRIVE_J})
     ->END
 
@@ -136,13 +160,14 @@ GameCode:
     default xi = 0
     default xj = 0
     _dwell = XORN_DWELL_SECONDS
-    # The origin (finale) - XORN is right behind you; a much shorter fuse.
-    if xi == 6 and xj == -2:
+    # XORN is right on top of its own kill-yard (the Heart, -5,-4) and the origin (0,-7) -
+    # both climax beats get a much shorter fuse so the confrontation always happens.
+    if (xi == 0 and xj == -7) or (xi == -5 and xj == -4):
         _dwell = XORN_DWELL_FINALE
 --- xorn_wait
     await delay_sim(5)
     ->END if not universe_cell_live(xi, xj)
-    ->END if quest_shared_state("beacon_arc/ep3_scan") == 99
+    ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
     _dwell = _dwell - 5
     jump xorn_wait if _dwell > 0
     # Fuse burned down and you're still here: only one XORN at a time.
@@ -180,6 +205,15 @@ brain:
 # items addon uses: a POSITIVE value is an upgrade, a NEGATIVE value a downgrade. Some deals
 # are honest, some are traps, some a coin-flip - that's the game. Result comes back as a
 # comms line from Eddy (role "eddy", so it's HIS face, not Storm's). Applied to the player.
+
+# The Resonance Cradle - the fifth Beacon piece, and the puzzle's key gate. Buying it sets
+# the beacon_cradle flag (the finale assembly checks it) and completes the get_cradle
+# objective. Bought via Eddy's shop, so exploration alone never finishes the Beacon.
+//signal/eddy_buy_cradle
+    set_inventory_value(universe_shared_id(), "beacon_cradle", 1)
+    signal_emit("quest_signal", {"SIGNAL_NAME": "beacon_cradle"})
+    comms_message("The Cradle's yours, captain. Whatever it's for - I don't want to know. Get it off my dock.", role("eddy"), role("__player__"), color="#fa0")
+    ->END
 
 # Loyal-customer honest shield emitters (Eddy's under-the-counter good stuff, unlocked by
 # building `generous` standing with him - the reputation branch).

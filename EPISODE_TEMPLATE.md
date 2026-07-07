@@ -38,13 +38,30 @@ Pays: <credits>            # omit on the terminal episode; use Win instead
 <What the ruin is; scan it, then hail Storm.>
 ```
 
-**Terminal (finale) episode only** — replace `Pays:` on the `scan` step with the win:
+**Terminal (finale) episode.** The campaign's win is **not** a plain `Win: true` on a scan —
+it's a **gated assembly** (the "assemble the Beacon" design). The origin's `scan` step just
+brings the array online; the win is a separate goal that fires on a signal the dispatcher
+emits only when every piece is present:
 
 ```
-When: scan 1 derelict
+## Goals
+
+### Light the Beacon (goal_light)
+---
+Scope: shared
+State: active
+When: signal beacon_lit
 Win: true
 Citation: <the end-of-run summary shown on the victory screen>
+---
+<what the player must gather + do>
 ```
+
+The Storm dispatcher (story.mast) emits `beacon_lit` only when the four scanned pieces are
+done AND the `beacon_cradle` flag is set (bought from Eddy) — so a **non-scan piece** (the
+Cradle) and the **assembly gate** are the puzzle. To add another required non-scan piece:
+set a flag in its acquisition route, check it in the dispatcher's assembly branch, and add a
+`get_<piece>` objective revealed via an `also` field on the lead that mentions it.
 
 Then add the episode's **landmark** in `## Landmarks`, pinned to the same `(i, j)`:
 
