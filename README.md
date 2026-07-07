@@ -51,6 +51,14 @@ Open the **Quests** tab on your console. This is your mission log and your map. 
 Make a habit of checking the Quest screen after every jump and after every conversation —
 new objectives appear here as the expedition unfolds.
 
+### Charted Locations (your way home, and back)
+
+Every named place you visit — home, a ruin, Eddy's Emporium — is recorded under a
+**Charted Locations** entry in the Quest screen. To go back somewhere you've already been,
+just **select it under Charted Locations and Engage**. That's your way home when things get
+hot, and your way back to the Emporium to spend what you've earned. There's no separate
+map — your quest list *is* your map, and it remembers where you've been.
+
 ---
 
 ## Talking to people (Comms)

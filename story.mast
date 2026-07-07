@@ -17,6 +17,11 @@ default shared UNIVERSE_SELECT = "Storms Beacon"
 # = no jump). This mission's story.mast runs before EVERY mastlib, so setting it here
 # wins. (No admiral theater and NAV_CONSOLE_ENABLED is off, so this is the jump path.)
 default shared QUEST_ENGAGE_ENABLED = True
+# Chart every named place we visit (home, ruins, Eddy's Emporium) as a "Charted
+# Locations" waypoint, so with no galaxy map the player still has a way home and a way
+# back to anywhere they've been - select it in the Quests tab and Engage. universe_core
+# does the work on arrival; this just opts in.
+default shared WAYPOINTS_ENABLED = True
 
 # XORN pursuit tuning. XORN is the superior pursuer that trails the hunt: linger in a
 # ruin system and it closes the gap, forcing escape-or-get-help (you can't win a straight
