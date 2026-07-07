@@ -18,6 +18,13 @@ default shared UNIVERSE_SELECT = "Storms Beacon"
 # wins. (No admiral theater and NAV_CONSOLE_ENABLED is off, so this is the jump path.)
 default shared QUEST_ENGAGE_ENABLED = True
 
+# XORN pursuit tuning. XORN is the superior pursuer that trails the hunt: linger in a
+# ruin system and it closes the gap, forcing escape-or-get-help (you can't win a straight
+# fight). Dwell = the grace window (seconds) before it warps in; the finale system (the
+# origin at 6,-2) has a much shorter fuse - XORN is right on top of the source. Tunable.
+default shared XORN_DWELL_SECONDS = 45
+default shared XORN_DWELL_FINALE = 15
+
 # Register Storm's Beacon in the universe registry (the start-screen "Universe" dropdown
 # scans `type: universe/*` labels). universe_core reads the named .amd MISSION-RELATIVE
 # first (universe_read_content), so stormsbeacon.amd loads from THIS mission folder.
@@ -104,4 +111,59 @@ GameCode:
         storm_spk = dialogue_speaker(UNIVERSE_CLANS, UNIVERSE_CAPTAINS, UNIVERSE_LIFEFORMS, "prof_storm")
         universe_chatter_card(storm_spk, storm_line)
     gui_refresh("repaint")
+    ->END
+
+
+# XORN pursuit. universe_core emits `universe_arrived` at the end of every system arrival
+# (with ARRIVE_I / ARRIVE_J). We start a dwell watch for that cell: if the player is still
+# there when the fuse burns down, XORN warps in. Home (0,0) is safe, and once the hunt is
+# won there's no pursuer. This is the "trailing dread" layer; the finale system carries a
+# short fuse so the climax always has the confrontation (the "big beat").
+//signal/universe_arrived if UNIVERSE_ACTIVE
+    ->END if ARRIVE_I == 0 and ARRIVE_J == 0
+    ->END if quest_shared_state("beacon_arc/ep3_scan") == 99
+    task_schedule(xorn_pursuit_watch, {"xi": ARRIVE_I, "xj": ARRIVE_J})
+    ->END
+
+# The dwell countdown for one arrival cell. Ends early (no XORN) if the player jumps out
+# (cell no longer live) or the hunt ends. Scheduled with its own xi/xj so it survives.
+=== xorn_pursuit_watch
+    default xi = 0
+    default xj = 0
+    _dwell = XORN_DWELL_SECONDS
+    # The origin (finale) - XORN is right behind you; a much shorter fuse.
+    if xi == 6 and xj == -2:
+        _dwell = XORN_DWELL_FINALE
+--- xorn_wait
+    await delay_sim(5)
+    ->END if not universe_cell_live(xi, xj)
+    ->END if quest_shared_state("beacon_arc/ep3_scan") == 99
+    _dwell = _dwell - 5
+    jump xorn_wait if _dwell > 0
+    # Fuse burned down and you're still here: only one XORN at a time.
+    ->END if len(to_object_list(role("xorn"))) > 0
+    task_schedule(xorn_engage, {"xi": xi, "xj": xj})
+    ->END
+
+# XORN closes the gap: a single superior alien hull (skaraan_executor) on the hostile
+# raider side, with a chase-the-player brain. Spawned near the lingering player in THIS
+# cell. The engine clears NPCs on a jump, so escaping the system removes XORN for free.
+=== xorn_engage
+metadata:``` yaml
+brain:
+  SEQ Pursuit:
+    - ai_chase_player
+```
+    default xi = 0
+    default xj = 0
+    _pl = objects_in_cell(to_object_list(role("__player__")), xi, xj)
+    ->END if len(_pl) == 0
+    _tgt = _pl[0]
+    _off = Vec3.rand_in_sphere(6000, 9000, False, True)
+    xorn = npc_spawn(_tgt.pos.x + _off.x, _tgt.pos.y, _tgt.pos.z + _off.z, "XORN", "raider, xorn", "skaraan_executor", "behav_npcship")
+    brain_add(xorn.id, brain, None, 0, None)
+    # Comms surface preference: a real transmission from Storm (primary) + one info card
+    # (this IS an important beat). Keep it terse - the warning is "run or get help".
+    universe_info_card("XORN has your bearing. You can't trade broadsides with that hull - break for the jump or find someone to throw at it.", "XORN", "#f33")
+    comms_message("That's XORN on our tail, Captain. Don't try to fight it straight - run for the jump, or find someone to throw in its path.", role("advisor"), role("__player__"), color="#6cf")
     ->END
