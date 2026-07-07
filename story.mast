@@ -1,0 +1,52 @@
+# Storm's Beacon - a standalone single-ship STORY mission built on the OpenUniverse
+# universe_core mastlib ONLY (no admiral RTS). This is the Phase 2b "core-only smoke"
+# consumer: it proves universe_core loads and jumps systems without the admiral addon.
+# See STORMS_BEACON.md (design) and FOUNDATION_PLAN.md (the split).
+
+# Auto-select this mission's universe. universe_core's universe.mast declares
+# `default shared UNIVERSE_SELECT = "Default"`; a mission's own story.mast compiles
+# BEFORE the mastlibs (load order: story.mast -> mastlibs -> local addons), so this
+# `default` runs first and wins - the start screen opens straight into Storm's Beacon.
+default shared UNIVERSE_SELECT = "Storms Beacon"
+
+# Enable the quest-driven jump. Movement in a story mission is the LM Quests tab's
+# "Engage" button (emits quest_engage -> universe_core resolves the chapter's on_reach
+# sector -> universe_jump_to). That button is gated by QUEST_ENGAGE_ENABLED, which LM's
+# quest_tab.mast defaults to False. universe_core defaults it True - but LM's mastlib
+# loads BEFORE universe_core, so LM's `default` wins and it stays False (no Engage button
+# = no jump). This mission's story.mast runs before EVERY mastlib, so setting it here
+# wins. (No admiral theater and NAV_CONSOLE_ENABLED is off, so this is the jump path.)
+default shared QUEST_ENGAGE_ENABLED = True
+
+# Register Storm's Beacon in the universe registry (the start-screen "Universe" dropdown
+# scans `type: universe/*` labels). universe_core reads the named .amd MISSION-RELATIVE
+# first (universe_read_content), so stormsbeacon.amd loads from THIS mission folder.
+=== universe_stormsbeacon
+metadata:``` yaml
+type: universe/stormsbeacon
+key: stormsbeacon
+display: Storms Beacon
+universe: stormsbeacon.amd
+```
+    ->END
+
+# This mission's OWN map (OpenUniverse Phase 2b: a map is mission presentation, not
+# engine). universe_core carries no @map, so this is the only one the start screen shows -
+# no inherited "Open Universe" / demo-universe dropdown. It sets which universe to load
+# and jumps into the shared setup label (universe_map_begin) in the universe_core mastlib.
+@map/stormsbeacon "Storms Beacon"
+" Prof. Storm has a lead on the Beacon - an ancient signal buried in the ruins the old
+" giants left behind. Follow the clues, scan the derelicts, and stay a jump ahead of
+" whatever is hunting the same trail.
+metadata:``` yaml
+Properties:
+  Main:
+    Start: 'gui_drop_down("$text: {START_MODE};list: Continue, New Game", var="START_MODE")'
+    Player Ships: 'gui_int_slider("$text:int;low: 1.0;high:8.0;", var= "PLAYER_COUNT")'
+    Difficulty: 'gui_int_slider("$text:int;low: 1.0;high:11.0;", var= "DIFFICULTY")'
+GameCode:
+  - PLAYER_COUNT
+  - DIFFICULTY
+```
+    UNIVERSE_SELECT = "Storms Beacon"
+    jump universe_map_begin

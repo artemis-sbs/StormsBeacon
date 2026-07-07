@@ -1,0 +1,71 @@
+// Storm's Beacon - the pilot episode. A minimal single-ship STORY universe on the
+// universe_core mastlib (OpenUniverse Phase 2b): Mode: story, no admiral economy. Prof.
+// Storm's beacon hunt - jump coreward, scan an ancient Torgoth megastation ruin for the
+// Beacon's trail. This is the vertical slice; the full episodic campaign (reputation,
+// XORN pursuit, crafting, Crazy Eddy) builds out from here - see STORMS_BEACON.md.
+
+# Storm's Beacon
+---
+Display: Storms Beacon
+---
+Prof. Storm has a lead on the Beacon - an ancient signal buried in the ruins the old
+giants left behind. A small ship, a long quiet run, and something already hunting the
+same trail.
+
+## Scenario
+---
+Mode: story
+---
+// Mode: story = a single-ship narrative with the Admiral economy OFF (no ## Admiralty
+// or ## Worldlets chapter). This mission loads only the universe_core mastlib, so the
+// admiral addon is not even present - admiralty_active() is False throughout.
+
+## Narrative
+
+### Storm's Lead (beacon_1)
+---
+Scope: shared
+State: active
+When: reach 2, -1
+Then: reveal beacon_2
+---
+Prof. Storm's voice crackles over comms: the Beacon's carrier tone folds into an
+eleven-hundred-year-old Torgoth channel, bearing coreward past the old marches to
+(2, -1). "That is where they were biggest," she says. "Before they shrank. Before they
+left the big empty houses behind." Bring the ship about and jump.
+
+### The Giant's House (beacon_2)
+---
+Scope: shared
+State: secret
+When: scan 1 derelict
+Pays: 200 credits
+---
+It hangs in the dark far larger than anything that flies today - a Torgoth megastation
+from the age when the Torgoth themselves were giants, its docking throats wide enough to
+swallow your ship whole. The Beacon's trail runs straight into it. Bring the science
+array to bear and read what the ruin remembers.
+
+## Goals
+
+### Read the Ruin (goal_read_ruin)
+---
+Scope: shared
+State: active
+When: scan 1 derelict
+Win: true
+Citation: The megastation archive gave up the next bearing - and Prof. Storm has her trail again. The Beacon is still out there, and so is whoever is following the same clues.
+---
+Follow Storm's lead to (2, -1) and scan the Torgoth megastation to pull the Beacon's next
+bearing from the ruin.
+
+## Landmarks
+
+### Torgoth Megastation (giants_house)
+---
+At: 2, -1
+Kind: derelict
+---
+A derelict from the age of giants - a Torgoth station built to a scale no modern hull
+needs, running dark for a thousand years, and still holding one faint echo of the Beacon
+in its cold archive.

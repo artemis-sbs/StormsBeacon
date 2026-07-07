@@ -1,0 +1,12 @@
+/lib/
+**/__pycache__/**
+.vscode/
+*.sbslib
+*.mastlib
+/.vs
+# Runtime artifacts written into the mission dir by the dev runner / mock:
+*.log
+# Media is extracted from the LegendaryMissions media resource zip at runtime
+# (story.json resources.media) - it is not this mission's authored content.
+# (When Storm's Beacon gets its OWN authored media, track it explicitly / adjust this.)
+/media/
