@@ -50,3 +50,43 @@ GameCode:
 ```
     UNIVERSE_SELECT = "Storms Beacon"
     jump universe_map_begin
+
+
+# Prof. Storm's advisor logic. She is a host-less cast lifeform (stormsbeacon.amd
+# ## Lifeforms) hailed on the Ultra-Beam with no target selected; her dialogue's
+# "Any word on the Beacon?" choice emits `signal storm_check` (a dialogue outcome).
+# Dialogue guards can't read quest state, so the state-aware "hand out the next lead"
+# logic lives HERE - the //signal/detain_saboteur pattern from universe_core. quest_reveal
+# flips a `State: secret` narrative chapter ACTIVE, so it appears in the Quests tab with an
+# Engage jump. QuestState ints: 2 = SECRET, 1 = ACTIVE, 99 = COMPLETE.
+//signal/storm_check if UNIVERSE_ACTIVE
+    storm_line = "Still working the archive. Sit tight."
+    storm_important = False
+    if quest_shared_state("beacon_arc/ep1_go") == 2:
+        # First hail: hand out episode 1 and clear the "Contact Prof. Storm" briefing.
+        quest_reveal(universe_shared_id(), "beacon_arc/ep1_go")
+        signal_emit("quest_signal", {"SIGNAL_NAME": "storm_briefed"})
+        storm_line = "Got your first lead. An old Torgoth channel out at (2, -1) - it's on your map now. Jump in and scan the ruin, then hail me."
+        storm_important = True
+    elif quest_shared_state("beacon_arc/ep1_scan") == 99 and quest_shared_state("beacon_arc/ep2_go") == 2:
+        # Episode 1 read: reveal the next site.
+        quest_reveal(universe_shared_id(), "beacon_arc/ep2_go")
+        storm_line = "Cross-referenced those glyphs. The trail runs to the old Kralien marches at (4, 1). Marked it - get moving."
+        storm_important = True
+    elif quest_shared_state("beacon_arc/ep2_scan") == 99:
+        storm_line = "That's the trail's end for now, Captain. Fine work - the Beacon's real, and we've got its bearing."
+        storm_important = True
+    elif quest_shared_state("beacon_arc/ep1_scan") != 99:
+        storm_line = "Your lead's already on the map - get to that Torgoth ruin and scan it, then check back with me."
+    elif quest_shared_state("beacon_arc/ep2_scan") != 99:
+        storm_line = "The Kralien ruin's on your map at (4, 1) - get out there and scan it."
+    # Comms surface preference: a real comms message from Storm is the PRIMARY surface
+    # (comms_message pulls her face/name off the lifeform). Add the info-panel card only on
+    # IMPORTANT beats (a new lead / the finale), not routine chatter. Then refresh any open
+    # Quests tab so a just-revealed lead shows at once (gui_refresh hits the tab's `repaint`).
+    comms_message(storm_line, role("advisor"), role("__player__"), color="#6cf")
+    if storm_important:
+        storm_spk = dialogue_speaker(UNIVERSE_CLANS, UNIVERSE_CAPTAINS, UNIVERSE_LIFEFORMS, "prof_storm")
+        universe_chatter_card(storm_spk, storm_line)
+    gui_refresh("repaint")
+    ->END

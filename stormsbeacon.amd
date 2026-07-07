@@ -1,63 +1,123 @@
-// Storm's Beacon - the pilot episode. A minimal single-ship STORY universe on the
-// universe_core mastlib (OpenUniverse Phase 2b): Mode: story, no admiral economy. Prof.
-// Storm's beacon hunt - jump coreward, scan an ancient Torgoth megastation ruin for the
-// Beacon's trail. This is the vertical slice; the full episodic campaign (reputation,
-// XORN pursuit, crafting, Crazy Eddy) builds out from here - see STORMS_BEACON.md.
+// Storm's Beacon - the pilot episodes. A single-ship STORY universe on the universe_core
+// mastlib (Mode: story, no admiral economy). Prof. Storm is VIRTUAL CREW: hail her on the
+// Ultra-Beam (with no target selected) for each lead. She reveals the next site; you
+// Engage-jump there from the Quests tab and scan the ancient ruin, then hail her again for
+// the next heading. Two Storm-gated episodes here; the full campaign (reputation, XORN,
+// crafting, Crazy Eddy) builds out from this spine - see STORMS_BEACON.md.
 
 # Storm's Beacon
 ---
 Display: Storms Beacon
 ---
 Prof. Storm has a lead on the Beacon - an ancient signal buried in the ruins the old
-giants left behind. A small ship, a long quiet run, and something already hunting the
-same trail.
+giants left behind. Hail her for each heading, follow the clues, and stay a jump ahead of
+whatever is hunting the same trail.
 
 ## Scenario
 ---
 Mode: story
 ---
-// Mode: story = a single-ship narrative with the Admiral economy OFF (no ## Admiralty
-// or ## Worldlets chapter). This mission loads only the universe_core mastlib, so the
-// admiral addon is not even present - admiralty_active() is False throughout.
+
+## Lifeforms
+
+### Professor Storm (prof_storm)
+---
+Face: female
+Roles: advisor
+Scene: storm_hail
+Color: #6cf
+---
+Expedition lead and xeno-archaeologist. A host-less advisor - hail her from anywhere on
+the Ultra-Beam (no target selected) for the next lead on the Beacon.
+
+## Dialogue
+
+### Professor Storm (storm_hail)
+---
+Speaker: prof_storm
+When: comms
+---
+% Storm here, Captain. What do you need?
+% Go ahead - I'm knee-deep in old star charts.
+% Talk to me. The trail's still warm.
+
+- [Any word on the Beacon?](storm_hail) ; signal storm_check
+- [Just checking in](storm_smalltalk)
+
+### Professor Storm (storm_smalltalk)
+---
+Speaker: prof_storm
+---
+% Watch yourself out there. The Beacon isn't the only thing hunting these ruins.
+% Keep the ship quiet and the sensors hot. We find it by being clever, not loud.
 
 ## Narrative
 
-### Storm's Lead (beacon_1)
+// The episodes nest under one arc via HEADING LEVELS: the arc is a `###` heading and each
+// step is a `####` heading under it (local keys). quest_grant_amd builds the nested quest
+// keys from the heading depth (`beacon_arc/<step>`, via quest_folder), so the Quests tab
+// renders them as a collapsible tree under "The Beacon Hunt". `Then: reveal` and the mission
+// code reference a step by its FULL path (`beacon_arc/ep1_scan`). (No `Parent:` field - that
+// is the mission-tree COMPLETION flow, not display grouping; the win is on the terminal step.)
+
+### The Beacon Hunt (beacon_arc)
 ---
 Scope: shared
 State: active
-When: reach 2, -1
-Then: reveal beacon_2
 ---
-Prof. Storm's voice crackles over comms: the Beacon's carrier tone folds into an
-eleven-hundred-year-old Torgoth channel, bearing coreward past the old marches to
-(2, -1). "That is where they were biggest," she says. "Before they shrank. Before they
-left the big empty houses behind." Bring the ship about and jump.
+Prof. Storm's search for the Beacon - an ancient signal the old giants left buried in
+their ruins. Hail her for each lead, follow the trail across the frontier, and read what
+the dead stations still remember.
 
-### The Giant's House (beacon_2)
+#### Contact Prof. Storm (briefing)
+---
+Scope: shared
+State: active
+When: signal storm_briefed
+---
+Hail Prof. Storm on the Ultra-Beam (no target selected) for your first lead on the Beacon.
+
+#### Storm's First Lead (ep1_go)
+---
+Scope: shared
+State: secret
+When: reach 2, -1
+Then: reveal beacon_arc/ep1_scan
+---
+Storm's first heading: an ancient Torgoth channel out at (2, -1), coreward past the old
+marches. Engage the jump drive from your Quests tab and follow it in.
+
+#### The Giant's House (ep1_scan)
 ---
 Scope: shared
 State: secret
 When: scan 1 derelict
-Pays: 200 credits
+Pays: 150 credits
 ---
-It hangs in the dark far larger than anything that flies today - a Torgoth megastation
-from the age when the Torgoth themselves were giants, its docking throats wide enough to
-swallow your ship whole. The Beacon's trail runs straight into it. Bring the science
-array to bear and read what the ruin remembers.
+A Torgoth megastation from the age when the Torgoth were giants - docking throats wide
+enough to swallow your ship. Bring the science array to bear and read what it remembers,
+then hail Storm with what you find.
 
-## Goals
-
-### Read the Ruin (goal_read_ruin)
+#### Storm's Next Lead (ep2_go)
 ---
 Scope: shared
-State: active
+State: secret
+When: reach 4, 1
+Then: reveal beacon_arc/ep2_scan
+---
+Storm cross-referenced the megastation's glyphs: the trail runs on to the old Kralien
+marches at (4, 1). Engage and jump.
+
+#### The Beacon's Voice (ep2_scan)
+---
+Scope: shared
+State: secret
 When: scan 1 derelict
 Win: true
-Citation: The megastation archive gave up the next bearing - and Prof. Storm has her trail again. The Beacon is still out there, and so is whoever is following the same clues.
+Citation: The Kralien ruin gave up the Beacon's voice at last - and Prof. Storm has what she came for. The Beacon is real, its bearing is logged, and this little ship flew home with a story the giants left behind.
 ---
-Follow Storm's lead to (2, -1) and scan the Torgoth megastation to pull the Beacon's next
-bearing from the ruin.
+A cold Kralien ruin, vast and silent, still holding one faint echo of the Beacon in its
+archive. Scan it to pull the Beacon's voice from the dark.
 
 ## Landmarks
 
@@ -67,5 +127,12 @@ At: 2, -1
 Kind: derelict
 ---
 A derelict from the age of giants - a Torgoth station built to a scale no modern hull
-needs, running dark for a thousand years, and still holding one faint echo of the Beacon
-in its cold archive.
+needs, running dark for a thousand years, and still holding one faint echo of the Beacon.
+
+### Kralien Ruin (kralien_ruin)
+---
+At: 4, 1
+Kind: derelict
+---
+A Kralien megastructure from their own age of giants, adrift and cold - and still
+whispering one eleven-hundred-year-old word into the static.
