@@ -22,7 +22,8 @@
         "artemis-sbs.LegendaryMissions.data_panels.v1.4.0.mastlib",
         "artemis-sbs.LegendaryMissions.basic_player_destroy.v1.4.0.mastlib",
         "artemis-sbs.LegendaryMissions.basic_random_skybox.v1.4.0.mastlib",
-        "artemis-sbs.OpenUniverse.universe_core.v1.4.0.mastlib"
+        "artemis-sbs.OpenUniverse.universe_core.v1.4.0.mastlib",
+        "artemis-sbs.OpenUniverse.fabrication.v1.4.0.mastlib"
     ],
     "resources": {
         "media": "artemis-sbs.LegendaryMissions.media.v1.4.0.zip"
