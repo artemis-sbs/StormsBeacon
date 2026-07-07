@@ -96,9 +96,14 @@ GameCode:
                 quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["go"])
                 storm_line = _ep["lead"]
                 storm_important = True
-                # First lead also clears the "Contact Prof. Storm" briefing step.
+                # First lead also clears the "Contact Prof. Storm" briefing step, and
+                # Storm fronts the expedition some seed credits (gear money for Eddy).
                 if _idx == 0:
                     signal_emit("quest_signal", {"SIGNAL_NAME": "storm_briefed"})
+                    _pl0 = to_object_list(role("__player__"))
+                    if len(_pl0) > 0:
+                        _sid = to_side_id(get_side(_pl0[0].id))
+                        set_inventory_value(_sid, "credits", get_inventory_value(_sid, "credits", 0) + 500)
             else:
                 storm_line = _ep["nudge"]
             _handed = True
@@ -166,4 +171,52 @@ brain:
     # (this IS an important beat). Keep it terse - the warning is "run or get help".
     universe_info_card("XORN has your bearing. You can't trade broadsides with that hull - break for the jump or find someone to throw at it.", "XORN", "#f33")
     comms_message("That's XORN on our tail, Captain. Don't try to fight it straight - run for the jump, or find someone to throw in its path.", role("advisor"), role("__player__"), color="#6cf")
+    ->END
+
+
+# Crazy Eddy's Emporium - the stat gamble. The shop MENU is declarative dialogue in
+# stormsbeacon.amd (`costs N credits` charges the buyer; `signal eddy_buy_*` routes here).
+# Each route applies a REAL, PERMANENT ship modifier via the same *_upgrade_coeff engine the
+# items addon uses: a POSITIVE value is an upgrade, a NEGATIVE value a downgrade. Some deals
+# are honest, some are traps, some a coin-flip - that's the game. Result comes back as a
+# comms line from Eddy (role "eddy", so it's HIS face, not Storm's). Applied to the player.
+
+# Honest good: a genuine sensor boost (great for reading ruins).
+//signal/eddy_buy_sensor
+    modifier_add(role("__player__"), "sensor_upgrade_coeff", 1.0, "eddy_sensor", duration=None)
+    comms_message("That array's the real deal - your science boards just got sharper eyes.", role("eddy"), role("__player__"), color="#fa0")
+    ->END
+
+# Gamble: 60% these coils sing, 40% they're shot.
+//signal/eddy_buy_coils
+    if random.randint(1, 100) <= 60:
+        modifier_add(role("__player__"), "impulse_upgrade_coeff", 0.75, "eddy_coils", duration=None)
+        comms_message("Ha! Those are the good ones - she'll fly like a scalded cat now.", role("eddy"), role("__player__"), color="#fa0")
+    else:
+        modifier_add(role("__player__"), "impulse_upgrade_coeff", -0.4, "eddy_coils", duration=None)
+        comms_message("...huh. Ease off the throttle on those, maybe. No refunds!", role("eddy"), role("__player__"), color="#f80")
+    ->END
+
+# Trap dressed as a bargain: a sliver of real shielding, a lot of dead weight (worse turn).
+//signal/eddy_buy_plating
+    modifier_add(role("__player__"), "all_shield_upgrade_coeff", 0.2, "eddy_plating_up", duration=None)
+    modifier_add(role("__player__"), "turn_upgrade_coeff", -0.5, "eddy_plating_down", duration=None)
+    comms_message("Solid as a rock, that plating! ...she might steer like one now. But solid!", role("eddy"), role("__player__"), color="#f80")
+    ->END
+
+# Pure coin-flip: one of four crates, two gems and two lemons.
+//signal/eddy_buy_mystery
+    _roll = random.randint(0, 3)
+    if _roll == 0:
+        modifier_add(role("__player__"), "all_shield_upgrade_coeff", 1.0, "eddy_mystery", duration=None)
+        comms_message("Would you look at that - military shield emitters. Your lucky day!", role("eddy"), role("__player__"), color="#fa0")
+    elif _roll == 1:
+        modifier_add(role("__player__"), "sensor_upgrade_coeff", 0.8, "eddy_mystery", duration=None)
+        comms_message("Sensor gear, barely used! Somebody up there likes you.", role("eddy"), role("__player__"), color="#fa0")
+    elif _roll == 2:
+        modifier_add(role("__player__"), "coolant_upgrade_coeff", -0.5, "eddy_mystery", duration=None)
+        comms_message("...ah. That one's a coolant leak in a box. Builds character, right?", role("eddy"), role("__player__"), color="#f80")
+    else:
+        modifier_add(role("__player__"), "turn_upgrade_coeff", -0.5, "eddy_mystery", duration=None)
+        comms_message("Congratulations, it's a crate of scrap iron. Heavy scrap. Sorry, captain!", role("eddy"), role("__player__"), color="#f80")
     ->END

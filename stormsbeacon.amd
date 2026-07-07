@@ -30,6 +30,17 @@ Color: #6cf
 Expedition lead and xeno-archaeologist. A host-less advisor - hail her from anywhere on
 the Ultra-Beam (no target selected) for the next lead on the Beacon.
 
+### Crazy Eddy (crazy_eddy)
+---
+Face: male
+Roles: advisor, eddy
+Scene: eddy_hail
+Color: #fa0
+---
+A back-channel ship-dealer working the old marches out of a ramshackle hull. Sells gear
+nobody else will - some of it even works. A host-less advisor: hail him on the Ultra-Beam
+(no target selected) to browse his deals. Cash up front, no refunds.
+
 ## Dialogue
 
 ### Professor Storm (storm_hail)
@@ -50,6 +61,53 @@ Speaker: prof_storm
 ---
 % Watch yourself out there. The Beacon isn't the only thing hunting these ruins.
 % Keep the ship quiet and the sensors hot. We find it by being clever, not loud.
+
+// Crazy Eddy's Emporium. The shop is DECLARATIVE dialogue: each deal is a choice gated on
+// `if credits >= N`, charged by `; costs N credits`, and wired to a MAST `//signal/eddy_buy_*`
+// route (story.mast) that applies the REAL ship modifier. Some deals are honest, some are
+// traps, some are a coin-flip - the route decides. The `eddy_sold` line is just his patter;
+// the actual up/down result comes back as a comms message from the route.
+
+### Crazy Eddy (eddy_hail)
+---
+Speaker: crazy_eddy
+When: comms
+---
+% Eddy's the name, salvage is the game! Step right up, captain.
+% You look like a soul in need of an upgrade. Lucky you - I'm having a sale.
+% No refunds, no returns, no questions asked. What'll it be?
+
+- [Show me the deals](eddy_shop)
+- [Not today, Eddy](eddy_bye)
+
+### Eddy's Deals (eddy_shop)
+---
+Speaker: crazy_eddy
+---
+% Every piece genuine salvage, pried off wrecks with my own two hands. Cash up front!
+
+- [Salvaged Sensor Array - 400cr](eddy_sold) if credits >= 400 ; costs 400 credits, signal eddy_buy_sensor
+- [Overclocked Impulse Coils - 250cr](eddy_sold) if credits >= 250 ; costs 250 credits, signal eddy_buy_coils
+- [Reinforced Plating, a STEAL - 150cr](eddy_sold) if credits >= 150 ; costs 150 credits, signal eddy_buy_plating
+- [Mystery Crate, feeling lucky? - 200cr](eddy_sold) if credits >= 200 ; costs 200 credits, signal eddy_buy_mystery
+- [Never mind](eddy_hail)
+
+### Sold! (eddy_sold)
+---
+Speaker: crazy_eddy
+---
+% Pleasure doing business! Bolt it on and don't come crying to me.
+% Sold! To the captain with more credits than sense.
+
+- [More deals](eddy_shop)
+- [I'm done here](eddy_bye)
+
+### Come Back Soon (eddy_bye)
+---
+Speaker: crazy_eddy
+---
+% Your loss. I'll be here, marinating in the dark.
+% Fly safe. Or don't - salvage is salvage.
 
 ## Narrative
 
