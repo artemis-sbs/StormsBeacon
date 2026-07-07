@@ -141,7 +141,10 @@ GameCode:
     # (comms_message pulls her face/name off the lifeform). Add the info-panel card only on
     # IMPORTANT beats (a new lead / the finale), not routine chatter. Then refresh any open
     # Quests tab so a just-revealed lead shows at once (gui_refresh hits the tab's `repaint`).
-    comms_message(storm_line, role("advisor"), role("__player__"), color="#6cf")
+    # From role("storm") - a SINGLE lifeform. comms_message fans out over every sender in
+    # the from-set, so role("advisor") (Storm + Eddy + Vex + Skarr) would send 4 copies, one
+    # per face. Always pass a character's UNIQUE role as the sender.
+    comms_message(storm_line, role("storm"), role("__player__"), color="#6cf")
     if storm_important:
         storm_spk = dialogue_speaker(UNIVERSE_CLANS, UNIVERSE_CAPTAINS, UNIVERSE_LIFEFORMS, "prof_storm")
         universe_chatter_card(storm_spk, storm_line)
@@ -204,7 +207,7 @@ brain:
     # Comms surface preference: a real transmission from Storm (primary) + one info card
     # (this IS an important beat). Keep it terse - the warning is "run or get help".
     universe_info_card("XORN has your bearing. You can't trade broadsides with that hull - break for the jump or find someone to throw at it.", "XORN", "#f33")
-    comms_message("That's XORN on our tail, Captain. Don't try to fight it straight - run for the jump, or find someone to throw in its path.", role("advisor"), role("__player__"), color="#6cf")
+    comms_message("That's XORN on our tail, Captain. Don't try to fight it straight - run for the jump, or find someone to throw in its path.", role("storm"), role("__player__"), color="#6cf")
     ->END
 
 

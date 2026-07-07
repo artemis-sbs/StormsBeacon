@@ -23,7 +23,7 @@ Mode: story
 ### [Professor Storm](prof_storm)
 ---
 Face: female
-Roles: advisor
+Roles: advisor, storm
 Scene: storm_hail
 Color: #6cf
 ---
