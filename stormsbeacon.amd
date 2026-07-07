@@ -41,6 +41,16 @@ A back-channel ship-dealer working the old marches out of a ramshackle hull. Sel
 nobody else will - some of it even works. A host-less advisor: hail him on the Ultra-Beam
 (no target selected) to browse his deals. Cash up front, no refunds.
 
+### Chief Engineer Vex (chief_vex)
+---
+Face: female
+Roles: advisor, engineer
+Scene: vex_hail
+Color: #8f8
+---
+Your chief engineer - keeps this under-gunned little ship flying on scavenged parts and
+spite. Hail her on the Ultra-Beam for a read on the ship and a piece of her mind.
+
 ## Dialogue
 
 ### Professor Storm (storm_hail)
@@ -86,11 +96,26 @@ Speaker: crazy_eddy
 ---
 % Every piece genuine salvage, pried off wrecks with my own two hands. Cash up front!
 
-- [Salvaged Sensor Array - 400cr](eddy_sold) if credits >= 400 ; costs 400 credits, signal eddy_buy_sensor
-- [Overclocked Impulse Coils - 250cr](eddy_sold) if credits >= 250 ; costs 250 credits, signal eddy_buy_coils
-- [Reinforced Plating, a STEAL - 150cr](eddy_sold) if credits >= 150 ; costs 150 credits, signal eddy_buy_plating
-- [Mystery Crate, feeling lucky? - 200cr](eddy_sold) if credits >= 200 ; costs 200 credits, signal eddy_buy_mystery
+// Each buy earns `crazy_eddy generous` standing (spending freely makes you his favorite).
+// At generous > 15 the "Regulars only" branch unlocks (rep gates a discounted menu) - the
+// tactical AND narrative rep use. Rep is per-captain, persisted across episodes.
+- [Salvaged Sensor Array - 400cr](eddy_sold) if credits >= 400 ; costs 400 credits, signal eddy_buy_sensor, earns crazy_eddy generous 3
+- [Overclocked Impulse Coils - 250cr](eddy_sold) if credits >= 250 ; costs 250 credits, signal eddy_buy_coils, earns crazy_eddy generous 3
+- [Reinforced Plating, a STEAL - 150cr](eddy_sold) if credits >= 150 ; costs 150 credits, signal eddy_buy_plating, earns crazy_eddy generous 3
+- [Mystery Crate, feeling lucky? - 200cr](eddy_sold) if credits >= 200 ; costs 200 credits, signal eddy_buy_mystery, earns crazy_eddy generous 3
+- [Regulars only - the good stuff](eddy_loyal) if generous > 15
 - [Never mind](eddy_hail)
+
+### Regulars Only (eddy_loyal)
+---
+Speaker: crazy_eddy
+---
+% For my best customer? I keep the honest stuff under the counter. No gambles, just gear.
+% You've been good to me, captain. So I'll be good to you. Discount, and no funny business.
+
+- [Sensor Array, friends price - 250cr](eddy_sold) if credits >= 250 ; costs 250 credits, signal eddy_buy_sensor, earns crazy_eddy generous 2
+- [Genuine Shield Emitters - 300cr](eddy_sold) if credits >= 300 ; costs 300 credits, signal eddy_buy_shield, earns crazy_eddy generous 2
+- [Back](eddy_shop)
 
 ### Sold! (eddy_sold)
 ---
@@ -108,6 +133,47 @@ Speaker: crazy_eddy
 ---
 % Your loss. I'll be here, marinating in the dark.
 % Fly safe. Or don't - salvage is salvage.
+
+// Chief Engineer Vex - the ship's own voice. Flavor + tone reinforcement (under-gunned,
+// run don't fight), and a nudge that Eddy's gear is a gamble. Pure dialogue, no outcomes.
+
+### Chief Engineer Vex (vex_hail)
+---
+Speaker: chief_vex
+When: comms
+---
+% Vex here. She's holding together. Mostly. What do you need?
+% Engineering. Talk fast - I've got a coolant line arguing with me.
+% If you're about to ask me to push the coils past redline again - no. Ask anyway.
+
+- [How's the ship holding up?](vex_status)
+- [What do you make of XORN?](vex_xorn)
+- [Carry on, Chief](vex_bye)
+
+### Chief Engineer Vex (vex_status)
+---
+Speaker: chief_vex
+---
+% She's a Warpster, not a warship. We win by being somewhere else when the shooting starts.
+% Keep buying Eddy's junk and I'll keep bolting it on - just don't blame me when it bites.
+% Give me a real salvage yard and a week and I'd make her sing. Failing that, we improvise.
+
+- [Understood](vex_hail)
+
+### Chief Engineer Vex (vex_xorn)
+---
+Speaker: chief_vex
+---
+% XORN outguns us at every turn. Our edge is the jump drive and knowing when to burn it.
+% If that thing gets a firing solution we don't trade shots, we run. That's not cowardice, that's math.
+
+- [Agreed](vex_hail)
+
+### Chief Engineer Vex (vex_bye)
+---
+Speaker: chief_vex
+---
+% I'll be in the engine room. Where else would I be.
 
 ## Narrative
 

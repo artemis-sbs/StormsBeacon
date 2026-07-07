@@ -181,6 +181,13 @@ brain:
 # are honest, some are traps, some a coin-flip - that's the game. Result comes back as a
 # comms line from Eddy (role "eddy", so it's HIS face, not Storm's). Applied to the player.
 
+# Loyal-customer honest shield emitters (Eddy's under-the-counter good stuff, unlocked by
+# building `generous` standing with him - the reputation branch).
+//signal/eddy_buy_shield
+    modifier_add(role("__player__"), "all_shield_upgrade_coeff", 1.0, "eddy_shield", duration=None)
+    comms_message("Genuine emitters, no tricks. Told you I keep the good stuff for regulars.", role("eddy"), role("__player__"), color="#fa0")
+    ->END
+
 # Honest good: a genuine sensor boost (great for reading ruins).
 //signal/eddy_buy_sensor
     modifier_add(role("__player__"), "sensor_upgrade_coeff", 1.0, "eddy_sensor", duration=None)
