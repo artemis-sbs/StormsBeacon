@@ -60,26 +60,41 @@ GameCode:
 # flips a `State: secret` narrative chapter ACTIVE, so it appears in the Quests tab with an
 # Engage jump. QuestState ints: 2 = SECRET, 1 = ACTIVE, 99 = COMPLETE.
 //signal/storm_check if UNIVERSE_ACTIVE
-    storm_line = "Still working the archive. Sit tight."
+    # The Beacon hunt's episodes, IN ORDER. This list is the whole dispatcher: Storm
+    # hands out the next lead by walking it, so ADDING AN EPISODE is two mechanical
+    # edits and no new logic -> (1) author its go/scan chapters + landmark in
+    # stormsbeacon.amd, (2) append one row here. Each row: go/scan are the nested quest
+    # keys under beacon_arc; lead = her comms line when she reveals it; nudge = her line
+    # while it's active but unscanned. (Multi-line literal wrapped in ~~ per MAST rules.)
+    _eps = ~~[
+        {"go": "ep1_go", "scan": "ep1_scan",
+         "lead": "Got your first lead. An old Torgoth channel out at (2, -1) - it's on your map now. Jump in and scan the ruin, then hail me.",
+         "nudge": "Your lead's already on the map - get to that Torgoth ruin and scan it, then check back with me."},
+        {"go": "ep2_go", "scan": "ep2_scan",
+         "lead": "Cross-referenced those glyphs. The trail runs to the old Kralien marches at (4, 1). Marked it - get moving.",
+         "nudge": "The Kralien ruin's on your map at (4, 1) - get out there and scan it."},
+        {"go": "ep3_go", "scan": "ep3_scan",
+         "lead": "The Kralien archive pointed deeper - a dead relay at (6, -2), right at the edge of the marches. That's where the Beacon's signal begins. Go.",
+         "nudge": "That relay at (6, -2) is the origin, Captain - get out there and scan it."}
+    ]~~
+    # Default = the trail's end (every episode scanned). Walk the list; act only on the
+    # FIRST not-yet-scanned episode (the `not _handed` guard stands in for a break).
+    storm_line = "That's the trail's end for now, Captain. Fine work - the Beacon's real, and we've got its bearing."
     storm_important = False
-    if quest_shared_state("beacon_arc/ep1_go") == 2:
-        # First hail: hand out episode 1 and clear the "Contact Prof. Storm" briefing.
-        quest_reveal(universe_shared_id(), "beacon_arc/ep1_go")
-        signal_emit("quest_signal", {"SIGNAL_NAME": "storm_briefed"})
-        storm_line = "Got your first lead. An old Torgoth channel out at (2, -1) - it's on your map now. Jump in and scan the ruin, then hail me."
-        storm_important = True
-    elif quest_shared_state("beacon_arc/ep1_scan") == 99 and quest_shared_state("beacon_arc/ep2_go") == 2:
-        # Episode 1 read: reveal the next site.
-        quest_reveal(universe_shared_id(), "beacon_arc/ep2_go")
-        storm_line = "Cross-referenced those glyphs. The trail runs to the old Kralien marches at (4, 1). Marked it - get moving."
-        storm_important = True
-    elif quest_shared_state("beacon_arc/ep2_scan") == 99:
-        storm_line = "That's the trail's end for now, Captain. Fine work - the Beacon's real, and we've got its bearing."
-        storm_important = True
-    elif quest_shared_state("beacon_arc/ep1_scan") != 99:
-        storm_line = "Your lead's already on the map - get to that Torgoth ruin and scan it, then check back with me."
-    elif quest_shared_state("beacon_arc/ep2_scan") != 99:
-        storm_line = "The Kralien ruin's on your map at (4, 1) - get out there and scan it."
+    _handed = False
+    for _idx, _ep in enumerate(_eps):
+        if not _handed and quest_shared_state("beacon_arc/" + _ep["scan"]) != 99:
+            if quest_shared_state("beacon_arc/" + _ep["go"]) == 2:
+                # Reveal this lead (flips the secret chapter active -> Engage jump).
+                quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["go"])
+                storm_line = _ep["lead"]
+                storm_important = True
+                # First lead also clears the "Contact Prof. Storm" briefing step.
+                if _idx == 0:
+                    signal_emit("quest_signal", {"SIGNAL_NAME": "storm_briefed"})
+            else:
+                storm_line = _ep["nudge"]
+            _handed = True
     # Comms surface preference: a real comms message from Storm is the PRIMARY surface
     # (comms_message pulls her face/name off the lifeform). Add the info-panel card only on
     # IMPORTANT beats (a new lead / the finale), not routine chatter. Then refresh any open

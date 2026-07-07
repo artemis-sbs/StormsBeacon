@@ -108,16 +108,61 @@ Then: reveal beacon_arc/ep2_scan
 Storm cross-referenced the megastation's glyphs: the trail runs on to the old Kralien
 marches at (4, 1). Engage and jump.
 
-#### The Beacon's Voice (ep2_scan)
+#### The Kralien Archive (ep2_scan)
+---
+Scope: shared
+State: secret
+When: scan 1 derelict
+Pays: 200 credits
+---
+A cold Kralien ruin, vast and silent, still holding one faint echo of the Beacon in its
+archive. Scan it to pull the fragment from the dark - then hail Storm, because a fragment
+is not the whole, and the trail runs deeper.
+
+#### Storm's Last Lead (ep3_go)
+---
+Scope: shared
+State: secret
+When: reach 6, -2
+Then: reveal beacon_arc/ep3_scan
+---
+Storm ran the Kralien fragment against the Torgoth glyphs and the two agree on one bearing:
+a dead relay at (6, -2), right at the edge of the marches, where the Beacon's signal
+begins. This is the origin. Engage and jump.
+
+#### The Origin (ep3_scan)
 ---
 Scope: shared
 State: secret
 When: scan 1 derelict
 Win: true
-Citation: The Kralien ruin gave up the Beacon's voice at last - and Prof. Storm has what she came for. The Beacon is real, its bearing is logged, and this little ship flew home with a story the giants left behind.
+Citation: The relay at the edge of the marches gave up the Beacon's origin at last - and Prof. Storm has what she came for. The Beacon is real, its bearing is logged, and this little ship flew home with a story the giants left behind.
 ---
-A cold Kralien ruin, vast and silent, still holding one faint echo of the Beacon in its
-archive. Scan it to pull the Beacon's voice from the dark.
+A dead relay adrift at the very edge of the charted marches, older than the ruins that
+pointed here - and still, faintly, the source of it all. Bring the science array to bear
+and read the Beacon's origin from the dark.
+
+## Regions
+
+// Geography for the Beacon hunt: the old marches past the last charted buoy, where the
+// giants of an earlier age left their megastations to rot. A nebula-heavy frontier - moody
+// skybox, faint violet map wash, few ports - so the episode systems read as one distinct
+// stretch of dark. Covers both ruin cells ((2,-1) and (4,1)) in one Chebyshev square.
+
+### The Old Marches (old_marches)
+---
+Center: 3, 0
+Radius: 3
+Skybox: sky-neb2-rvb
+Music: Artemis2
+Color: #86c
+Nebula mix: 55%
+Station mix: 5%
+Enemy mix: 10%
+---
+The frontier past the last charted buoy - the old marches, where the giants of an earlier
+age left their megastations to rot in the drifting cloud. Nebulae everywhere, few ports,
+and something always a jump behind you.
 
 ## Landmarks
 
@@ -125,14 +170,33 @@ archive. Scan it to pull the Beacon's voice from the dark.
 ---
 At: 2, -1
 Kind: derelict
+Terrain: nebula violet
+Guards: skaraan 2
 ---
 A derelict from the age of giants - a Torgoth station built to a scale no modern hull
 needs, running dark for a thousand years, and still holding one faint echo of the Beacon.
+Scavengers picked the trail up first - a light bounty-hunter wing loiters in the wreck's
+shadow. (Guards: a skaraan fleet contests the ruin on arrival; clear or slip past to scan.)
 
 ### Kralien Ruin (kralien_ruin)
 ---
 At: 4, 1
 Kind: derelict
+Terrain: asteroids
+Guards: torgoth 3
 ---
 A Kralien megastructure from their own age of giants, adrift and cold - and still
-whispering one eleven-hundred-year-old word into the static.
+whispering one eleven-hundred-year-old word into the static. A Torgoth reclamation
+party gutted the outer decks and lingers - they want the archive too. (Guards: a
+torgoth fleet holds the ruin on arrival.)
+
+### The Origin Relay (origin_relay)
+---
+At: 6, -2
+Kind: derelict
+Terrain: nebula red
+Guards: skaraan 4
+---
+Older than the ruins that pointed here - a lone relay drifting at the edge of the charted
+marches, wrapped in a bruise-red nebula, still faintly the source of the Beacon. Whatever
+else has been hunting the trail got here first: a hard escort loiters in the murk.
