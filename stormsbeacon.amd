@@ -314,9 +314,18 @@ State: secret
 When: scan 1 derelict
 Pays: 150 credits
 ---
-A Torgoth megastation from the age when the Torgoth were giants. Deep in its dead heart sits
-the Beacon's VOICE - the transmitter core, first of the five pieces. Scan it to take the
-Voice, then hail Storm.
+The first of the Beacon's five pieces: its transmitter core, buried in the dead heart of a
+Torgoth megastation from the age when the Torgoth were giants - docking throats wide enough
+to swallow your ship whole.
+
+## Objective
+- Bring the science array to bear on the derelict
+- Scan the core to take the Voice
+- Hail Prof. Storm for the next lead
+
+## Hazard
+Scavengers found the trail first. A light bounty-hunter wing loiters in the wreck's shadow -
+clear them or slip past, but do not linger; worse things than scavengers follow this trail.
 
 #### [Storm's Next Lead](ep2_go)
 ---
