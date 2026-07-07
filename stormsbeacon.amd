@@ -394,9 +394,18 @@ State: secret
 When: signal beacon_cradle
 ---
 The pieces are useless loose - they need the CRADLE to seat and resonate them, and Crazy Eddy
-fenced the only one left. Hail Eddy on the Ultra-Beam (no target selected) and buy the
-Resonance Cradle from his deals. Do it any time before the finale - the Beacon can't be lit
-without it.
+fenced the only one left. Buy the Resonance Cradle from Eddy - hail him on the Ultra-Beam, or
+better, drop by his Emporium and buy it in person. Do it any time before the finale; the
+Beacon can't be lit without it.
+
+#### [Crazy Eddy's Emporium](visit_emporium)
+---
+Scope: shared
+State: secret
+When: reach 3, 3
+---
+Eddy runs his whole racket out of the Spaceship Emporium, a ramshackle bazaar at (3, 3).
+Engage and jump there to see his stock in person - hail the station to browse the deals.
 
 #### [Storm's Fourth Lead](ep4_go)
 ---
@@ -551,3 +560,15 @@ Guards: skaraan 4
 The deepest dark past every chart - a vast silent array adrift where the giants first lit the
 Beacon a thousand years ago, wrapped in a bruise-red shroud. It has waited this long. XORN
 will arrive fast to see it never sings again.
+
+### [Crazy Eddy's Spaceship Emporium](eddy_emporium)
+---
+At: 3, 3
+Kind: station
+Art: starbase_industry
+Terrain: asteroids
+---
+A ramshackle bazaar bolted together from a dozen dead hulls and strung with salvage lights -
+Crazy Eddy's Spaceship Emporium, where the frontier comes to buy what nobody else will sell.
+Hail the station to browse his deals in person; the Resonance Cradle and the good stuff live
+here. (He's on the Ultra-Beam too, but drop by - Eddy likes an audience.)

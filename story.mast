@@ -91,9 +91,9 @@ GameCode:
         {"go": "ep2_go", "scan": "ep2_scan",
          "lead": "The Voice points to the Lens - a Kralien ruin at (4, 1). Torgoth reclaimers are sniffing around it too. Get there first.",
          "nudge": "The Lens is at (4, 1), in that Kralien ruin - scan it before the Torgoth strip it."},
-        {"go": "ep3_go", "scan": "ep3_scan", "also": "get_cradle",
-         "lead": "Two pieces, and I see it now - the Beacon's an ARRAY, and it needs a Cradle to seat the pieces. Eddy of all people fenced the only one; go buy it off him. Meanwhile the Cipher's in a nebula relay at (6, -2). Go.",
-         "nudge": "The Cipher's at (6, -2), drowned in nebula - and don't forget to buy that Cradle off Eddy."},
+        {"go": "ep3_go", "scan": "ep3_scan", "also": "get_cradle,visit_emporium",
+         "lead": "Two pieces, and I see it now - the Beacon's an ARRAY, and it needs a Cradle to seat the pieces. Eddy of all people fenced the only one; buy it off him - hail him, or drop by his Emporium at (3, 3). Meanwhile the Cipher's in a nebula relay at (6, -2). Go.",
+         "nudge": "The Cipher's at (6, -2), drowned in nebula - and don't forget that Cradle. Eddy's Emporium is at (3, 3) if you'd rather shop in person."},
         {"go": "ep4_go", "scan": "ep4_scan",
          "lead": "Last ruin-piece is the Heart - and XORN took it, out to a kill-yard at (-5, -4). Scan it out from under their guns and RUN. Don't linger.",
          "nudge": "The Heart's still in XORN's yard at (-5, -4). Scan it and run - that's not a place to dawdle."},
@@ -107,11 +107,12 @@ GameCode:
     for _idx, _ep in enumerate(_eps):
         if not _handed and quest_shared_state("beacon_arc/" + _ep["scan"]) != 99:
             if quest_shared_state("beacon_arc/" + _ep["go"]) == 2:
-                # Reveal this lead (flips the secret chapter active -> Engage jump). An `also`
-                # side-objective (the Cradle) reveals alongside it.
+                # Reveal this lead (flips the secret chapter active -> Engage jump). Any `also`
+                # side-objectives (comma-separated: the Cradle + the Emporium) reveal with it.
                 quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["go"])
                 if _ep.get("also") is not None:
-                    quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["also"])
+                    for _also in _ep["also"].split(","):
+                        quest_reveal(universe_shared_id(), "beacon_arc/" + _also)
                 storm_line = _ep["lead"]
                 storm_important = True
                 # First lead also clears the "Contact Prof. Storm" briefing step, and
@@ -275,6 +276,14 @@ brain:
     signal_emit("quest_signal", {"SIGNAL_NAME": "beacon_cradle"})
     comms_message("The Cradle's yours, captain. Whatever it's for - I don't want to know. Get it off my dock.", role("eddy"), role("__player__"), color="#fa0")
     ->END
+
+# Crazy Eddy's Spaceship Emporium (the eddy_emporium landmark station). Hailing it opens
+# Eddy's shop IN PERSON - the same eddy_hail dialogue as his Ultra-Beam badge. The Emporium
+# is the mission's only station+landmark object, so gate on those two roles. (Enters the
+# dialogue driver the way //comms/universe_cast does: set DLG_SCENE, jump the enter label.)
+//comms if UNIVERSE_ACTIVE and has_roles(COMMS_ORIGIN_ID, "__player__") and has_role(COMMS_SELECTED_ID, "station") and has_role(COMMS_SELECTED_ID, "landmark")
+    DLG_SCENE = "eddy_hail"
+    jump universe_dialogue_enter
 
 # Loyal-customer honest shield emitters (Eddy's under-the-counter good stuff, unlocked by
 # building `generous` standing with him - the reputation branch).
