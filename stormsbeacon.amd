@@ -344,8 +344,17 @@ State: secret
 When: scan 1 derelict
 Pays: 200 credits
 ---
-A cold Kralien megastructure holding the Beacon's LENS - the focusing array that aims the
-Voice. A Torgoth reclamation party wants it too. Scan it to take the Lens, then hail Storm.
+A cold Kralien megastructure, vast and dark, holding the Beacon's LENS - the focusing array
+that bends the Voice into a single coherent signal. The Kralien built to the same giant scale
+as the Torgoth; the docking rings alone dwarf a modern fleet.
+
+## Objective
+- Scan the Lens from the derelict's core
+- Hail Prof. Storm once you have it
+
+## Hazard
+A Torgoth reclamation party got here first and is stripping the outer decks - they want the
+Lens too. Take it before they do, or take it from them.
 
 #### [Storm's Third Lead](ep3_go)
 ---
@@ -366,8 +375,17 @@ State: secret
 When: scan 1 derelict
 Pays: 200 credits
 ---
-A relay drowned in bruise-violet nebula, holding the Beacon's CIPHER - the key that aligns
-Voice and Lens into one signal. Scan it to take the Cipher, then hail Storm.
+A lone relay drowned in bruise-violet nebula, older than the ruins that pointed to it, holding
+the Beacon's CIPHER - the key that aligns Voice and Lens into one signal instead of noise.
+Without it, the other pieces are just scrap that hums.
+
+## Objective
+- Slip through the nebula to the relay
+- Scan the Cipher, then hail Storm
+
+## Note
+The cloud hides more than the relay. Keep the sensors hot and the throttle ready - you are not
+the only one who followed this signal into the murk.
 
 #### [The Resonance Cradle](get_cradle)
 ---
@@ -398,9 +416,17 @@ State: secret
 When: scan 1 derelict
 Pays: 300 credits
 ---
-A gutted salvage yard at the edge of the dark, XORN's colors on the wrecks - this is where it
-dragged the Beacon's HEART. Scan the Heart out from under their guns, then break for open
-space and hail Storm. Do not linger here.
+Not a ruin - a kill-yard. XORN dragged the Beacon's HEART, its power source, out to this
+gutted salvage field and left a heavy screen on it: wrecks, mines, and a wing that answers to
+no flag but its own.
+
+## Objective
+- Reach the Heart through the yard
+- Scan it, then break for open space and jump
+
+## Hazard
+XORN is close here and comes fast. This is the last place to be caught lingering - scan the
+Heart and RUN. Do not try to hold the field.
 
 #### [Storm's Last Lead](origin_go)
 ---
@@ -419,9 +445,17 @@ Scope: shared
 State: secret
 When: scan 1 derelict
 ---
-The place the Beacon was born - a silent array adrift in the deepest dark, waiting a thousand
-years for its pieces to come home. Scan it to bring the array online, then hail Storm to
-assemble the Beacon. XORN will not let this happen quietly.
+The place the Beacon was born: a vast, silent array adrift in the deepest dark past every
+chart, waiting a thousand years for its pieces to come home. Scanning it wakes the array - but
+the Beacon only sings once every piece is seated.
+
+## Objective
+- Scan the origin array to bring it online
+- Hail Prof. Storm to assemble and light the Beacon
+
+## Hazard
+XORN will arrive fast to see the Beacon stays silent forever. Hold long enough for Storm to
+finish - or you will have carried every piece this far for nothing.
 
 ## [Goals](goals)
 
