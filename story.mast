@@ -25,6 +25,12 @@ default shared QUEST_ENGAGE_ENABLED = True
 default shared XORN_DWELL_SECONDS = 45
 default shared XORN_DWELL_FINALE = 15
 
+# The bounty hunters (Madame Skarr's hired ship) are the SECOND, lighter chaser - eager, so
+# a shorter fuse than XORN (they show first), but bribable: hail Skarr and pay them off (sets
+# the hunters_bribed flag, which suppresses their spawns). The escalation: scan and go before
+# 30s = clean; linger = hunters; linger past 45s = hunters AND XORN.
+default shared BOUNTY_DWELL_SECONDS = 30
+
 # Register Storm's Beacon in the universe registry (the start-screen "Universe" dropdown
 # scans `type: universe/*` labels). universe_core reads the named .amd MISSION-RELATIVE
 # first (universe_read_content), so stormsbeacon.amd loads from THIS mission folder.
@@ -152,6 +158,9 @@ GameCode:
     ->END if ARRIVE_I == 0 and ARRIVE_J == 0
     ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
     task_schedule(xorn_pursuit_watch, {"xi": ARRIVE_I, "xj": ARRIVE_J})
+    # The bounty hunters too, unless the player has paid Skarr to call them off.
+    if get_inventory_value(universe_shared_id(), "hunters_bribed", 0) == 0:
+        task_schedule(bounty_hunter_watch, {"xi": ARRIVE_I, "xj": ARRIVE_J})
     ->END
 
 # The dwell countdown for one arrival cell. Ends early (no XORN) if the player jumps out
@@ -196,6 +205,55 @@ brain:
     # (this IS an important beat). Keep it terse - the warning is "run or get help".
     universe_info_card("XORN has your bearing. You can't trade broadsides with that hull - break for the jump or find someone to throw at it.", "XORN", "#f33")
     comms_message("That's XORN on our tail, Captain. Don't try to fight it straight - run for the jump, or find someone to throw in its path.", role("advisor"), role("__player__"), color="#6cf")
+    ->END
+
+
+# The bounty hunters - Madame Skarr's hired ship (the Second Wind). Lighter than XORN and
+# bribable: pay Skarr and `hunters_bribed` suppresses them. Dwell watch mirrors XORN's, but
+# with a shorter fuse so they arrive first. The `bounty_hunter` role on the crew LIFEFORM is
+# the comms face; the SHIP carries `bounty_hunter_ship` so the "only one at a time" check and
+# the escape/clear-on-jump don't tangle with the voice.
+=== bounty_hunter_watch
+    default xi = 0
+    default xj = 0
+    _bdwell = BOUNTY_DWELL_SECONDS
+--- bounty_wait
+    await delay_sim(5)
+    ->END if not universe_cell_live(xi, xj)
+    ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
+    ->END if get_inventory_value(universe_shared_id(), "hunters_bribed", 0) == 1
+    _bdwell = _bdwell - 5
+    jump bounty_wait if _bdwell > 0
+    ->END if len(to_object_list(role("bounty_hunter_ship"))) > 0
+    task_schedule(bounty_engage, {"xi": xi, "xj": xj})
+    ->END
+
+# The Second Wind runs you down: a lighter alien hull (skaraan_enforcer) on the raider side,
+# chasing the player, and an auto-hail of crew banter - the leader plus the apathetic Dobbs
+# ("Whatever."). Bribe Skarr to be rid of them; the hull clears on a jump like any NPC.
+=== bounty_engage
+metadata:``` yaml
+brain:
+  SEQ Pursuit:
+    - ai_chase_player
+```
+    default xi = 0
+    default xj = 0
+    _bpl = objects_in_cell(to_object_list(role("__player__")), xi, xj)
+    ->END if len(_bpl) == 0
+    _btgt = _bpl[0]
+    _boff = Vec3.rand_in_sphere(7000, 11000, False, True)
+    bh = npc_spawn(_btgt.pos.x + _boff.x, _btgt.pos.y, _btgt.pos.z + _boff.z, "Second Wind", "raider, bounty_hunter_ship", "skaraan_enforcer", "behav_npcship")
+    brain_add(bh.id, brain, None, 0, None)
+    _bline = random.choice(["Second Wind, closing. Skarr's paying for that Beacon - hand it over. Dobbs, sound scary. Dobbs: ...whatever.", "Nothing personal, captain, strictly Skarr's coin. Dobbs, guns hot. Dobbs: yeah, yeah, whatever.", "You can still make this easy. Dobbs, tell them. Dobbs: It can be easy. Or whatever."])
+    comms_message(_bline, role("bounty_hunter"), role("__player__"), color="#db4")
+    ->END
+
+# Bribe outcome: hailing Skarr and paying 300cr emits this (dialogue `signal hunters_bribed`).
+# Sets the suppress flag so no more bounty spawns; XORN is unmoved - that's a different debt.
+//signal/hunters_bribed if UNIVERSE_ACTIVE
+    set_inventory_value(universe_shared_id(), "hunters_bribed", 1)
+    comms_message("Deal's a deal. The Second Wind is peeling off - for now.", role("skarr"), role("__player__"), color="#7c4")
     ->END
 
 

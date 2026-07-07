@@ -51,6 +51,28 @@ Color: #8f8
 Your chief engineer - keeps this under-gunned little ship flying on scavenged parts and
 spite. Hail her on the Ultra-Beam for a read on the ship and a piece of her mind.
 
+### Madame Skarr (madame_skarr)
+---
+Face: female
+Roles: advisor, skarr
+Scene: skarr_hail
+Color: #7c4
+---
+A Skaraan treasure-broker, hell-bent on selling the Beacon to the highest bidder - and not
+much fussed whether it's whole or prised off your wreck. She hired the hunters on your tail.
+Hail her on the Ultra-Beam to deal, or to tell her where to go.
+
+### The Bounty Hunters (bounty_crew)
+---
+Face: male
+Roles: bounty_hunter
+Scene: bounty_hail
+Color: #db4
+---
+Two hunters in one battered ship on Madame Skarr's contract. One does the talking; the other,
+Dobbs, does the shooting and can't be bothered with the rest. The voice on your comms when the
+Second Wind runs you down.
+
 ## Dialogue
 
 ### Professor Storm (storm_hail)
@@ -186,6 +208,66 @@ Speaker: chief_vex
 Speaker: chief_vex
 ---
 % I'll be in the engine room. Where else would I be.
+
+// Madame Skarr - the Skaraan rival who wants to SELL the Beacon (a foil to Storm, who wants
+// its history, and XORN, which fears what it says). She hired the bounty hunters; hailing her
+// lets you BRIBE them off (`costs 300 credits, signal hunters_bribed` -> a MAST route sets the
+// suppress flag). The bounty crew's own hail is where the apathetic Dobbs answers "Whatever."
+
+### Madame Skarr (skarr_hail)
+---
+Speaker: madame_skarr
+When: comms
+---
+% Ah - the little grave-robber. You've been busy. So have I.
+% That Beacon has buyers lined up around the sector, captain. Be smart: sell it to me.
+% My hunters bill by the hour. Save us both the trouble and hand it over.
+
+- [What do you even want, Skarr?](skarr_taunt)
+- [Call off your hunters - 300cr](skarr_deal) if credits >= 300 ; costs 300 credits, signal hunters_bribed
+- [Go climb a tree](skarr_bye)
+
+### Madame Skarr (skarr_taunt)
+---
+Speaker: madame_skarr
+---
+% The Beacon, of course. Whatever it turns out to be, it's worth more than your ship and your
+% life put together. Storm thinks it's history. I know it's a payday. One of us is a romantic.
+
+- [Back](skarr_hail)
+
+### Madame Skarr (skarr_deal)
+---
+Speaker: madame_skarr
+---
+% Mm. Credits now, hunters called off. A pleasure - for the moment.
+% Don't mistake this for mercy, captain. It's a receipt.
+
+- [Understood](skarr_bye)
+
+### Madame Skarr (skarr_bye)
+---
+Speaker: madame_skarr
+---
+% Run along. My hunters will keep you company.
+% We'll speak again. Over the Beacon, or over your wreck.
+
+### The Bounty Hunters (bounty_hail)
+---
+Speaker: bounty_crew
+When: comms
+---
+% Second Wind here. Madame Skarr's paying good coin for your Beacon. Easy way, or the other way.
+% Dobbs, say hello to the nice captain. ...Dobbs. Dobbs (bored): Hi. Whatever.
+% Hand it over and nobody has to explain anything to Skarr. Dobbs: Are we shooting or not. Whatever.
+
+- [Not today, boys](bounty_bye)
+
+### The Bounty Hunters (bounty_bye)
+---
+Speaker: bounty_crew
+---
+% Suit yourself. Dobbs, warm up the guns. ...Dobbs. Dobbs: Yeah. Whatever.
 
 ## Narrative
 
