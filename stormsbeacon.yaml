@@ -80,8 +80,11 @@ dialogue:
       - Go ahead - I'm knee-deep in old star charts.
       - Talk to me. The trail's still warm.
     choices:
-      - {text: "Any word on the Beacon?", target: storm_hail, signal: storm_check}
-      - {text: Just checking in, target: storm_smalltalk}
+      - text: Any word on the Beacon?
+        target: storm_hail
+        signal: storm_check
+      - text: Just checking in
+        target: storm_smalltalk
 
   - key: storm_smalltalk
     display: Professor Storm
@@ -104,8 +107,10 @@ dialogue:
       - You look like a soul in need of an upgrade. Lucky you - I'm having a sale.
       - No refunds, no returns, no questions asked. What'll it be?
     choices:
-      - {text: Show me the deals, target: eddy_shop}
-      - {text: "Not today, Eddy", target: eddy_bye}
+      - text: Show me the deals
+        target: eddy_shop
+      - text: Not today, Eddy
+        target: eddy_bye
 
   - key: eddy_shop
     display: Eddy's Deals
@@ -116,13 +121,41 @@ dialogue:
     # At generous > 15 the "Regulars only" branch unlocks (rep gates a discounted menu) - the
     # tactical AND narrative rep use. Rep is per-captain, persisted across episodes.
     choices:
-      - {text: Salvaged Sensor Array - 400cr, target: eddy_sold, if: "credits >= 400", costs: 400 credits, signal: eddy_buy_sensor, earns: crazy_eddy generous 3}
-      - {text: Overclocked Impulse Coils - 250cr, target: eddy_sold, if: "credits >= 250", costs: 250 credits, signal: eddy_buy_coils, earns: crazy_eddy generous 3}
-      - {text: "Reinforced Plating, a STEAL - 150cr", target: eddy_sold, if: "credits >= 150", costs: 150 credits, signal: eddy_buy_plating, earns: crazy_eddy generous 3}
-      - {text: "Mystery Crate, feeling lucky? - 200cr", target: eddy_sold, if: "credits >= 200", costs: 200 credits, signal: eddy_buy_mystery, earns: crazy_eddy generous 3}
-      - {text: That big giant-tech frame - the Resonance Cradle - 500cr, target: eddy_cradle_sold, if: "credits >= 500", costs: 500 credits, signal: eddy_buy_cradle, earns: crazy_eddy generous 5}
-      - {text: Regulars only - the good stuff, target: eddy_loyal, if: "generous > 15"}
-      - {text: Never mind, target: eddy_hail}
+      - text: Salvaged Sensor Array - 400cr
+        target: eddy_sold
+        if: credits >= 400
+        costs: 400 credits
+        signal: eddy_buy_sensor
+        earns: crazy_eddy generous 3
+      - text: Overclocked Impulse Coils - 250cr
+        target: eddy_sold
+        if: credits >= 250
+        costs: 250 credits
+        signal: eddy_buy_coils
+        earns: crazy_eddy generous 3
+      - text: Reinforced Plating, a STEAL - 150cr
+        target: eddy_sold
+        if: credits >= 150
+        costs: 150 credits
+        signal: eddy_buy_plating
+        earns: crazy_eddy generous 3
+      - text: Mystery Crate, feeling lucky? - 200cr
+        target: eddy_sold
+        if: credits >= 200
+        costs: 200 credits
+        signal: eddy_buy_mystery
+        earns: crazy_eddy generous 3
+      - text: That big giant-tech frame - the Resonance Cradle - 500cr
+        target: eddy_cradle_sold
+        if: credits >= 500
+        costs: 500 credits
+        signal: eddy_buy_cradle
+        earns: crazy_eddy generous 5
+      - text: Regulars only - the good stuff
+        target: eddy_loyal
+        if: generous > 15
+      - text: Never mind
+        target: eddy_hail
 
   - key: eddy_loyal
     display: Regulars Only
@@ -131,9 +164,20 @@ dialogue:
       - For my best customer? I keep the honest stuff under the counter. No gambles, just gear.
       - You've been good to me, captain. So I'll be good to you. Discount, and no funny business.
     choices:
-      - {text: "Sensor Array, friends price - 250cr", target: eddy_sold, if: "credits >= 250", costs: 250 credits, signal: eddy_buy_sensor, earns: crazy_eddy generous 2}
-      - {text: Genuine Shield Emitters - 300cr, target: eddy_sold, if: "credits >= 300", costs: 300 credits, signal: eddy_buy_shield, earns: crazy_eddy generous 2}
-      - {text: Back, target: eddy_shop}
+      - text: Sensor Array, friends price - 250cr
+        target: eddy_sold
+        if: credits >= 250
+        costs: 250 credits
+        signal: eddy_buy_sensor
+        earns: crazy_eddy generous 2
+      - text: Genuine Shield Emitters - 300cr
+        target: eddy_sold
+        if: credits >= 300
+        costs: 300 credits
+        signal: eddy_buy_shield
+        earns: crazy_eddy generous 2
+      - text: Back
+        target: eddy_shop
 
   - key: eddy_sold
     display: Sold!
@@ -142,8 +186,10 @@ dialogue:
       - Pleasure doing business! Bolt it on and don't come crying to me.
       - Sold! To the captain with more credits than sense.
     choices:
-      - {text: More deals, target: eddy_shop}
-      - {text: I'm done here, target: eddy_bye}
+      - text: More deals
+        target: eddy_shop
+      - text: I'm done here
+        target: eddy_bye
 
   - key: eddy_cradle_sold
     display: The Cradle
@@ -152,8 +198,10 @@ dialogue:
       - The big ugly frame? Ha! Knew it'd find a buyer eventually. Never could unload the thing - too heavy, too weird, hums when you look at it wrong. All yours, captain. No refunds!
       - Careful hauling that home. Feels like it's WAITING for something. Gives me the creeps.
     choices:
-      - {text: More deals, target: eddy_shop}
-      - {text: I'm done here, target: eddy_bye}
+      - text: More deals
+        target: eddy_shop
+      - text: I'm done here
+        target: eddy_bye
 
   - key: eddy_bye
     display: Come Back Soon
@@ -173,9 +221,12 @@ dialogue:
       - Engineering. Talk fast - I've got a coolant line arguing with me.
       - If you're about to ask me to push the coils past redline again - no. Ask anyway.
     choices:
-      - {text: "How's the ship holding up?", target: vex_status}
-      - {text: "What do you make of XORN?", target: vex_xorn}
-      - {text: "Carry on, Chief", target: vex_bye}
+      - text: How's the ship holding up?
+        target: vex_status
+      - text: What do you make of XORN?
+        target: vex_xorn
+      - text: Carry on, Chief
+        target: vex_bye
 
   - key: vex_status
     display: Chief Engineer Vex
@@ -185,7 +236,8 @@ dialogue:
       - Keep buying Eddy's junk and I'll keep bolting it on - just don't blame me when it bites.
       - Give me a real salvage yard and a week and I'd make her sing. Failing that, we improvise.
     choices:
-      - {text: Understood, target: vex_hail}
+      - text: Understood
+        target: vex_hail
 
   - key: vex_xorn
     display: Chief Engineer Vex
@@ -194,7 +246,8 @@ dialogue:
       - XORN outguns us at every turn. Our edge is the jump drive and knowing when to burn it.
       - If that thing gets a firing solution we don't trade shots, we run. That's not cowardice, that's math.
     choices:
-      - {text: Agreed, target: vex_hail}
+      - text: Agreed
+        target: vex_hail
 
   - key: vex_bye
     display: Chief Engineer Vex
@@ -215,9 +268,15 @@ dialogue:
       - That Beacon has buyers lined up around the sector, captain. Be smart: sell it to me.
       - My hunters bill by the hour. Save us both the trouble and hand it over.
     choices:
-      - {text: "What do you even want, Skarr?", target: skarr_taunt}
-      - {text: Call off your hunters - 300cr, target: skarr_deal, if: "credits >= 300", costs: 300 credits, signal: hunters_bribed}
-      - {text: Go climb a tree, target: skarr_bye}
+      - text: What do you even want, Skarr?
+        target: skarr_taunt
+      - text: Call off your hunters - 300cr
+        target: skarr_deal
+        if: credits >= 300
+        costs: 300 credits
+        signal: hunters_bribed
+      - text: Go climb a tree
+        target: skarr_bye
 
   - key: skarr_taunt
     display: Madame Skarr
@@ -225,7 +284,8 @@ dialogue:
     lines:
       - The Beacon, of course. Whatever it turns out to be, it's worth more than your ship and your life put together. Storm thinks it's history. I know it's a payday. One of us is a romantic.
     choices:
-      - {text: Back, target: skarr_hail}
+      - text: Back
+        target: skarr_hail
 
   - key: skarr_deal
     display: Madame Skarr
@@ -234,7 +294,8 @@ dialogue:
       - Mm. Credits now, hunters called off. A pleasure - for the moment.
       - Don't mistake this for mercy, captain. It's a receipt.
     choices:
-      - {text: Understood, target: skarr_bye}
+      - text: Understood
+        target: skarr_bye
 
   - key: skarr_bye
     display: Madame Skarr
@@ -252,7 +313,8 @@ dialogue:
       - "Dobbs, say hello to the nice captain. ...Dobbs. Dobbs (bored): Hi. Whatever."
       - "Hand it over and nobody has to explain anything to Skarr. Dobbs: Are we shooting or not. Whatever."
     choices:
-      - {text: "Not today, boys", target: bounty_bye}
+      - text: Not today, boys
+        target: bounty_bye
 
   - key: bounty_bye
     display: The Bounty Hunters

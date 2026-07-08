@@ -11,8 +11,8 @@ formats: the native AMD source, and 1:1 translations to `stormsbeacon.yaml` and
 | Bytes | **20.5k** | 24.2k | 25.7k |
 | Lines | 574 | 553 | 423 |
 | Reads as prose/script | **yes** | partly | no |
-| Punctuation "just works" | **yes** | no — `,` `?` `:` need quoting | no — `&gt;` `&amp;` escaping |
-| Renders in-game as-is (`#` headings) | **yes** | no | no |
+| Punctuation "just works" | **yes** | mostly — in block style only `: ` (colon-space) and leading `#` (hex colors) need quoting | no — `&gt;` `&amp;` escaping |
+| Structure doubles as display markdown | **yes** | no (fields, or embed markdown) | no (elements, or embed markdown) |
 | Generic tooling / schema validation | no | yes | **yes (XSD)** |
 | Explicit structure (no ambiguity) | no (heading depth) | mostly | **yes** |
 
@@ -24,18 +24,39 @@ rendered straight to the player. On that job AMD dominates:
 - **It disappears.** Storm's lines read like a screenplay; the choices read like
   choices. In XML every one of those lines is buried in `<line>...</line>`; in YAML
   they're list items behind `text:`/`lines:` scaffolding.
-- **No escaping tax.** Proven during the conversion: in YAML, `"Not today, boys"`
-  and `"What do you make of XORN?"` *broke the parse* until quoted; XML needs
-  `&gt;=` for `if credits >= 400`. AMD carries all that punctuation for free because
-  prose is the default, not a quoted exception.
-- **Zero wiring.** The `#` headings *are* the rendered gui_text_area markdown. The
-  other two are pure data — something still has to render them.
+- **No escaping tax.** AMD carries all punctuation for free because prose is the
+  default, not a quoted exception. XML always pays it — `&gt;=` for
+  `if credits >= 400`, `&amp;` for `&`. YAML's tax is smaller but real (see below).
+- **One representation for structure and display.** An AMD body *is* the display
+  markdown — its `#`/`-`/`image://` lines pass straight to gui_text_area. This isn't
+  a rendering *advantage* (all three parse to the same tree, and the same string
+  renders the same wherever it came from); it's that AMD needs no second
+  representation. The translations either embed the same markdown in a scalar/element
+  (renders identically) or decompose it into fields a loader must map back to display.
 - **Smallest on disk**, despite being the most readable — the tell that it has the
   least ceremony.
 
 XML's only real wins (schema validation, unambiguous nesting) don't matter for
 hand-authored narrative, and it pays for them with the worst readability and the
 heaviest escaping. It's the clear *loser* here.
+
+## The YAML tax: flow vs block
+
+YAML's punctuation cost depends entirely on which style you write. In **flow** style
+(`{text: ..., target: ...}`), `,` is a structural separator and `?`/`:` are
+indicators, so dialogue punctuation breaks — and worse, some of it breaks silently:
+
+- `{text: Not today, boys}` does not error; it parses to
+  `{'text': 'Not today', 'boys': None}` — quiet data corruption.
+- `{text: ...Skarr?...}` throws a hard parse error on the `?`.
+
+This is standard-spec behavior, not an engine quirk or a weak parser — `sbs_utils`
+bundles standard PyYAML, and any compliant parser must treat flow context this way.
+In **block** style the problem disappears: commas, question marks, and `>=`
+conditions are all fine as plain scalars. Only two cases still need quoting,
+independent of style — colon-space (`Dobbs: Hi. Whatever.`) and a value starting
+with `#` (hex colors like `"#6cf"`, since `#` begins a comment). `stormsbeacon.yaml`
+uses block style throughout, so those are the only quoted values in it.
 
 ## The caveat
 
