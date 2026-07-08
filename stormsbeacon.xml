@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Storm's Beacon - the pilot episodes. A single-ship STORY universe on the universe_core
+     mastlib (Mode: story, no admiral economy). Prof. Storm is VIRTUAL CREW: hail her on the
+     Ultra-Beam (with no target selected) for each lead. She reveals the next site; you
+     Engage-jump there from the Quests tab and scan the ancient ruin, then hail her again for
+     the next heading. Two Storm-gated episodes here; the full campaign (reputation, XORN,
+     crafting, Crazy Eddy) builds out from this spine - see STORMS_BEACON.md. -->
+<amd key="storm_s_beacon" display="Storms Beacon">
+  <description>
+    Prof. Storm has a lead on the Beacon - an ancient signal buried in the ruins the old
+    giants left behind. Hail her for each heading, follow the clues, and stay a jump ahead of
+    whatever is hunting the same trail.
+  </description>
+
+  <scenario key="scenario" mode="story"/>
+
+  <lifeforms key="lifeforms">
+    <lifeform key="prof_storm" display="Professor Storm"
+              face="female" roles="advisor, storm" scene="storm_hail" color="#6cf">
+      Expedition lead and xeno-archaeologist. A host-less advisor - hail her from anywhere on
+      the Ultra-Beam (no target selected) for the next lead on the Beacon.
+    </lifeform>
+
+    <lifeform key="crazy_eddy" display="Crazy Eddy"
+              face="male" roles="advisor, eddy" scene="eddy_hail" color="#fa0">
+      A back-channel ship-dealer working the old marches out of a ramshackle hull. Sells gear
+      nobody else will - some of it even works. A host-less advisor: hail him on the Ultra-Beam
+      (no target selected) to browse his deals. Cash up front, no refunds.
+    </lifeform>
+
+    <lifeform key="chief_vex" display="Chief Engineer Vex"
+              face="female" roles="advisor, engineer" scene="vex_hail" color="#8f8">
+      Your chief engineer - keeps this under-gunned little ship flying on scavenged parts and
+      spite. Hail her on the Ultra-Beam for a read on the ship and a piece of her mind.
+    </lifeform>
+
+    <lifeform key="madame_skarr" display="Madame Skarr"
+              face="female" roles="advisor, skarr" scene="skarr_hail" color="#7c4">
+      A Skaraan treasure-broker, hell-bent on selling the Beacon to the highest bidder - and not
+      much fussed whether it's whole or prised off your wreck. She hired the hunters on your tail.
+      Hail her on the Ultra-Beam to deal, or to tell her where to go.
+    </lifeform>
+
+    <lifeform key="bounty_crew" display="The Bounty Hunters"
+              face="male" roles="bounty_hunter" scene="bounty_hail" color="#db4">
+      Two hunters in one battered ship on Madame Skarr's contract. One does the talking; the other,
+      Dobbs, does the shooting and can't be bothered with the rest. The voice on your comms when the
+      Second Wind runs you down.
+    </lifeform>
+  </lifeforms>
+
+  <dialogue key="dialogue">
+    <node key="storm_hail" display="Professor Storm" speaker="prof_storm" when="comms">
+      <line>Storm here, Captain. What do you need?</line>
+      <line>Go ahead - I'm knee-deep in old star charts.</line>
+      <line>Talk to me. The trail's still warm.</line>
+      <choice target="storm_hail" signal="storm_check">Any word on the Beacon?</choice>
+      <choice target="storm_smalltalk">Just checking in</choice>
+    </node>
+
+    <node key="storm_smalltalk" display="Professor Storm" speaker="prof_storm">
+      <line>Watch yourself out there. The Beacon isn't the only thing hunting these ruins.</line>
+      <line>Keep the ship quiet and the sensors hot. We find it by being clever, not loud.</line>
+    </node>
+
+    <!-- Crazy Eddy's Emporium. The shop is DECLARATIVE dialogue: each deal is a choice gated on
+         `if credits >= N`, charged by `costs N credits`, and wired to a MAST `//signal/eddy_buy_*`
+         route (story.mast) that applies the REAL ship modifier. Some deals are honest, some are
+         traps, some are a coin-flip - the route decides. The `eddy_sold` line is just his patter;
+         the actual up/down result comes back as a comms message from the route. -->
+    <node key="eddy_hail" display="Crazy Eddy" speaker="crazy_eddy" when="comms">
+      <line>Eddy's the name, salvage is the game! Step right up, captain.</line>
+      <line>You look like a soul in need of an upgrade. Lucky you - I'm having a sale.</line>
+      <line>No refunds, no returns, no questions asked. What'll it be?</line>
+      <choice target="eddy_shop">Show me the deals</choice>
+      <choice target="eddy_bye">Not today, Eddy</choice>
+    </node>
+
+    <node key="eddy_shop" display="Eddy's Deals" speaker="crazy_eddy">
+      <line>Every piece genuine salvage, pried off wrecks with my own two hands. Cash up front!</line>
+      <!-- Each buy earns `crazy_eddy generous` standing (spending freely makes you his favorite).
+           At generous > 15 the "Regulars only" branch unlocks (rep gates a discounted menu) - the
+           tactical AND narrative rep use. Rep is per-captain, persisted across episodes. -->
+      <choice target="eddy_sold" if="credits &gt;= 400"
+              costs="400 credits" signal="eddy_buy_sensor" earns="crazy_eddy generous 3">Salvaged Sensor Array - 400cr</choice>
+      <choice target="eddy_sold" if="credits &gt;= 250"
+              costs="250 credits" signal="eddy_buy_coils" earns="crazy_eddy generous 3">Overclocked Impulse Coils - 250cr</choice>
+      <choice target="eddy_sold" if="credits &gt;= 150"
+              costs="150 credits" signal="eddy_buy_plating" earns="crazy_eddy generous 3">Reinforced Plating, a STEAL - 150cr</choice>
+      <choice target="eddy_sold" if="credits &gt;= 200"
+              costs="200 credits" signal="eddy_buy_mystery" earns="crazy_eddy generous 3">Mystery Crate, feeling lucky? - 200cr</choice>
+      <choice target="eddy_cradle_sold" if="credits &gt;= 500"
+              costs="500 credits" signal="eddy_buy_cradle" earns="crazy_eddy generous 5">That big giant-tech frame - the Resonance Cradle - 500cr</choice>
+      <choice target="eddy_loyal" if="generous &gt; 15">Regulars only - the good stuff</choice>
+      <choice target="eddy_hail">Never mind</choice>
+    </node>
+
+    <node key="eddy_loyal" display="Regulars Only" speaker="crazy_eddy">
+      <line>For my best customer? I keep the honest stuff under the counter. No gambles, just gear.</line>
+      <line>You've been good to me, captain. So I'll be good to you. Discount, and no funny business.</line>
+      <choice target="eddy_sold" if="credits &gt;= 250"
+              costs="250 credits" signal="eddy_buy_sensor" earns="crazy_eddy generous 2">Sensor Array, friends price - 250cr</choice>
+      <choice target="eddy_sold" if="credits &gt;= 300"
+              costs="300 credits" signal="eddy_buy_shield" earns="crazy_eddy generous 2">Genuine Shield Emitters - 300cr</choice>
+      <choice target="eddy_shop">Back</choice>
+    </node>
+
+    <node key="eddy_sold" display="Sold!" speaker="crazy_eddy">
+      <line>Pleasure doing business! Bolt it on and don't come crying to me.</line>
+      <line>Sold! To the captain with more credits than sense.</line>
+      <choice target="eddy_shop">More deals</choice>
+      <choice target="eddy_bye">I'm done here</choice>
+    </node>
+
+    <node key="eddy_cradle_sold" display="The Cradle" speaker="crazy_eddy">
+      <line>The big ugly frame? Ha! Knew it'd find a buyer eventually. Never could unload the thing - too heavy, too weird, hums when you look at it wrong. All yours, captain. No refunds!</line>
+      <line>Careful hauling that home. Feels like it's WAITING for something. Gives me the creeps.</line>
+      <choice target="eddy_shop">More deals</choice>
+      <choice target="eddy_bye">I'm done here</choice>
+    </node>
+
+    <node key="eddy_bye" display="Come Back Soon" speaker="crazy_eddy">
+      <line>Your loss. I'll be here, marinating in the dark.</line>
+      <line>Fly safe. Or don't - salvage is salvage.</line>
+    </node>
+
+    <!-- Chief Engineer Vex - the ship's own voice. Flavor + tone reinforcement (under-gunned,
+         run don't fight), and a nudge that Eddy's gear is a gamble. Pure dialogue, no outcomes. -->
+    <node key="vex_hail" display="Chief Engineer Vex" speaker="chief_vex" when="comms">
+      <line>Vex here. She's holding together. Mostly. What do you need?</line>
+      <line>Engineering. Talk fast - I've got a coolant line arguing with me.</line>
+      <line>If you're about to ask me to push the coils past redline again - no. Ask anyway.</line>
+      <choice target="vex_status">How's the ship holding up?</choice>
+      <choice target="vex_xorn">What do you make of XORN?</choice>
+      <choice target="vex_bye">Carry on, Chief</choice>
+    </node>
+
+    <node key="vex_status" display="Chief Engineer Vex" speaker="chief_vex">
+      <line>She's a Warpster, not a warship. We win by being somewhere else when the shooting starts.</line>
+      <line>Keep buying Eddy's junk and I'll keep bolting it on - just don't blame me when it bites.</line>
+      <line>Give me a real salvage yard and a week and I'd make her sing. Failing that, we improvise.</line>
+      <choice target="vex_hail">Understood</choice>
+    </node>
+
+    <node key="vex_xorn" display="Chief Engineer Vex" speaker="chief_vex">
+      <line>XORN outguns us at every turn. Our edge is the jump drive and knowing when to burn it.</line>
+      <line>If that thing gets a firing solution we don't trade shots, we run. That's not cowardice, that's math.</line>
+      <choice target="vex_hail">Agreed</choice>
+    </node>
+
+    <node key="vex_bye" display="Chief Engineer Vex" speaker="chief_vex">
+      <line>I'll be in the engine room. Where else would I be.</line>
+    </node>
+
+    <!-- Madame Skarr - the Skaraan rival who wants to SELL the Beacon (a foil to Storm, who wants
+         its history, and XORN, which fears what it says). She hired the bounty hunters; hailing her
+         lets you BRIBE them off (`costs 300 credits, signal hunters_bribed` -> a MAST route sets the
+         suppress flag). The bounty crew's own hail is where the apathetic Dobbs answers "Whatever." -->
+    <node key="skarr_hail" display="Madame Skarr" speaker="madame_skarr" when="comms">
+      <line>Ah - the little grave-robber. You've been busy. So have I.</line>
+      <line>That Beacon has buyers lined up around the sector, captain. Be smart: sell it to me.</line>
+      <line>My hunters bill by the hour. Save us both the trouble and hand it over.</line>
+      <choice target="skarr_taunt">What do you even want, Skarr?</choice>
+      <choice target="skarr_deal" if="credits &gt;= 300"
+              costs="300 credits" signal="hunters_bribed">Call off your hunters - 300cr</choice>
+      <choice target="skarr_bye">Go climb a tree</choice>
+    </node>
+
+    <node key="skarr_taunt" display="Madame Skarr" speaker="madame_skarr">
+      <line>The Beacon, of course. Whatever it turns out to be, it's worth more than your ship and your life put together. Storm thinks it's history. I know it's a payday. One of us is a romantic.</line>
+      <choice target="skarr_hail">Back</choice>
+    </node>
+
+    <node key="skarr_deal" display="Madame Skarr" speaker="madame_skarr">
+      <line>Mm. Credits now, hunters called off. A pleasure - for the moment.</line>
+      <line>Don't mistake this for mercy, captain. It's a receipt.</line>
+      <choice target="skarr_bye">Understood</choice>
+    </node>
+
+    <node key="skarr_bye" display="Madame Skarr" speaker="madame_skarr">
+      <line>Run along. My hunters will keep you company.</line>
+      <line>We'll speak again. Over the Beacon, or over your wreck.</line>
+    </node>
+
+    <node key="bounty_hail" display="The Bounty Hunters" speaker="bounty_crew" when="comms">
+      <line>Second Wind here. Madame Skarr's paying good coin for your Beacon. Easy way, or the other way.</line>
+      <line>Dobbs, say hello to the nice captain. ...Dobbs. Dobbs (bored): Hi. Whatever.</line>
+      <line>Hand it over and nobody has to explain anything to Skarr. Dobbs: Are we shooting or not. Whatever.</line>
+      <choice target="bounty_bye">Not today, boys</choice>
+    </node>
+
+    <node key="bounty_bye" display="The Bounty Hunters" speaker="bounty_crew">
+      <line>Suit yourself. Dobbs, warm up the guns. ...Dobbs. Dobbs: Yeah. Whatever.</line>
+    </node>
+  </dialogue>
+
+  <narrative key="narrative">
+    <!-- The Beacon is NOT one relic you find - it is FIVE pieces the giants scattered so no single
+         heir could ever wield it. Four hide in ruins you scan (Voice, Lens, Cipher, Heart); the
+         fifth - the Cradle that seats and resonates them - the giants' heirs looted and lost to the
+         black market, and Crazy Eddy has it. Episodes nest under one arc via HEADING LEVELS (`###`
+         arc, `####` steps -> nested quest keys `beacon_arc/<step>`). Storm hands out leads one at a
+         time (the data-driven `_eps` walker in story.mast); the finale ASSEMBLES the pieces, and
+         scanning ruins alone can't finish it - without the Cradle bought from Eddy the Beacon has
+         nothing to seat. See EPISODE_TEMPLATE.md to add more pieces. -->
+    <quest key="beacon_arc" display="The Beacon Hunt" scope="shared" state="active">
+      <description>
+        Prof. Storm's search for the Beacon - which turns out to be no single relic but five pieces
+        the giants scattered across their ruins. Hail her for each lead, gather the pieces, and carry
+        them to the origin to be made whole.
+      </description>
+
+      <quest key="briefing" display="Contact Prof. Storm" scope="shared" state="active"
+             when="signal storm_briefed">
+        Hail Prof. Storm on the Ultra-Beam (no target selected) for your first lead on the Beacon.
+      </quest>
+
+      <quest key="ep1_go" display="Storm's First Lead" scope="shared" state="secret"
+             when="reach 2, -1" then="reveal beacon_arc/ep1_scan">
+        Storm's first heading: an ancient Torgoth channel out at (2, -1), coreward past the old
+        marches. Engage the jump drive from your Quests tab and follow it in.
+      </quest>
+
+      <quest key="ep1_scan" display="The Voice" scope="shared" state="secret"
+             when="scan 1 derelict" pays="150 credits">
+        <description>
+          The first of the Beacon's five pieces: its transmitter core, buried in the dead heart of a
+          Torgoth megastation from the age when the Torgoth were giants - docking throats wide enough
+          to swallow your ship whole.
+        </description>
+        <section title="Objective">
+          <item>Bring the science array to bear on the derelict</item>
+          <item>Scan the core to take the Voice</item>
+          <item>Hail Prof. Storm for the next lead</item>
+        </section>
+        <section title="Hazard">
+          Scavengers found the trail first. A light bounty-hunter wing loiters in the wreck's shadow -
+          clear them or slip past, but do not linger; worse things than scavengers follow this trail.
+        </section>
+      </quest>
+
+      <quest key="ep2_go" display="Storm's Next Lead" scope="shared" state="secret"
+             when="reach 4, 1" then="reveal beacon_arc/ep2_scan">
+        Storm cross-referenced the Voice against the old charts: the next piece lies in the Kralien
+        marches at (4, 1). Engage and jump.
+      </quest>
+
+      <quest key="ep2_scan" display="The Lens" scope="shared" state="secret"
+             when="scan 1 derelict" pays="200 credits">
+        <description>
+          A cold Kralien megastructure, vast and dark, holding the Beacon's LENS - the focusing array
+          that bends the Voice into a single coherent signal. The Kralien built to the same giant scale
+          as the Torgoth; the docking rings alone dwarf a modern fleet.
+        </description>
+        <section title="Objective">
+          <item>Scan the Lens from the derelict's core</item>
+          <item>Hail Prof. Storm once you have it</item>
+        </section>
+        <section title="Hazard">
+          A Torgoth reclamation party got here first and is stripping the outer decks - they want the
+          Lens too. Take it before they do, or take it from them.
+        </section>
+      </quest>
+
+      <quest key="ep3_go" display="Storm's Third Lead" scope="shared" state="secret"
+             when="reach 6, -2" then="reveal beacon_arc/ep3_scan">
+        Two pieces in hand and Storm sees the shape of it now: the Beacon is an ARRAY, not a relic,
+        and it needs a CRADLE to seat the pieces - one the giants' heirs looted and lost. Of all
+        people, Crazy Eddy has it. Meanwhile the third piece, the Cipher, waits in a nebula-wrapped
+        relay at (6, -2). Engage and jump - and think about paying Eddy a visit.
+      </quest>
+
+      <quest key="ep3_scan" display="The Cipher" scope="shared" state="secret"
+             when="scan 1 derelict" pays="200 credits">
+        <description>
+          A lone relay drowned in bruise-violet nebula, older than the ruins that pointed to it, holding
+          the Beacon's CIPHER - the key that aligns Voice and Lens into one signal instead of noise.
+          Without it, the other pieces are just scrap that hums.
+        </description>
+        <section title="Objective">
+          <item>Slip through the nebula to the relay</item>
+          <item>Scan the Cipher, then hail Storm</item>
+        </section>
+        <section title="Note">
+          The cloud hides more than the relay. Keep the sensors hot and the throttle ready - you are not
+          the only one who followed this signal into the murk.
+        </section>
+      </quest>
+
+      <quest key="get_cradle" display="The Resonance Cradle" scope="shared" state="secret"
+             when="signal beacon_cradle">
+        The pieces are useless loose - they need the CRADLE to seat and resonate them, and Crazy Eddy
+        fenced the only one left. Buy the Resonance Cradle from Eddy - hail him on the Ultra-Beam, or
+        better, drop by his Emporium and buy it in person. Do it any time before the finale; the
+        Beacon can't be lit without it.
+      </quest>
+
+      <quest key="visit_emporium" display="Crazy Eddy's Emporium" scope="shared" state="secret"
+             when="reach 3, 3">
+        Eddy runs his whole racket out of the Spaceship Emporium, a ramshackle bazaar at (3, 3).
+        Engage and jump there to see his stock in person - hail the station to browse the deals.
+      </quest>
+
+      <quest key="ep4_go" display="Storm's Fourth Lead" scope="shared" state="secret"
+             when="reach -5, -4" then="reveal beacon_arc/ep4_scan">
+        The Cipher named the last ruin-piece and where it went: the HEART, the Beacon's power source -
+        and XORN hauled it out to a dead salvage yard at (-5, -4). You'll have to pry it loose from
+        under their guns. Engage, and be ready to run.
+      </quest>
+
+      <quest key="ep4_scan" display="The Heart" scope="shared" state="secret"
+             when="scan 1 derelict" pays="300 credits">
+        <description>
+          Not a ruin - a kill-yard. XORN dragged the Beacon's HEART, its power source, out to this
+          gutted salvage field and left a heavy screen on it: wrecks, mines, and a wing that answers to
+          no flag but its own.
+        </description>
+        <section title="Objective">
+          <item>Reach the Heart through the yard</item>
+          <item>Scan it, then break for open space and jump</item>
+        </section>
+        <section title="Hazard">
+          XORN is close here and comes fast. This is the last place to be caught lingering - scan the
+          Heart and RUN. Do not try to hold the field.
+        </section>
+      </quest>
+
+      <quest key="origin_go" display="Storm's Last Lead" scope="shared" state="secret"
+             when="reach 0, -7" then="reveal beacon_arc/origin_scan">
+        Every ruin-piece in hand - Voice, Lens, Cipher, Heart - and (you did buy the Cradle?) the
+        frame to seat them. Storm has the origin at last: (0, -7), the deep dark past every chart,
+        where the giants first lit the Beacon. Carry the pieces home. Engage.
+      </quest>
+
+      <quest key="origin_scan" display="The Origin" scope="shared" state="secret"
+             when="scan 1 derelict">
+        <description>
+          The place the Beacon was born: a vast, silent array adrift in the deepest dark past every
+          chart, waiting a thousand years for its pieces to come home. Scanning it wakes the array - but
+          the Beacon only sings once every piece is seated.
+        </description>
+        <section title="Objective">
+          <item>Scan the origin array to bring it online</item>
+          <item>Hail Prof. Storm to assemble and light the Beacon</item>
+        </section>
+        <section title="Hazard">
+          XORN will arrive fast to see the Beacon stays silent forever. Hold long enough for Storm to
+          finish - or you will have carried every piece this far for nothing.
+        </section>
+      </quest>
+    </quest>
+  </narrative>
+
+  <goals key="goals">
+    <!-- The win is gated, not automatic: scanning the origin only brings the array online. The
+         actual victory fires on `signal beacon_lit`, which the Storm dispatcher (story.mast) emits
+         ONLY when every piece is present - the four scanned ruins AND the Cradle bought from Eddy.
+         Arrive without the Cradle and Storm sends you back to buy it. That gate is the puzzle. -->
+    <goal key="goal_light" display="Light the Beacon" scope="shared" state="active"
+          when="signal beacon_lit" win="true"
+          citation="At the origin, with XORN's guns lighting the dark, Prof. Storm seated the last piece in the Cradle and woke the Beacon. It did what the giants built it to do a thousand years ago - it called. And in its first clear note was their final warning: the thing that unmade the giants and drove them small and hidden, the thing XORN still answers to. The Beacon is whole, its message is logged, and one small ship flew home with a story the giants died to leave. XORN broke off into the dark. It will be back. So will you.">
+      Gather all five pieces of the Beacon - the four ruin-pieces AND Eddy's Cradle - carry them to
+      the origin, and have Prof. Storm assemble and light it while XORN does everything to stop you.
+    </goal>
+  </goals>
+
+  <regions key="regions">
+    <!-- Geography for the whole hunt: the old marches and the deep dark beyond, where the giants
+         left their megastations to rot. A nebula-heavy frontier - moody skybox, faint violet map
+         wash, few ports. One big Chebyshev square covering every ruin cell out to the origin. -->
+    <region key="old_marches" display="The Old Marches"
+            center="0, -1" radius="8" skybox="sky-neb2-rvb" music="Artemis2" color="#86c"
+            nebula-mix="55%" station-mix="5%" enemy-mix="10%">
+      The frontier past the last charted buoy - the old marches, where the giants of an earlier age
+      left their megastations to rot in the drifting cloud, and where the trail runs out into the
+      deepest dark. Nebulae everywhere, few ports, and something always a jump behind you.
+    </region>
+  </regions>
+
+  <landmarks key="landmarks">
+    <landmark key="giants_house" display="Torgoth Megastation"
+              at="2, -1" kind="derelict" terrain="nebula violet" guards="skaraan 2">
+      A derelict from the age of giants - a Torgoth station built to a scale no modern hull needs,
+      running dark for a thousand years, holding the Beacon's Voice in its dead heart. Scavengers
+      picked the trail up first - a light bounty-hunter wing loiters in the wreck's shadow.
+    </landmark>
+
+    <landmark key="kralien_ruin" display="Kralien Ruin"
+              at="4, 1" kind="derelict" terrain="asteroids" guards="torgoth 3">
+      A Kralien megastructure from their own age of giants, adrift and cold, holding the Beacon's
+      Lens. A Torgoth reclamation party gutted the outer decks and lingers - they want it too.
+    </landmark>
+
+    <landmark key="cipher_relay" display="The Cipher Relay"
+              at="6, -2" kind="derelict" terrain="nebula violet" guards="skaraan 4">
+      A lone relay drowned in bruise-violet nebula, older than the ruins that pointed here, holding
+      the Beacon's Cipher. Whatever else hunts the trail got here first: a hard escort loiters in
+      the murk.
+    </landmark>
+
+    <landmark key="heart_yard" display="XORN Salvage Yard"
+              at="-5, -4" kind="derelict" terrain="asteroids" guards="skaraan 5">
+      Not a ruin - a kill-yard. XORN dragged the Beacon's Heart here and left a heavy screen on it,
+      wrecks and mines and a wing that answers to no flag but its own. Scan the Heart and run; this
+      is the last place to be caught still.
+    </landmark>
+
+    <landmark key="origin_array" display="The Origin Array"
+              at="0, -7" kind="derelict" terrain="nebula red" guards="skaraan 4">
+      The deepest dark past every chart - a vast silent array adrift where the giants first lit the
+      Beacon a thousand years ago, wrapped in a bruise-red shroud. It has waited this long. XORN
+      will arrive fast to see it never sings again.
+    </landmark>
+
+    <landmark key="eddy_emporium" display="Crazy Eddy's Spaceship Emporium"
+              at="3, 3" kind="station" art="starbase_industry" terrain="asteroids">
+      A ramshackle bazaar bolted together from a dozen dead hulls and strung with salvage lights -
+      Crazy Eddy's Spaceship Emporium, where the frontier comes to buy what nobody else will sell.
+      Hail the station to browse his deals in person; the Resonance Cradle and the good stuff live
+      here. (He's on the Ultra-Beam too, but drop by - Eddy likes an audience.)
+    </landmark>
+  </landmarks>
+</amd>
