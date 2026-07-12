@@ -77,7 +77,7 @@ GameCode:
 # logic lives HERE - the //signal/detain_saboteur pattern from universe_core. quest_reveal
 # flips a `State: secret` narrative chapter ACTIVE, so it appears in the Quests tab with an
 # Engage jump. QuestState ints: 2 = SECRET, 1 = ACTIVE, 99 = COMPLETE.
-//signal/storm_check if UNIVERSE_ACTIVE
+//shared/signal/storm_check if UNIVERSE_ACTIVE
     # The Beacon hunt's episodes, IN ORDER. This list is the whole dispatcher: Storm
     # hands out the next lead by walking it, so ADDING AN EPISODE is two mechanical
     # edits and no new logic -> (1) author its go/scan chapters + landmark in
@@ -163,7 +163,7 @@ GameCode:
 # there when the fuse burns down, XORN warps in. Home (0,0) is safe, and once the hunt is
 # won there's no pursuer. This is the "trailing dread" layer; the finale system carries a
 # short fuse so the climax always has the confrontation (the "big beat").
-//signal/universe_arrived if UNIVERSE_ACTIVE
+//shared/signal/universe_arrived if UNIVERSE_ACTIVE
     ->END if ARRIVE_I == 0 and ARRIVE_J == 0
     ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
     task_schedule(xorn_pursuit_watch, {"xi": ARRIVE_I, "xj": ARRIVE_J})
@@ -260,7 +260,7 @@ brain:
 
 # Bribe outcome: hailing Skarr and paying 300cr emits this (dialogue `signal hunters_bribed`).
 # Sets the suppress flag so no more bounty spawns; XORN is unmoved - that's a different debt.
-//signal/hunters_bribed if UNIVERSE_ACTIVE
+//shared/signal/hunters_bribed if UNIVERSE_ACTIVE
     set_inventory_value(universe_shared_id(), "hunters_bribed", 1)
     comms_message("Deal's a deal. The Second Wind is peeling off - for now.", role("skarr"), role("__player__"), color="#7c4")
     ->END
@@ -276,7 +276,7 @@ brain:
 # The Resonance Cradle - the fifth Beacon piece, and the puzzle's key gate. Buying it sets
 # the beacon_cradle flag (the finale assembly checks it) and completes the get_cradle
 # objective. Bought via Eddy's shop, so exploration alone never finishes the Beacon.
-//signal/eddy_buy_cradle
+//shared/signal/eddy_buy_cradle
     set_inventory_value(universe_shared_id(), "beacon_cradle", 1)
     signal_emit("quest_signal", {"SIGNAL_NAME": "beacon_cradle"})
     comms_message("The Cradle's yours, captain. Whatever it's for - I don't want to know. Get it off my dock.", role("eddy"), role("__player__"), color="#fa0")
@@ -292,19 +292,19 @@ brain:
 
 # Loyal-customer honest shield emitters (Eddy's under-the-counter good stuff, unlocked by
 # building `generous` standing with him - the reputation branch).
-//signal/eddy_buy_shield
+//shared/signal/eddy_buy_shield
     modifier_add(role("__player__"), "all_shield_upgrade_coeff", 1.0, "eddy_shield", duration=None)
     comms_message("Genuine emitters, no tricks. Told you I keep the good stuff for regulars.", role("eddy"), role("__player__"), color="#fa0")
     ->END
 
 # Honest good: a genuine sensor boost (great for reading ruins).
-//signal/eddy_buy_sensor
+//shared/signal/eddy_buy_sensor
     modifier_add(role("__player__"), "sensor_upgrade_coeff", 1.0, "eddy_sensor", duration=None)
     comms_message("That array's the real deal - your science boards just got sharper eyes.", role("eddy"), role("__player__"), color="#fa0")
     ->END
 
 # Gamble: 60% these coils sing, 40% they're shot.
-//signal/eddy_buy_coils
+//shared/signal/eddy_buy_coils
     if random.randint(1, 100) <= 60:
         modifier_add(role("__player__"), "impulse_upgrade_coeff", 0.75, "eddy_coils", duration=None)
         comms_message("Ha! Those are the good ones - she'll fly like a scalded cat now.", role("eddy"), role("__player__"), color="#fa0")
@@ -314,14 +314,14 @@ brain:
     ->END
 
 # Trap dressed as a bargain: a sliver of real shielding, a lot of dead weight (worse turn).
-//signal/eddy_buy_plating
+//shared/signal/eddy_buy_plating
     modifier_add(role("__player__"), "all_shield_upgrade_coeff", 0.2, "eddy_plating_up", duration=None)
     modifier_add(role("__player__"), "turn_upgrade_coeff", -0.5, "eddy_plating_down", duration=None)
     comms_message("Solid as a rock, that plating! ...she might steer like one now. But solid!", role("eddy"), role("__player__"), color="#f80")
     ->END
 
 # Pure coin-flip: one of four crates, two gems and two lemons.
-//signal/eddy_buy_mystery
+//shared/signal/eddy_buy_mystery
     _roll = random.randint(0, 3)
     if _roll == 0:
         modifier_add(role("__player__"), "all_shield_upgrade_coeff", 1.0, "eddy_mystery", duration=None)
