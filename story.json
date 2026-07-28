@@ -25,7 +25,7 @@
         "artemis-sbs.LegendaryMissions.fabrication.v1.4.0.mastlib",
         "artemis-sbs.OpenUniverse.universe_core.v1.4.0.mastlib"
     ],
-    "resources": {
-        "media": "artemis-sbs.LegendaryMissions.media.v1.4.0.zip"
-    }
+    "shared_media": [
+        "artemis-sbs.LegendaryMissions.media.v1.4.0.zip"
+    ]
 }
