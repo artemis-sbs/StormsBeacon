@@ -1,0 +1,16 @@
+=== my_gui_mine
+    gui_section("area: 1,8.9,95.9,97.3;")
+    gui_row("")
+    b = gui_button("OK")
+    on gui_message(b):
+        print("")
+
+    
+    on gui_message(gui_button("OK")):
+        print("")
+        
+    gui_row("")
+    gui_text("$text:Hello;")
+    gui_ship("battleship")
+    gui_button("OK")
+    await gui()
