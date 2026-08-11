@@ -10,3 +10,6 @@
 # (story.json resources.media) - it is not this mission's authored content.
 # (When Storm's Beacon gets its OWN authored media, track it explicitly / adjust this.)
 /media/
+# Rendered documents from `sbs docs` - build output, not source. An embedded
+# edition can run to several MB because it inlines the face atlases.
+/__docs__/
