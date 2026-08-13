@@ -70,6 +70,29 @@ GameCode:
     jump universe_map_begin
 
 
+# AUTHORING MAP. The Voice is four jumps and a Storm briefing out from home, and a ruin
+# you cannot reach in under ten minutes is a ruin nobody will iterate on. This starts a new
+# game standing in its system, with the interior built, so the crawl itself can be flown
+# and corrected. It is also the only way a headless conformance run ever sees a relic.
+#
+# It is NOT a shortcut through the campaign: the quest chain still has to be revealed by
+# Storm, so what this proves is the RUIN - the geometry, the contact, the containment, the
+# hails firing off the chambers - not the story around it.
+@map/stormsbeacon_voice "Test: The Voice (relic)"
+" Start in the Torgoth megastation's system with the ruin built. For authoring and
+" testing the relic interior, not for playing the campaign.
+metadata:``` yaml
+Properties:
+  Main:
+    Player Ships: 'gui_int_slider("$text:int;low: 1.0;high:8.0;", var= "PLAYER_COUNT")'
+    Difficulty: 'gui_int_slider("$text:int;low: 1.0;high:11.0;", var= "DIFFICULTY")'
+```
+    UNIVERSE_SELECT = "Storms Beacon"
+    shared START_MODE = "New Game"
+    shared UNIVERSE_START_CELL = (2, -1)
+    jump universe_map_begin
+
+
 # Prof. Storm's advisor logic. She is a host-less cast lifeform (stormsbeacon.amd
 # ## Lifeforms) hailed on the Ultra-Beam with no target selected; her dialogue's
 # "Any word on the Beacon?" choice emits `signal storm_check` (a dialogue outcome).
@@ -186,6 +209,12 @@ GameCode:
     await delay_sim(5)
     ->END if not universe_cell_live(xi, xj)
     ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
+    # NOT WHILE THEY ARE IN THE RUIN. The fuse measures lingering, and being inside a
+    # relic IS lingering - so without this a dungeon would GUARANTEE the pursuer, and
+    # guarantee it at the worst moment, with the crew nose-down in a shaft and their jump
+    # drive refused by the structure. The clock does not tick while they are inside; XORN
+    # is waiting when they come out, which is the better scene anyway.
+    jump xorn_wait if universe_in_relic() is not None
     _dwell = _dwell - 5
     jump xorn_wait if _dwell > 0
     # Fuse burned down and you're still here: only one XORN at a time.
@@ -231,6 +260,8 @@ brain:
     ->END if not universe_cell_live(xi, xj)
     ->END if get_inventory_value(universe_shared_id(), "beacon_lit", 0) == 1
     ->END if get_inventory_value(universe_shared_id(), "hunters_bribed", 0) == 1
+    # Same rule as XORN: scavengers wait outside a tomb, they do not fly down it.
+    jump bounty_wait if universe_in_relic() is not None
     _bdwell = _bdwell - 5
     jump bounty_wait if _bdwell > 0
     ->END if len(to_object_list(role("bounty_hunter_ship"))) > 0
@@ -349,6 +380,83 @@ brain:
 
 //gui/normal_sci
     gui_tab_enable("fabrication")
+
+# A CLUE IS A THING YOU CARRY. The manifest is an authored item in the Voice's freight
+# hall; taking it puts it in the hold, and carrying it is what unlocks the branch on
+# Storm's comms ("I found something in the ruin") - a dialogue guard reads the hold
+# directly, so nothing has to be told that the clue was found.
+#
+# What the CONVERSATION is worth is recorded here, on the shared agent, because a clue is
+# only half a discovery until somebody who can read it has read it.
+//shared/signal/manifest_read if UNIVERSE_ACTIVE
+    ->END if get_inventory_value(universe_shared_id(), "manifest_read", 0) == 1
+    set_inventory_value(universe_shared_id(), "manifest_read", 1)
+    universe_info_card("Prof. Storm has the Torgoth manifest. She will need time with the old charts before it means anything.", "Archaeology", "#6cf")
+    ->END
+
+# ============================================================================
+# TAKING A BEACON PIECE - scan it, then carry it out.
+#
+# The piece is an authored `Item:` in the relic's deepest room, so it is a real object
+# sitting in a cradle rather than a number that increments when a scan completes. Two
+# things have to happen to it, in order, and neither is a button:
+#
+#   1. SCIENCE SCANS IT. That is the reveal - Storm gets his readings, and the piece is
+#      marked as loose. A cradle a thousand years cold does not give the thing up to a
+#      ship that just flew past it.
+#   2. THE SHIP CARRIES IT OUT. A grav tether on the core, and out through the throat you
+#      came in by. The objective completes when the PIECE leaves the volume, not when the
+#      ship does - which is the whole difference between taking it and visiting it.
+#
+# `universe_relic_holds` is the test, and it is asked of the CARGO: the containment latch
+# tracks ships, and the thing on the tether is not one.
+# ============================================================================
+
+# The scan. `relic_piece` is the role every beacon piece carries, so this is written once
+# for all four.
+//science if UNIVERSE_ACTIVE and has_role(SCIENCE_SELECTED_ID, "relic_piece")
+    ->END if get_inventory_value(SCIENCE_SELECTED_ID, "sb_piece_scanned", 0) == 1
+    set_inventory_value(SCIENCE_SELECTED_ID, "sb_piece_scanned", 1)
+    # The piece knows which ruin it is in and which item it is: a thing placed at an
+    # authored point carries that point's roles and its relic's key, so nothing here has
+    # to be told per-episode.
+    _pk = get_inventory_value(SCIENCE_SELECTED_ID, "item_key", "")
+    _rk = get_inventory_value(SCIENCE_SELECTED_ID, "relic_key", "")
+    comms_message("Readings coming through - I have it. It is loose in the cradle now, Captain. Get a tether on it and carry it out; it will not survive a jump and neither will you if you try one in there.", role("storm"), role("__player__"), color="#6cf")
+    universe_info_card("The core reads as loose in its cradle. Tether it and carry it out of the structure.", "Science", "#8cf")
+    task_schedule(sb_watch_extraction, {"piece_id": SCIENCE_SELECTED_ID, "piece_key": _pk, "relic_key": _rk})
+    ->END
+
+# Watch a scanned piece until it is OUT of the ruin. Ends if the piece is destroyed, or if
+# the cell it belongs to is gone - a relic that was torn down took its piece with it, and
+# the crew will find it again in its cradle on the next visit.
+# DECLARED, in metadata, rather than left to be found: the emit below builds its name from
+# the relic the piece came out of, so a static scan cannot see any of these. Without the
+# declaration every episode's `When: signal <x>_taken` reads as waiting on a signal nothing
+# sends - a warning that would train an author to ignore the one lint check most likely to
+# catch a really broken quest. (It has to be a real line, not a comment: the linter's
+# pattern is `emits:` at the start of a line.)
+=== sb_watch_extraction
+metadata: ``` yaml
+emits: voice_taken, lens_taken, cipher_taken, heart_taken
+```
+    default piece_id = 0
+    default piece_key = ""
+    default relic_key = ""
+    ->END if piece_id == 0
+    _ex_obj = to_object(piece_id)
+    ->END if _ex_obj is None
+    ->END if relic_key == ""
+--- extraction_wait
+    await delay_sim(2)
+    _ex_obj = to_object(piece_id)
+    ->END if _ex_obj is None
+    jump extraction_wait if universe_relic_holds(relic_key, (_ex_obj.pos.x, _ex_obj.pos.y, _ex_obj.pos.z))
+    # It is outside the structure. That is the objective, and it is also the moment the
+    # trail goes hot again - which is why the pursuit clock starts breathing here.
+    signal_emit("quest_signal", {"SIGNAL_NAME": relic_key + "_taken"})
+    comms_message("You have it. You actually have it. Get clear of that system before something else decides it wants a look.", role("storm"), role("__player__"), color="#6cf")
+    ->END
 
 # Salvage source: scanning a ruin yields salvage once per wreck (runs alongside
 # universe_core's credit-granting //science route; different flag).

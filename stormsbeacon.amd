@@ -85,7 +85,30 @@ When: comms
 % Talk to me. The trail's still warm.
 
 - [Any word on the Beacon?](storm_hail) ; signal storm_check
+- [I found something in the ruin](storm_manifest) if carrying clue_manifest >= 1
 - [Just checking in](storm_smalltalk)
+
+### [Storm reads the manifest](storm_manifest)
+---
+Speaker: prof_storm
+---
+% Read it to me. Read it - no, hold it up, let me - THERE. Do you see that entry? That is not freight. That is a MANIFEST LINE for something they moved out of the station under guard, in the last hour anyone was alive in there.
+% You brought me a cargo list. Captain, I could kiss you. Everything else in that station was picked over a century ago; nobody steals paperwork.
+
+Whatever left the Voice's station on that last day, it did not go far - and it did not go
+alone. Give me a day with the old charts and I will have you a heading.
+
+- [Take your time.]() ; signal manifest_read
+- [What are we looking for?](storm_manifest_more)
+
+### [Storm on what the manifest means](storm_manifest_more)
+---
+Speaker: prof_storm
+---
+% Another cache. Not a piece of the Beacon - the giants did not put two of those in one arm of the sky - but the people who scattered them left records, and records are how you find the ones they hid properly.
+% A warren, by the description. Somewhere they stopped on the way. Whatever they were carrying, they were carrying it away from something.
+
+- [Understood.]() ; signal manifest_read
 
 ### [Professor Storm](storm_smalltalk)
 ---
@@ -93,6 +116,98 @@ Speaker: prof_storm
 ---
 % Watch yourself out there. The Beacon isn't the only thing hunting these ruins.
 % Keep the ship quiet and the sensors hot. We find it by being clever, not loud.
+
+// STORM'S EXPEDITION HAILS. A hail is a call the SCRIPT starts - the crew answers it on
+// comms - and these are fired declaratively: a quest beat carries `Action: prof_storm hails
+// <scene>` and the call goes out the moment that beat goes active. The beats chain off
+// reaching a named place inside the ruin, so Storm talks you through the station room by
+// room without a line of MAST.
+//
+// `Presentation: portrait` puts his face on it. Keep each `%` line on ONE line however
+// long it runs - a wrapped continuation is an orphan the parser reports against the wrong
+// line.
+
+### [Storm on the approach](voice_brief)
+---
+Speaker: prof_storm
+When: hail
+Title: The Torgoth Megastation
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% Captain - I have your sensor return and I am looking at it with my mouth open. That is not a wreck. That is a STATION, and it is intact enough to have an inside.
+% There it is. Nine kilometres of it. The Torgoth built that when they were giants and they built it to last longer than they did.
+
+The throat on the near face is a docking corridor. They moved freight through it that would
+not fit in your hangar bay sideways.
+
+Two things before you go in. The murk in there will cap your engines - that is the station,
+not your engineer. And you will not get a jump solution from inside a structure that dense,
+so whatever happens in there, you come out the way you went in.
+
+- [Understood. Going in.]()
+- [What am I looking for?](voice_brief_what)
+
+### [Storm on what to look for](voice_brief_what)
+---
+Speaker: prof_storm
+---
+% The transmitter core. The piece that SPEAKS - the rest of the Beacon is lenses and cradles and cipher work, but this is the part that made noise. It will be at the bottom of the structure, because the Torgoth put the important thing where the station would have to be taken apart to reach it.
+% Something that has been trying to transmit for a thousand years. You will know it. Everything else in that station is dead.
+
+- [On my way.]()
+
+### [Storm on the concourse](voice_concourse_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Concourse
+Presentation: portrait
+Color: #6cf
+---
+% You are through the throat. Whatever that space opens into, take a moment and LOOK at it before you fly it - I am getting a structural return that says something came down in there.
+% Careful. That is a spar across the middle of the concourse, and it did not fall gently.
+
+Three ways on from a Torgoth concourse, as a rule: freight one side, sorting the other,
+and the service shaft straight down. The shaft is the one you want. The other two are
+where the scavengers will already have been - which does not mean they took everything.
+
+- [Copy.]()
+
+### [Storm on the shaft](voice_shaft_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Service Shaft
+Presentation: portrait
+Color: #6cf
+---
+% That shaft runs the depth of the station. Take it slowly - it is a hull's width across and the walls are a thousand years past their last inspection.
+% Down. All the way down. Whatever is still alive in there is at the bottom.
+
+Nobody has flown this since the Torgoth did. Mind the walls.
+
+- [Going down.]()
+
+### [Storm on the bay](voice_bay_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Transmitter Bay
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% That is it. That is the Voice. Captain - that machine has been talking to nobody for ten centuries and it is STILL WARM.
+% There. In the cradle. Do you see it? Do you see what they built around it?
+
+Scan it first - I want everything your array can give me before it moves.
+
+Then get a tether on it and carry it out. It will not fit through anything but the way you
+came, and it is not going to walk.
+
+- [Understood.]()
 
 // Crazy Eddy's Emporium. The shop is DECLARATIVE dialogue: each deal is a choice gated on
 // `if credits >= N`, charged by `; costs N credits`, and wired to a MAST `//signal/eddy_buy_*`
@@ -311,21 +426,98 @@ marches. Engage the jump drive from your Quests tab and follow it in.
 ---
 Scope: shared
 State: secret
-When: scan 1 derelict
+When: signal voice_taken
 Pays: 150 credits
+Then: reveal beacon_arc/ep1_approach
 ---
 The first of the Beacon's five pieces: its transmitter core, buried in the dead heart of a
 Torgoth megastation from the age when the Torgoth were giants - docking throats wide enough
 to swallow your ship whole.
 
 ## Objective
-- Bring the science array to bear on the derelict
-- Scan the core to take the Voice
-- Hail Prof. Storm for the next lead
+- Find the station - it is a long way out from where the jump puts you
+- Fly the throat and get inside
+- Work down to the transmitter bay
+- Scan the core, then tether it out through the way you came
 
 ## Hazard
+The station does not let go. Once you are in the structure your jump drive is useless and
+the murk caps your engines - you leave the way you came in or not at all.
+
 Scavengers found the trail first. A light bounty-hunter wing loiters in the wreck's shadow -
-clear them or slip past, but do not linger; worse things than scavengers follow this trail.
+clear them or slip past. Whatever else follows this trail will not follow you inside; it
+will be waiting when you come out.
+
+#### [The Long Approach](ep1_approach)
+---
+Scope: shared
+State: secret
+When: reach entrance 4000
+Then: reveal beacon_arc/ep1_brief
+---
+The station reads as a mass anomaly a long way off your arrival. Close on it.
+
+#### [Storm's Briefing](ep1_brief)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails voice_brief
+Then: reveal beacon_arc/ep1_inside
+---
+Storm has something to say before you go in.
+
+#### [Inside](ep1_inside)
+---
+Scope: shared
+State: secret
+When: reach voice_concourse 1200
+Then: reveal beacon_arc/ep1_concourse
+---
+
+#### [The Concourse](ep1_concourse)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails voice_concourse_scene
+Then: reveal beacon_arc/ep1_deep
+---
+
+#### [The Shaft](ep1_deep)
+---
+Scope: shared
+State: secret
+When: reach voice_shaft 900
+Then: reveal beacon_arc/ep1_shaft
+---
+
+#### [Down the Shaft](ep1_shaft)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails voice_shaft_scene
+Then: reveal beacon_arc/ep1_bay
+---
+
+#### [The Transmitter Bay](ep1_bay)
+---
+Scope: shared
+State: secret
+When: reach voice_bay 1200
+Then: reveal beacon_arc/ep1_core
+---
+
+#### [The Core](ep1_core)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails voice_bay_scene
+---
+Scan the core, then get a tether on it and carry it out. It has been in that cradle for a
+thousand years; it is not going to walk.
 
 #### [Storm's Next Lead](ep2_go)
 ---
@@ -511,12 +703,19 @@ deepest dark. Nebulae everywhere, few ports, and something always a jump behind 
 ---
 At: 2, -1
 Kind: derelict
-Terrain: nebula violet
+Relic: voice
+Relic file: relics/voice.amd
+Cutscene: arrive_voice
 Guards: skaraan 2
 ---
 A derelict from the age of giants - a Torgoth station built to a scale no modern hull needs,
 running dark for a thousand years, holding the Beacon's Voice in its dead heart. Scavengers
 picked the trail up first - a light bounty-hunter wing loiters in the wreck's shadow.
+
+`Relic:` is what makes this a place you fly INTO rather than a prop you scan from outside:
+the interior is authored in `relics/voice.amd` and built when the crew arrives. `Terrain:`
+is gone from this record on purpose - a relic brings its own atmosphere, sized to the
+structure, and a second envelope would be two nebulae fighting over one ruin.
 
 ### [Kralien Ruin](kralien_ruin)
 ---

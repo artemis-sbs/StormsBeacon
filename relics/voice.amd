@@ -1,0 +1,259 @@
+# [The Torgoth Megastation](voice_relic_doc)
+
+The first of the Beacon's five pieces, and the first ruin the crew flies inside.
+
+**The Torgoth BUILT.** Everything here is a box: freight halls with flat walls and real
+corners, a docking throat wide enough to swallow a modern hull sideways, a transmitter
+bay squared off around the machine it was built to hold. No sphere appears in this file,
+and that is the point - the Kralien ruin two systems on is all worn spheres, and a crew
+that has flown both should be able to tell whose hands made each without being told.
+
+Sizes are held to the two rules every relic obeys: neighbouring rooms stay under ~3500u
+apart (`render-distance-objects` is 5000, so a wider ruin stops drawing its own far side)
+and the whole structure stays under ~11200u across so one nebula covers it.
+
+Edit this file with **Artemis AMD: Show Relic Plan** - drag a wall and it rewrites one
+line, leaving this prose alone.
+
+## [Cutscenes](cutscenes)
+
+The first-visit set-piece. `Cutscene: arrive_voice` on the landmark plays this ONCE, the
+first time anyone arrives in the system - the flag is persisted, so a return trip is not
+made to sit through it again.
+
+`Subject:` resolves LATE, against a cast name the mission binds or a role in the world. The
+sensor contact at the mouth carries `relic_contact`, so the camera has something real to
+find without this file knowing what the ruin is made of.
+
+### [Arrival at the Megastation](arrive_voice)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 4
+---
+
+### [The station, from a long way out](arrive_voice_1)
+---
+Cutscene: arrive_voice
+Subject: relic_contact
+Lens: 0, 2200, -9000
+Seconds: 5
+Overlay: lower_third
+Name: Torgoth Megastation
+---
+Running dark for a thousand years.
+
+### [Closing on the face of it](arrive_voice_2)
+---
+Cutscene: arrive_voice
+Subject: relic_contact
+Move: 0, 1400, -6000 -> 0, 300, -1800
+Seconds: 7
+Ease: in_out
+---
+
+### [The mouth](arrive_voice_3)
+---
+Cutscene: arrive_voice
+Subject: relic_contact
+Lens: -900, 120, -1400
+Seconds: 4
+Overlay: lower_third
+Name: The Docking Throat
+---
+Built for hulls that no longer exist.
+
+## [Items](items)
+
+What is in the ruin. A relic file carries its own items so the whole thing - the space,
+what is in it, and what those things ARE - opens as one document. `Item:` on a part is a
+reference, so a typo here is a lint error with a line number rather than a treasure that
+spawns as a question mark.
+
+### [the Voice](beacon_voice)
+---
+Type: item/quest
+Art: unknown
+Tier: 5
+---
+The Beacon's transmitter core: the piece that speaks. Cold for a thousand years and still
+trying.
+
+### [Torgoth salvage](torgoth_salvage)
+---
+Type: item/salvage
+Art: unknown
+Price: 120
+---
+Structural alloy from an age that could afford to build like this. Eddy will take it.
+
+### [a cargo manifest](clue_manifest)
+---
+Type: item/quest
+Art: unknown
+---
+A freight manifest, still legible. It lists what left this station in its last hour - and
+where it went. Storm will want to see this.
+
+## [Relics](relics)
+
+### [The Voice](voice)
+---
+Atmosphere: violet
+Containment: tractor
+Scrape band: 140
+Margin: 80
+Forbid jump: yes
+Seed: 21
+Art: plain_asteroid_6, plain_asteroid_7, plain_asteroid_8, plain_asteroid_9
+---
+A station from the age when the Torgoth were giants, running dark for a thousand years.
+The Beacon's transmitter core is still in its cradle at the bottom of the shaft, still
+trying to speak.
+
+`Forbid jump` is the whole reason this reads as a tomb: once you are in, you fly out the
+way you came.
+
+### [the throat](throat)
+---
+Relic: voice
+Box: -3200, 0, 0, 1400, 420, 420
+---
+The way in. A docking throat built for hulls that no longer exist - a corridor to your
+ship, a keyhole to theirs.
+
+### [the concourse](concourse)
+---
+Relic: voice
+Box: -600, 0, 0, 1300, 500, 1300
+---
+Where the throat opens out. Four ways on from here; three of them are still standing.
+
+### [the freight hall](freight)
+---
+Relic: voice
+Box: 1800, 0, -1500, 1250, 380, 900
+---
+Cargo cradles the size of frigates, all of them empty, all of them opened from the
+inside.
+
+### [the sorting floor](sorting)
+---
+Relic: voice
+Box: 1800, 0, 1500, 1150, 340, 800
+---
+
+### [the shaft](shaft)
+---
+Relic: voice
+Box: 600, -1600, 0, 380, 1400, 380
+---
+Straight down from the concourse. On a top-down plan a vertical shaft is a dot - read the
+second number.
+
+### [the transmitter bay](bay)
+---
+Relic: voice
+Box: 600, -3000, 0, 1000, 500, 1000
+---
+The dead heart. Whatever the Torgoth built the rest of this station around, they built it
+around this room.
+
+### [the cradle](cradle_solid)
+---
+Relic: voice
+Solid: box, 600, -3000, 0, 320, 200, 320
+---
+A subtracted mass in the middle of the bay - the machine's own mounting block, hanging in
+the room you have to fly around it in.
+
+### [the fallen span](span_solid)
+---
+Relic: voice
+Solid: capsule, -1100, -300, -700, -100, 300, 700, 160
+---
+A structural spar down across the concourse. It has been there a long time.
+
+DIAGONAL, and it stops short of the walls. Squared off across the room it spanned the
+whole width and left a 240u slot at each end - an accidental chokepoint the plan view
+does not show you, because a solid reads as a hole rather than as a wall. Set on the
+diagonal it is something to fly around, which is what it is for.
+
+### [the mouth](mouth)
+---
+Relic: voice
+Point: -4700, 0, 0
+Roles: entrance
+---
+The way in, and what your sensors see first. `Roles: entrance` is what puts a contact
+here on arrival and what Storm's briefing measures its range against.
+
+### [the concourse marker](at_concourse)
+---
+Relic: voice
+Point: -1200, 0, 600
+Roles: voice_concourse
+---
+A named place is a quest target: a chamber the story wants to react to gets a point with
+a role, and a beat reaches for it. Nothing else is needed.
+
+Off the room's centre on purpose - the fallen span runs through the middle of it, and a
+marker inside a subtracted mass is a place no ship can ever reach.
+
+### [the freight marker](at_freight)
+---
+Relic: voice
+Point: 1800, 0, -1500
+Roles: voice_freight
+---
+
+### [the shaft head](at_shaft)
+---
+Relic: voice
+Point: 600, -600, 0
+Roles: voice_shaft
+---
+
+### [the bay floor](at_bay)
+---
+Relic: voice
+Point: 600, -3000, 650
+Roles: voice_bay
+---
+
+### [the core cradle](core_place)
+---
+Relic: voice
+Point: 600, -2600, 0
+Roles: voice_core, relic_piece
+Item: beacon_voice
+---
+Where the transmitter core sits. No `Starts when:`, so it is simply there - the ruin has
+held it for a thousand years and nothing about the crew's arrival changes that.
+
+`relic_piece` is the role every beacon piece carries, and a thing placed at a point wears
+that point's roles - so the science route that reveals a piece is written once for all
+four ruins, and this file is the only place that says which object is one.
+
+### [the sorting cache](sorting_cache)
+---
+Relic: voice
+Point: 1800, 0, 1500
+Roles: voice_treasure
+Item: torgoth_salvage
+Qty: 3
+---
+Left behind by whoever emptied the freight hall. Treasure, not plot: taking it is worth
+credits and nothing else.
+
+### [the manifest](manifest_place)
+---
+Relic: voice
+Point: 1800, 0, -1500
+Roles: voice_clue
+Item: clue_manifest
+Starts when: reach voice_concourse 900
+---
+A cargo manifest, still readable. The CLUE - and it does not exist until the crew is
+inside, because a clue that can be scooped from outside the ruin is not a discovery, it
+is a pickup.

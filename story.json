@@ -23,6 +23,7 @@
         "artemis-sbs.LegendaryMissions.basic_player_destroy.v1.4.0.mastlib",
         "artemis-sbs.LegendaryMissions.basic_random_skybox.v1.4.0.mastlib",
         "artemis-sbs.LegendaryMissions.fabrication.v1.4.0.mastlib",
+        "artemis-sbs.LegendaryMissions.grav_tether.v1.4.0.mastlib",
         "artemis-sbs.LegendaryMissions.races.v1.4.0.mastlib",
         "artemis-sbs.OpenUniverse.universe_core.v1.4.0.mastlib"
     ],
