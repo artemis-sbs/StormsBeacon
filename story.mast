@@ -175,7 +175,7 @@ Properties:
     # per face. Always pass a character's UNIQUE role as the sender.
     comms_message(storm_line, role("storm"), role("__player__"), color="#6cf")
     if storm_important:
-        storm_spk = dialogue_speaker(UNIVERSE_CLANS, UNIVERSE_CAPTAINS, UNIVERSE_LIFEFORMS, "prof_storm")
+        storm_spk = dialogue_speaker(UNIVERSE_SIDES, UNIVERSE_CAPTAINS, UNIVERSE_LIFEFORMS, "prof_storm")
         universe_chatter_card(storm_spk, storm_line)
     gui_refresh("repaint")
     ->END
