@@ -4,8 +4,14 @@ The repeatable unit of the campaign. Adding an episode is **two mechanical edits
 **no new logic**. This is the "locked" template from STORMS_BEACON.md §12 (Phase 0 step 3);
 episodes 1–3 in `stormsbeacon.amd` are the worked examples.
 
-Each episode is: **Storm reveals a heading → you Engage-jump there → the ruin sits in
-terrain, contested by guards → you scan it → hail Storm for the next lead.**
+Each episode is: **Storm reveals a heading → you Engage-jump there → you FIND the ruin and
+fly INTO it → Storm talks you through it room by room → you scan the piece and tether it
+out → hail Storm for the next lead.**
+
+> **The ruins are relics now.** An episode's ruin is no longer one prop you scan from
+> outside; it is a flyable interior authored in `relics/<key>.amd`. See
+> **[Adding a relic episode](#adding-a-relic-episode)** below - the two mechanical edits
+> still hold, and a third file joins them.
 
 ---
 
@@ -116,3 +122,94 @@ no per-episode `if/elif` is ever needed. The first row also clears the opening b
 2. Browser — jump to the episode's `(i, j)`: confirm the ruin sits in its terrain, the
    guards contest it, scanning completes the step, and hailing Storm hands out the next lead
    (or the victory screen on the finale).
+
+---
+
+## Adding a relic episode
+
+The ruin is a third file, and it is the one that matters. The two edits above are
+unchanged; this is what goes with them.
+
+### The relic file - `relics/<key>.amd`
+
+One document holding the ruin, what is in it, and what is said in it:
+
+| section | what for |
+|---|---|
+| `## Relics` | the geometry: chambers (spheres), boxes, `Passage to:`, subtracted `Solid:`, and `Point:` places |
+| `## Items` | the piece, the treasure and the clues, so `Item:` on a point resolves |
+| `## Cutscenes` | the first-visit shot list the landmark's `Cutscene:` names |
+
+Then the landmark carries `Relic: <key>` and `Relic file: relics/<key>.amd`, and the
+episode's chapters chain off the ruin's own places.
+
+### Give it a shape that means something
+
+Architecture is characterisation. The seven ruins are deliberately not one template:
+
+| ruin | shape | because |
+|---|---|---|
+| the Voice | all boxes | the Torgoth BUILT - flat walls, real corners |
+| the Lens | spheres with machined boxes | the Kralien bored it out, then squared off what had to be exact |
+| the Ash Warren | all chambers | nobody built it; it was dug |
+| the Cipher | chambers that fold back | it was hidden, and the obvious way in is a dead end |
+| the Heart | chambers with cut boxes through them | somebody else took it apart to get at the middle |
+| the False Choir | the Voice, at two-thirds scale | it is a COPY, made by people working from memory |
+| the Sink | one enormous box | it is a container, not a building |
+
+### The chain
+
+Each beat is completed by REACHING a named place and reveals the next, which hails.
+`relic_contents_arm` puts an invisible measuring post on every point carrying `Roles:`,
+and the quest driver's reach test measures against objects holding a role - so a chamber
+named in the `.amd` is a quest target with nothing wired:
+
+```
+lead (When: reach i,j)  ->  approach (When: reach entrance 4000)
+                        ->  briefing (Action: prof_storm hails <scene>)
+                        ->  a room   (When: reach <role> 1200)
+                        ->  a hail   ->  ... ->  scan step (When: signal <relic>_taken)
+```
+
+The lead opens the EXPEDITION and the expedition's last beat opens the objective that
+waits for the piece - not the other way round, or Storm briefs the crew on how to fly in
+after they have already carried it out.
+
+### Taking the piece
+
+Mark the piece's point `Roles: <name>, relic_piece`. Science scanning it is the reveal;
+the objective completes when the PIECE leaves the volume, which is the difference between
+taking it and visiting it. No per-episode code: the science route and the extraction watch
+are written once for every ruin.
+
+### Clues
+
+A clue is an item keyed `clue_<name>`. Taking one emits `<name>_taken`, and what it
+UNLOCKS is one row in the `_unlocks` table in `story.mast` - beside the clue, not in a
+chapter that has to be armed before the clue is found, which is a race the player wins by
+exploring in an order nobody anticipated.
+
+A clue in the hold also opens comms branches: a dialogue guard reads the hold directly with
+`if carrying clue_<name> >= 1`.
+
+### A ruin with nothing in it
+
+At least one should be empty. Not every dig is a find, and a campaign where every ruin
+holds treasure is one where ruins stop meaning anything. A dry hole earns its place by
+holding the CLUE the next real ruin needs - and Storm's dispatcher can gate a lead on
+carrying it (`needs` / `needs_line` on the `_eps` row), so she says plainly what is
+missing instead of going quiet.
+
+### Check it before you fly it
+
+```
+sbs lint StormsBeacon
+```
+
+catches an `Item:` that names nothing, a `Starts when:` a relic cannot watch, and a
+`Point:` buried inside a subtracted mass - the last of which is the most repeated mistake
+in authoring a ruin, because the obvious place for a marker is the middle of a room and
+the obvious place for a pillar is also the middle of a room.
+
+Then fly it: `@map/stormsbeacon_relics` starts a new game standing in any ruin's system,
+with the interior built.
