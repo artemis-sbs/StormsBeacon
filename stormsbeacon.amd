@@ -209,6 +209,88 @@ came, and it is not going to walk.
 
 - [Understood.]()
 
+### [Storm on the Kralien structure](lens_brief)
+---
+Speaker: prof_storm
+When: hail
+Title: The Kralien Megastructure
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% Look at the SHAPE of it, Captain. The Torgoth station was built - beams and bays and right angles. This was bored. Whatever the Kralien used to hollow that out, we do not have it and we never did.
+% Same age, same scale, completely different hands. That is what I brought you here to see, and the Lens is only half of why.
+
+The square mouth on the near end is machined - they squared off whatever had to be exact
+and let the rest of it curve. Fly in there and follow it round; the structure turns, and
+everything past the turn is aimed at one spot.
+
+Same rules as the last one. Your drive will not give you a jump solution inside that, and
+the murk will hold you to impulse.
+
+- [Going in.]()
+- [Aimed at what?](lens_brief_what)
+
+### [Storm on what it was aimed at](lens_brief_what)
+---
+Speaker: prof_storm
+---
+% We do not know. That is the honest answer and it is the reason I have spent eleven years on this. Something at the other end of a very long line.
+% The Lens focuses the Voice - takes a shout in every direction and makes it a line. Whatever the giants were talking TO, they wanted it heard in one place and nowhere else.
+
+- [Understood.]()
+
+### [Storm in the gallery](lens_gallery_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Gallery
+Presentation: portrait
+Color: #6cf
+---
+% Those walls are smooth. Not polished - SMOOTH, the way a river bed is smooth, and there was never any river in there. Take a reading of that surface for me on your way past.
+% Mind the column in the middle of that room. It is holding the ceiling up and it has been doing it a very long time.
+
+Whatever the Kralien left in the side bays, the reclaimers have already been through - but
+they were after metal, and they would not have known what glass was worth.
+
+- [Copy.]()
+
+### [Storm at the drum](lens_drum_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Focusing Chamber
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% There. In the collar - that is the Lens, and it is still ALIGNED, Captain. A thousand years adrift and it is still pointing where they left it pointing.
+% A box inside a sphere. Do you see it? They grew the room and then bolted a machined mount into the middle of it, because the mount had to be exact and the room did not.
+
+Scan it before you touch it. I want the alignment recorded - where that thing is looking is
+a question I intend to answer eventually.
+
+Then tether it and take it out the way you came.
+
+- [Understood.]()
+
+### [Storm at the bottom of the warren](ash_bottom_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Last Room
+Presentation: portrait
+Color: #6cf
+---
+% Nothing. No piece, no array, no machine - and Captain, that is not a wasted trip, that is the FIND. They stopped here. They turned round. Something in that last room told them where to go next and I want it.
+% Empty. Good. An empty room somebody dug all the way down to is a room they were using for something they did not want written down anywhere else.
+
+Look for a plate, a slate, anything cut rather than printed. The Kralien did not trust
+paper with the things that mattered.
+
+- [Looking.]()
+
 // Crazy Eddy's Emporium. The shop is DECLARATIVE dialogue: each deal is a choice gated on
 // `if credits >= N`, charged by `; costs N credits`, and wired to a MAST `//signal/eddy_buy_*`
 // route (story.mast) that applies the REAL ship modifier. Some deals are honest, some are
@@ -533,20 +615,104 @@ marches at (4, 1). Engage and jump.
 ---
 Scope: shared
 State: secret
-When: scan 1 derelict
+When: signal lens_taken
 Pays: 200 credits
+Then: reveal beacon_arc/ep2_approach
 ---
 A cold Kralien megastructure, vast and dark, holding the Beacon's LENS - the focusing array
 that bends the Voice into a single coherent signal. The Kralien built to the same giant scale
 as the Torgoth; the docking rings alone dwarf a modern fleet.
 
 ## Objective
-- Scan the Lens from the derelict's core
-- Hail Prof. Storm once you have it
+- Find the structure and fly the aperture
+- Follow it round through the gallery and the ring
+- Scan the Lens in the drum, then tether it out
 
 ## Hazard
 A Torgoth reclamation party got here first and is stripping the outer decks - they want the
-Lens too. Take it before they do, or take it from them.
+Lens too. Take it before they do, or take it from them. They will not follow you inside;
+nobody sane flies into a Kralien structure with the lights off.
+
+#### [The Long Approach](ep2_approach)
+---
+Scope: shared
+State: secret
+When: reach entrance 4000
+Then: reveal beacon_arc/ep2_brief
+---
+
+#### [Storm's Briefing](ep2_brief)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails lens_brief
+Then: reveal beacon_arc/ep2_inside
+---
+
+#### [The Gallery](ep2_inside)
+---
+Scope: shared
+State: secret
+When: reach lens_gallery 1200
+Then: reveal beacon_arc/ep2_gallery
+---
+
+#### [Bored, Not Built](ep2_gallery)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails lens_gallery_scene
+Then: reveal beacon_arc/ep2_drum
+---
+
+#### [The Drum](ep2_drum)
+---
+Scope: shared
+State: secret
+When: reach lens_drum 1200
+Then: reveal beacon_arc/ep2_mount
+---
+
+#### [The Mount](ep2_mount)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails lens_drum_scene
+---
+Scan the Lens, then tether it and carry it out through the aperture.
+
+#### [The Ash Warren](ash_go)
+---
+Scope: shared
+State: secret
+When: reach 3, -4
+Then: reveal beacon_arc/ash_dive
+---
+The Kralien survey slate marks a warren in the ash fields at (3, -4). Storm does not
+believe there is a piece of the Beacon in it. She believes the people who hid the Cipher
+went there first, and that is a different kind of valuable.
+
+#### [Down the Warren](ash_dive)
+---
+Scope: shared
+State: secret
+When: reach ash_crossing 1200
+Then: reveal beacon_arc/ash_bottom
+---
+
+#### [The Bottom of It](ash_bottom)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails ash_bottom_scene
+When: signal chart_taken
+Then: reveal beacon_arc/ep3_go
+---
+There is a route chart in the last room. Take it: the Cipher is not findable without it.
 
 #### [Storm's Third Lead](ep3_go)
 ---
@@ -721,11 +887,26 @@ structure, and a second envelope would be two nebulae fighting over one ruin.
 ---
 At: 4, 1
 Kind: derelict
-Terrain: asteroids
+Relic: lens
+Relic file: relics/lens.amd
+Cutscene: arrive_lens
 Guards: torgoth 3
 ---
 A Kralien megastructure from their own age of giants, adrift and cold, holding the Beacon's
 Lens. A Torgoth reclamation party gutted the outer decks and lingers - they want it too.
+
+### [The Ash Warren](ash_warren_lm)
+---
+At: 3, -4
+Kind: derelict
+Relic: ash_warren
+Relic file: relics/ash_warren.amd
+Cutscene: arrive_ash
+---
+A rock in the ash fields with a hole bored into it. Nothing about it is on any chart Storm
+has, and there is no beacon piece in it - which is exactly why it matters: the people who
+scattered the Beacon stopped here on the way to hiding the Cipher, and they left a route
+chart behind them.
 
 ### [The Cipher Relay](cipher_relay)
 ---

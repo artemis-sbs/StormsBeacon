@@ -1,0 +1,182 @@
+# [The Ash Warren](ash_relic_doc)
+
+**A dry hole - and the mission needs you to fly it anyway.**
+
+There is no beacon piece here. Whoever scattered the Beacon stopped in this warren on the
+way to somewhere else, and what they left behind is a record of where they went next. The
+Cipher cannot be found without it.
+
+That is the whole argument for a ruin with nothing in it: not every dig is a find, and a
+campaign where every ruin holds treasure is a campaign where ruins stop meaning anything.
+The payoff here is knowledge, and one very good piece of salvage for the trouble.
+
+**All chambers, no boxes.** Nobody built this. It was bored out of a rock by something that
+wanted to be underground, and then it was abandoned in a hurry - which is why half of it
+has come down.
+
+## [Cutscenes](cutscenes)
+
+### [Arrival at the Ash Warren](arrive_ash)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 4
+---
+
+### [The rock, in the ash](arrive_ash_1)
+---
+Cutscene: arrive_ash
+Subject: relic_contact
+Lens: 0, 2600, -7000
+Seconds: 5
+Overlay: lower_third
+Name: The Ash Warren
+---
+Not a station. Not even a wreck. Somebody hollowed this out.
+
+### [The bore](arrive_ash_2)
+---
+Cutscene: arrive_ash
+Subject: relic_contact
+Move: -2000, 800, -4000 -> -200, 100, -1200
+Seconds: 6
+---
+
+## [Items](items)
+
+### [a Kralien route chart](clue_chart)
+---
+Type: item/quest
+Art: unknown
+---
+A route chart, cut into a plate that has outlasted everyone who read it. It marks the relay
+they ran to - and the way IN to it, which is not the way anything approaches from open
+space.
+
+### [deep salvage](ash_salvage)
+---
+Type: item/salvage
+Art: unknown
+Price: 240
+---
+Whatever they were mining here, they were mining it a long way down and they left in a
+hurry. Eddy will ask where you got it.
+
+## [Relics](relics)
+
+### [The Ash Warren](ash_warren)
+---
+Atmosphere: red
+Containment: tractor
+Scrape band: 160
+Margin: 90
+Forbid jump: yes
+Seed: 51
+Art: plain_asteroid_6, plain_asteroid_9, plain_asteroid_10
+---
+A warren bored into a rock in the ash fields. No hand squared anything off in here; every
+room is round because round is what you get when you dig.
+
+### [the bore](bore)
+---
+Relic: ash_warren
+Chamber: -2600, 0, 0, 700
+---
+The way in. Wide enough, if you are careful and slow.
+
+### [the first hollow](hollow)
+---
+Relic: ash_warren
+Chamber: -900, 0, 0, 1100
+Passage to: bore 320
+---
+
+### [the crossing](crossing)
+---
+Relic: ash_warren
+Chamber: 700, -400, 0, 1000
+Passage to: hollow 300
+---
+Three ways on. Two of them are full of rock.
+
+### [the deep cut](deep)
+---
+Relic: ash_warren
+Chamber: 1800, -1600, 900, 900
+Passage to: crossing 400
+---
+Down and over. Whatever they were following, they followed it here.
+
+### [the last room](last)
+---
+Relic: ash_warren
+Chamber: 2600, -2600, 1900, 800
+Passage to: deep 380
+---
+And this is where they stopped, turned round, and left.
+
+### [the fall](fall_solid)
+---
+Relic: ash_warren
+Solid: sphere, 300, -100, -600, 420
+---
+The roof of the crossing came down. Off to one side of the room, deliberately: a slab on
+the CENTRE would sit exactly where every passage into the room meets, and that is not an
+obstacle to fly around, it is a door that will not open.
+
+### [the wedge](wedge_solid)
+---
+Relic: ash_warren
+Solid: capsule, 1400, -1300, 1600, 2200, -1900, 1900, 200
+---
+A slab across one side of the deep cut, at an angle. Off the room's centre for the
+same reason the fall is: the centre is where the passages meet.
+
+### [the bore mouth](mouth)
+---
+Relic: ash_warren
+Point: -3500, 0, 0
+Roles: entrance
+---
+
+### [the first hollow](at_hollow)
+---
+Relic: ash_warren
+Point: -900, 0, 0
+Roles: ash_hollow
+---
+
+### [the crossing](at_crossing)
+---
+Relic: ash_warren
+Point: 700, -400, 700
+Roles: ash_crossing
+---
+Off the fallen roof, which fills the middle of this room.
+
+### [the last room](at_last)
+---
+Relic: ash_warren
+Point: 2600, -2600, 1900
+Roles: ash_last
+---
+
+### [the chart](chart_place)
+---
+Relic: ash_warren
+Point: 2600, -2600, 2300
+Roles: ash_clue
+Item: clue_chart
+Starts when: reach ash_crossing 1000
+---
+The route chart, in the last room. This is the ONLY thing in this ruin that matters, and
+the crew has to go all the way down to find out.
+
+### [the seam](salvage_place)
+---
+Relic: ash_warren
+Point: 1900, -1500, 1500
+Roles: ash_treasure
+Item: ash_salvage
+Qty: 2
+---

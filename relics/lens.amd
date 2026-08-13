@@ -1,0 +1,196 @@
+# [The Kralien Megastructure](lens_relic_doc)
+
+The second piece, and the second kind of hands.
+
+**The Kralien GREW, then squared it off.** Worn spheres - bored out, smoothed by whatever
+they used and by a thousand years of nothing - with machined boxes bolted around the parts
+that had to be exact. Fly the Voice and then fly this and the difference should be obvious
+before anyone says a word about who built which.
+
+The Lens itself sits in a focusing chamber the whole structure is aimed through, so the
+route in is a curve rather than the Voice's straight shaft: gallery, ring, and the drum at
+the far end of it.
+
+## [Cutscenes](cutscenes)
+
+### [Arrival at the Kralien Ruin](arrive_lens)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 4
+---
+
+### [The structure, edge on](arrive_lens_1)
+---
+Cutscene: arrive_lens
+Subject: relic_contact
+Lens: 0, 3000, -8000
+Seconds: 5
+Overlay: lower_third
+Name: Kralien Megastructure
+---
+Older than the Torgoth station, and colder.
+
+### [Down the length of it](arrive_lens_2)
+---
+Cutscene: arrive_lens
+Subject: relic_contact
+Move: -4000, 900, -5000 -> 0, 200, -1600
+Seconds: 7
+Ease: in_out
+---
+
+## [Items](items)
+
+### [the Lens](beacon_lens)
+---
+Type: item/quest
+Art: unknown
+Tier: 5
+---
+The focusing array: the piece that takes the Voice's noise and bends it into one coherent
+line. Without it the Beacon shouts in every direction at once and reaches nobody.
+
+### [Kralien optics](kralien_optics)
+---
+Type: item/salvage
+Art: unknown
+Price: 180
+---
+Cut glass a thousand years old and still true. Eddy will not know what it is worth, which
+means he will pay too much or too little and be pleased either way.
+
+### [a survey slate](clue_slate)
+---
+Type: item/quest
+Art: unknown
+---
+A Kralien survey slate, scratched rather than printed - the work of somebody in a hurry.
+It marks a warren in the ash fields, and something they were carrying to it.
+
+## [Relics](relics)
+
+### [The Lens](lens)
+---
+Atmosphere: blue
+Containment: tractor
+Scrape band: 140
+Margin: 80
+Forbid jump: yes
+Seed: 34
+Art: plain_asteroid_7, plain_asteroid_8, plain_asteroid_10, plain_asteroid_11
+---
+A Kralien megastructure, dark and cold, built to the same giant scale as the Torgoth
+station and by hands that thought about it completely differently.
+
+### [the aperture](aperture)
+---
+Relic: lens
+Box: -3400, 0, 0, 900, 500, 500
+---
+The way in - a machined mouth, square-cut, on the end of a structure that is otherwise all
+curves. The Kralien squared off whatever had to be exact.
+
+### [the gallery](gallery)
+---
+Relic: lens
+Chamber: -1700, 0, 0, 1100
+---
+Bored, not built. The walls are smooth in a way no tool leaves.
+
+### [the ring](ring)
+---
+Relic: lens
+Chamber: 200, 0, 600, 1300
+Passage to: gallery 320
+---
+The structure turns here. Everything past this point is aimed at the same spot.
+
+### [the drum](drum)
+---
+Relic: lens
+Chamber: 2100, -300, 1800, 1000
+Passage to: ring 300
+---
+The focusing chamber. It is a sphere because it had to be a sphere.
+
+### [the collar](collar)
+---
+Relic: lens
+Box: 2100, -300, 1800, 700, 240, 700
+---
+Machined, and set into the drum - the mount the Lens sits in. A box inside a sphere: the
+two ways of building, in the one room that mattered.
+
+### [the gallery pillar](gallery_solid)
+---
+Relic: lens
+Solid: capsule, -1700, -900, 0, -1700, 900, 0, 220
+---
+A column through the gallery, floor to ceiling. Fly around it.
+
+### [the drum core](drum_solid)
+---
+Relic: lens
+Solid: sphere, 2100, -300, 1800, 300
+---
+Whatever the Lens was focusing onto. It is not there any more; the mounting is.
+
+### [the aperture mouth](mouth)
+---
+Relic: lens
+Point: -4600, 0, 0
+Roles: entrance
+---
+
+### [the gallery floor](at_gallery)
+---
+Relic: lens
+Point: -1700, 0, 700
+Roles: lens_gallery
+---
+Off the pillar, which runs through the middle of this room.
+
+### [the ring turn](at_ring)
+---
+Relic: lens
+Point: 200, 0, 600
+Roles: lens_ring
+---
+
+### [the drum floor](at_drum)
+---
+Relic: lens
+Point: 2100, 200, 1800
+Roles: lens_drum
+---
+Above the mounting core, not inside it.
+
+### [the mount](lens_place)
+---
+Relic: lens
+Point: 2100, 100, 2400
+Roles: lens_core, relic_piece
+Item: beacon_lens
+---
+The Lens, still in its collar, still aimed at nothing.
+
+### [the optics shelf](optics_cache)
+---
+Relic: lens
+Point: -1700, 0, -700
+Roles: lens_treasure
+Item: kralien_optics
+Qty: 2
+---
+
+### [the slate](slate_place)
+---
+Relic: lens
+Point: 200, 0, 1500
+Roles: lens_clue
+Item: clue_slate
+Starts when: reach lens_gallery 900
+---
+The survey slate. It names the Ash Warren - which is how the crew ever hears of a ruin
+nobody has a lead to.

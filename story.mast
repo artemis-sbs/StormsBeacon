@@ -381,6 +381,23 @@ brain:
 //gui/normal_sci
     gui_tab_enable("fabrication")
 
+# PICKING UP A CLUE IS A STORY BEAT. The items addon emits `item_collected` for every
+# pickup; a clue is any item whose key starts with `clue_`, and taking one emits
+# `<name>_taken` so a quest can wait on it (`When: signal chart_taken`).
+#
+# Derived from the key rather than listed, so a new clue in a new ruin needs no code -
+# author `Item: clue_x` in the .amd and `When: signal x_taken` in the chapter, and it
+# works. The emits are declared in metadata below because a computed name is invisible to
+# a static scan.
+//shared/signal/item_collected if UNIVERSE_ACTIVE
+metadata: ``` yaml
+emits: manifest_taken, slate_taken, chart_taken
+```
+    ->END if key is None
+    ->END if not str(key).startswith("clue_")
+    signal_emit("quest_signal", {"SIGNAL_NAME": str(key)[5:] + "_taken"})
+    ->END
+
 # A CLUE IS A THING YOU CARRY. The manifest is an authored item in the Voice's freight
 # hall; taking it puts it in the hold, and carrying it is what unlocks the branch on
 # Storm's comms ("I found something in the ruin") - a dialogue guard reads the hold
