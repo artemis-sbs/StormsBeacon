@@ -11,6 +11,8 @@
 import sb_helpers.py
 
 default shared UNIVERSE_SELECT = "Storms Beacon"
+# Which ruin the "pick a relic" test map starts in.
+default shared SB_RUIN = "The Voice"
 
 # Enable the quest-driven jump. Movement in a story mission is the LM Quests tab's
 # "Engage" button (emits quest_engage -> universe_core resolves the chapter's on_reach
@@ -81,6 +83,25 @@ GameCode:
 # It is NOT a shortcut through the campaign: the quest chain still has to be revealed by
 # Storm, so what this proves is the RUIN - the geometry, the contact, the containment, the
 # hails firing off the chambers - not the story around it.
+@map/stormsbeacon_relics "Test: pick a relic"
+" Start in any ruin's system with the interior built. For authoring and testing the relic
+" interiors, not for playing the campaign.
+metadata:``` yaml
+Properties:
+  Main:
+    Ruin: 'gui_drop_down("$text: {SB_RUIN};list: The Voice, The Lens, The Ash Warren, The Cipher, The Heart, The False Choir, The Sink", var="SB_RUIN")'
+    Player Ships: 'gui_int_slider("$text:int;low: 1.0;high:8.0;", var= "PLAYER_COUNT")'
+    Difficulty: 'gui_int_slider("$text:int;low: 1.0;high:11.0;", var= "DIFFICULTY")'
+```
+    UNIVERSE_SELECT = "Storms Beacon"
+    shared START_MODE = "New Game"
+    # The cells the ruins are pinned to, by the name the picker shows. One place, so a
+    # ruin that moves does not leave a test map pointing at empty space.
+    _cells = ~~{"The Voice": (2, -1), "The Lens": (4, 1), "The Ash Warren": (3, -4), "The Cipher": (6, -2), "The Heart": (-5, -4), "The False Choir": (5, -5), "The Sink": (1, -6)}~~
+    shared UNIVERSE_START_CELL = _cells.get(SB_RUIN, (2, -1))
+    jump universe_map_begin
+
+
 @map/stormsbeacon_voice "Test: The Voice (relic)"
 " Start in the Torgoth megastation's system with the ruin built. For authoring and
 " testing the relic interior, not for playing the campaign.
@@ -127,6 +148,9 @@ Properties:
          "needs_line": "I can't give you a heading for the Cipher, Captain - not because I'm holding out, because I do not HAVE one. That Kralien slate you brought back names a warren in the ash fields at (3, -4). They stopped there on the way to hiding it. Whatever they wrote down, they wrote it down at the bottom of that hole.",
          "lead": "Two pieces, and I see it now - the Beacon's an ARRAY, and it needs a Cradle to seat the pieces. Eddy of all people fenced the only one; buy it off him - hail him, or drop by his Emporium at (3, 3). Meanwhile the Cipher's in a nebula relay at (6, -2). Go.",
          "nudge": "The Cipher's at (6, -2), drowned in nebula - and don't forget that Cradle. Eddy's Emporium is at (3, 3) if you'd rather shop in person."},
+        {"go": "choir_go", "scan": "choir_empty",
+         "lead": "I have a reading at (5, -5) that matches the Voice's signature - close enough that I am going to say it out loud: I think that is the fourth piece. Go and look at it.",
+         "nudge": "That reading at (5, -5) is still sitting there, Captain, and I am still fairly sure about it. Go and look."},
         {"go": "ep4_go", "scan": "ep4_scan",
          "lead": "Last ruin-piece is the Heart - and XORN took it, out to a kill-yard at (-5, -4). Scan it out from under their guns and RUN. Don't linger.",
          "nudge": "The Heart's still in XORN's yard at (-5, -4). Scan it and run - that's not a place to dawdle."},
@@ -405,7 +429,7 @@ brain:
 # a static scan.
 //shared/signal/item_collected if UNIVERSE_ACTIVE
 metadata: ``` yaml
-emits: manifest_taken, slate_taken, chart_taken
+emits: manifest_taken, slate_taken, chart_taken, votive_taken, traffic_taken, order_taken
 ```
     ->END if key is None
     ->END if not str(key).startswith("clue_")
@@ -417,7 +441,7 @@ emits: manifest_taken, slate_taken, chart_taken
     # This is the spine of the campaign's middle: the Lens hides the slate that names the
     # Ash Warren, and the warren - which holds no piece of the Beacon at all - hides the
     # chart without which the Cipher cannot be found.
-    _unlocks = ~~{"clue_slate": "beacon_arc/ash_go", "clue_chart": "beacon_arc/ep3_go"}~~
+    _unlocks = ~~{"clue_slate": "beacon_arc/ash_go", "clue_chart": "beacon_arc/ep3_go", "clue_votive": "beacon_arc/sink_go"}~~
     if str(key) in _unlocks:
         quest_reveal(universe_shared_id(), _unlocks[str(key)])
         gui_refresh("repaint")

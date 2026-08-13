@@ -1,0 +1,156 @@
+# [The False Choir](choir_relic_doc)
+
+**Storm is wrong about this one, and the crew finds out from the inside.**
+
+The lead is real, the reading is real, and the ruin is the wrong ruin. It is the same shape
+as the Voice - boxes, right angles, a transmitter bay at the bottom of a shaft - because
+somebody COPIED the Voice, badly, a long time after the giants were gone. The cradle is
+there. The machine is there. It has never worked and it was never going to.
+
+That is the beat: an archaeologist backing a hunch, a crew flying four rooms to the bottom
+of it, and an empty cradle. What is down there instead is the reason the copy exists, and
+the reason is the next heading.
+
+**The geometry is the tell**, for anyone who has flown the Voice: the same rooms in the
+same order and all of it slightly too small, because the builders were working from the
+outside of something they had only seen once.
+
+## [Cutscenes](cutscenes)
+
+### [Arrival at the Choir](arrive_choir)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 4
+---
+
+### [It looks right](arrive_choir_1)
+---
+Cutscene: arrive_choir
+Subject: relic_contact
+Lens: 0, 2000, -7000
+Seconds: 5
+Overlay: lower_third
+Name: The False Choir
+---
+The same hands, Storm says. She is about to be wrong.
+
+### [Closing](arrive_choir_2)
+---
+Cutscene: arrive_choir
+Subject: relic_contact
+Move: 0, 1200, -5000 -> 0, 250, -1500
+Seconds: 6
+---
+
+## [Items](items)
+
+### [a votive plate](clue_votive)
+---
+Type: item/quest
+Art: unknown
+---
+Not a machine part. A plate, cut with a copy of the giants' notation by somebody who did
+not understand it - the work of people who found a working Beacon relay, built a shrine
+around what they thought it was, and wrote down where the real one had gone.
+
+### [shrine metal](choir_salvage)
+---
+Type: item/salvage
+Art: unknown
+Price: 140
+---
+Soft alloy, beaten thin, a thousand offerings' worth. Worth something to Eddy and nothing
+to anyone else.
+
+## [Relics](relics)
+
+### [The False Choir](false_choir)
+---
+Atmosphere: blue
+Containment: tractor
+Scrape band: 140
+Margin: 80
+Forbid jump: yes
+Seed: 96
+Art: plain_asteroid_7, plain_asteroid_10, plain_asteroid_11
+---
+A copy of a giant's station, built to two-thirds scale by hands that were working from
+memory and reverence rather than from plans.
+
+### [the throat](throat)
+---
+Relic: false_choir
+Box: -2200, 0, 0, 900, 300, 300
+---
+Narrower than the Voice's, and the crew will notice.
+
+### [the concourse](concourse)
+---
+Relic: false_choir
+Box: -400, 0, 0, 950, 380, 950
+---
+
+### [the shaft](shaft)
+---
+Relic: false_choir
+Box: 300, -1100, 0, 300, 950, 300
+---
+
+### [the bay](bay)
+---
+Relic: false_choir
+Box: 300, -2100, 0, 800, 400, 800
+---
+The same room in the same place as the Voice's transmitter bay, and about two-thirds of
+the size. Whatever they were copying, they had seen it from the outside.
+
+### [the empty cradle](cradle_solid)
+---
+Relic: false_choir
+Solid: box, 300, -2100, 0, 260, 160, 260
+---
+A cradle, cut to hold something the size of the Voice's core. There is nothing in it and
+there never was.
+
+### [the choir mouth](mouth)
+---
+Relic: false_choir
+Point: -3300, 0, 0
+Roles: entrance
+---
+
+### [the concourse](at_concourse)
+---
+Relic: false_choir
+Point: -400, 0, 500
+Roles: choir_concourse
+---
+
+### [the empty bay](at_bay)
+---
+Relic: false_choir
+Point: 300, -2100, 530
+Roles: choir_bay
+---
+Where the crew learns this was never it.
+
+### [the votive plate](votive_place)
+---
+Relic: false_choir
+Point: 300, -2100, -530
+Roles: choir_clue
+Item: clue_votive
+Starts when: reach choir_bay 900
+---
+Set beside the empty cradle, the way an offering is set beside an altar. Storm will need a
+minute with this one.
+
+### [the offerings](choir_cache)
+---
+Relic: false_choir
+Point: -400, 0, -500
+Roles: choir_treasure
+Item: choir_salvage
+Qty: 3
+---

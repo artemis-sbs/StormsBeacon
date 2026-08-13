@@ -1,0 +1,210 @@
+# [The Breaker's Yard](heart_relic_doc)
+
+The fourth piece, in the one ruin somebody else is already living in.
+
+**Mixed, and wrong.** XORN cut this hulk open to get at what was inside it, so the
+structure is half giant-built chamber and half breaker's cut: square holes hacked through
+round rooms, a service trench opened up the side of it, and a yard where they stack what
+they strip. The architecture tells you the story before Storm does - nobody flies a ruin
+this shape by accident, and the ruin did not used to be this shape.
+
+**This is the episode with something in it.** `Spawn:` puts a picket in the yard and a
+second in the trench, waking when the crew reaches them - the only relic in the campaign
+that fights back from the inside.
+
+## [Cutscenes](cutscenes)
+
+### [Arrival at the Yard](arrive_heart)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 4
+---
+
+### [Somebody got here first](arrive_heart_1)
+---
+Cutscene: arrive_heart
+Subject: relic_contact
+Lens: 0, 2400, -7000
+Seconds: 5
+Overlay: lower_third
+Name: The Breaker's Yard
+---
+It was a ruin. Now it is a worksite.
+
+### [The cut](arrive_heart_2)
+---
+Cutscene: arrive_heart
+Subject: relic_contact
+Move: -2500, 1000, -4500 -> -400, 150, -1300
+Seconds: 6
+---
+
+## [Items](items)
+
+### [the Heart](beacon_heart)
+---
+Type: item/quest
+Art: unknown
+Tier: 5
+---
+The power core: the piece that makes the other four more than furniture. XORN cut a hole in
+a thousand-year-old structure to reach it and then could not get it out.
+
+### [cut plate](cut_plate)
+---
+Type: item/salvage
+Art: unknown
+Price: 260
+---
+Stacked in the yard, ready to be lifted, in a hull that will not be coming back for it.
+
+### [a work order](clue_order)
+---
+Type: item/quest
+Art: unknown
+---
+XORN's own work order, in XORN's own hand. It says what they were cutting for, and it says
+where they were told to take it.
+
+## [Relics](relics)
+
+### [The Heart](heart)
+---
+Atmosphere: red
+Containment: tractor
+Scrape band: 180
+Margin: 100
+Forbid jump: yes
+Seed: 85
+Art: plain_asteroid_6, plain_asteroid_7, plain_asteroid_9, plain_asteroid_11
+---
+A giant's hulk with a breaker's yard cut into the side of it. The rooms are theirs; the
+holes between them are not.
+
+### [the cut](cut)
+---
+Relic: heart
+Box: -2700, 0, 0, 1100, 400, 400
+---
+Not a door. A hole, cut square through a curved wall by somebody in a hurry with the right
+tools.
+
+### [the yard](yard)
+---
+Relic: heart
+Box: -700, 0, 0, 1100, 500, 1100
+---
+Where they stack what they strip. Plate, spar and cable, sorted and waiting for a lift that
+is never coming.
+
+### [the drum](drum)
+---
+Relic: heart
+Chamber: 1400, -200, 400, 1200
+---
+A giant's room, round and enormous, and there is a square hole hacked in the far side of it.
+
+No `Passage to:` - a passage joins two CHAMBERS, and the yard is a box. Where a box meets a
+sphere they are joined by OVERLAPPING, which is also the truer picture here: nobody built a
+corridor between these two rooms, somebody cut a hole where they met.
+
+### [the trench](trench)
+---
+Relic: heart
+Box: 1400, -1900, 400, 350, 1400, 350
+---
+A service trench opened straight down out of the drum. Their cut, not the builders'.
+
+### [the core room](core_room)
+---
+Relic: heart
+Chamber: 1400, -3400, 400, 900
+---
+And here is what they came for, and here is where they stopped.
+
+### [the stack](stack_solid)
+---
+Relic: heart
+Solid: box, -700, 0, -700, 400, 300, 200
+---
+Cut plate, stacked against one wall of the yard. Solid enough to fly into.
+
+### [the drum core](drum_solid)
+---
+Relic: heart
+Solid: sphere, 1400, -200, 400, 400
+---
+
+### [the cut mouth](mouth)
+---
+Relic: heart
+Point: -4000, 0, 0
+Roles: entrance
+---
+
+### [the yard floor](at_yard)
+---
+Relic: heart
+Point: -700, 0, 500
+Roles: heart_yard
+Spawn: skaraan x2
+Starts when: reach heart_yard 1200
+---
+A picket in the yard, and it does not wake until the crew is in the room with it. An ambush
+authored where it happens: the `.amd` says what is there and when, and no mission code
+decides either.
+
+### [the drum floor](at_drum)
+---
+Relic: heart
+Point: 1400, 500, 400
+Roles: heart_drum
+---
+
+### [the trench head](at_trench)
+---
+Relic: heart
+Point: 1400, -1200, 400
+Roles: heart_trench
+Spawn: skaraan
+Starts when: reach heart_trench 1000
+---
+One more, in the trench, where there is no room to turn round.
+
+### [the core room](at_core)
+---
+Relic: heart
+Point: 1400, -3400, 0
+Roles: heart_core_room
+---
+
+### [the core](heart_place)
+---
+Relic: heart
+Point: 1400, -3400, 900
+Roles: heart_core, relic_piece
+Item: beacon_heart
+---
+The Heart, still seated, with a thousand years of somebody else's cutting gear abandoned
+around it.
+
+### [the plate stack](plate_cache)
+---
+Relic: heart
+Point: -700, 0, 600
+Roles: heart_treasure
+Item: cut_plate
+Qty: 4
+---
+
+### [the work order](order_place)
+---
+Relic: heart
+Point: 1400, -3400, -200
+Roles: heart_clue
+Item: clue_order
+Starts when: reach heart_core_room 900
+---
+XORN's work order, left in the core room. The last clue in the campaign, and the one that
+tells Storm who has been a step ahead of her the whole way.

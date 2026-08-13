@@ -1,0 +1,140 @@
+# [The Sink](sink_relic_doc)
+
+**One room. That is the whole ruin.**
+
+A single enormous box, flooded to the ceiling with a thousand years of nebula settling out
+of the murk, and nothing in it but what fell in. There is no piece of the Beacon here and
+Storm never claimed there was - it is on the chart as a place XORN has been, which is worth
+knowing when XORN is what is chasing you.
+
+Optional, found by clue, and short by design: after four ruins of rooms-and-corridors, a
+relic that is one vast space with things suspended in it should read as a different kind of
+place, not a fifth dungeon.
+
+What is in it is a salvage haul worth real money and a scrap of XORN's own traffic - the
+piece of paper that shortens the last episode, if the crew has it before they fly into the
+breaker's yard.
+
+## [Cutscenes](cutscenes)
+
+### [Arrival at the Sink](arrive_sink)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 3
+---
+
+### [One room](arrive_sink_1)
+---
+Cutscene: arrive_sink
+Subject: relic_contact
+Lens: 0, 2200, -6500
+Seconds: 5
+Overlay: lower_third
+Name: The Sink
+---
+Whatever this was, it is a container now.
+
+## [Items](items)
+
+### [deep haul](sink_salvage)
+---
+Type: item/salvage
+Art: unknown
+Price: 320
+---
+A thousand years of things that drifted in and never drifted out. Eddy will empty his till.
+
+### [a XORN traffic scrap](clue_traffic)
+---
+Type: item/quest
+Art: unknown
+---
+Half a XORN routing order, water-ruined and still legible in the places that matter. It
+names the yard at (-5, -4), and it names what they were told to cut out of it.
+
+## [Relics](relics)
+
+### [The Sink](sink)
+---
+Atmosphere: purple
+Containment: tractor
+Scrape band: 200
+Margin: 120
+Forbid jump: yes
+Seed: 113
+Art: plain_asteroid_6, plain_asteroid_8, plain_asteroid_9
+---
+One room, flooded and enormous, with a hole in one end.
+
+### [the inlet](inlet)
+---
+Relic: sink
+Box: -3300, 0, 0, 900, 350, 350
+---
+The hole in the end. It is the only way in and it is the only way out.
+
+### [the sink](basin)
+---
+Relic: sink
+Box: 200, 0, 0, 2600, 900, 2600
+---
+Five kilometres of room and no floor plan at all. Fly it however you like - there is
+nothing in here that cares which way you came.
+
+### [the drift](drift_solid)
+---
+Relic: sink
+Solid: sphere, 200, 0, 0, 700
+---
+A mass of settled debris hanging in the middle of the room, big enough to hide the far wall
+from the near one.
+
+### [the wrack](wrack_solid)
+---
+Relic: sink
+Solid: capsule, 1800, -600, -1500, 2400, 400, 1200, 300
+---
+A spar, or a hull, or a piece of something. It has been in here longer than the debris.
+
+### [the inlet mouth](mouth)
+---
+Relic: sink
+Point: -4400, 0, 0
+Roles: entrance
+---
+
+### [the near side](at_near)
+---
+Relic: sink
+Point: -1600, 0, 0
+Roles: sink_near
+---
+
+### [the far side](at_far)
+---
+Relic: sink
+Point: 2000, 0, 1600
+Roles: sink_far
+---
+Behind the drift, which is the only reason there is a "far side" at all.
+
+### [the haul](haul_place)
+---
+Relic: sink
+Point: 2000, 0, 2000
+Roles: sink_treasure
+Item: sink_salvage
+Qty: 5
+---
+
+### [the traffic scrap](traffic_place)
+---
+Relic: sink
+Point: -600, -500, 1600
+Roles: sink_clue
+Item: clue_traffic
+Starts when: reach sink_near 1200
+---
+Caught against the wall, low and off to one side, where a crew that flew straight down the
+middle would never look.

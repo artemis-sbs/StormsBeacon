@@ -337,6 +337,117 @@ Priority: 2
 
 - [Understood.]()
 
+### [Storm on the yard](heart_brief)
+---
+Speaker: prof_storm
+When: hail
+Title: The Breaker's Yard
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% That is not a ruin any more, Captain, that is a WORKSITE. Somebody cut a square hole in a thousand-year-old hull and has been carrying it out in pieces, and I am fairly sure I know who.
+% Look at the shape of the hole. Nothing that old cuts square like that. XORN has been living in this thing.
+
+Use their cut - it is the only way in and they made it wide enough for a hull, because
+they had to get things out through it.
+
+Two more things, and then I will be quiet. Everything else on this trail was empty; this
+one is not. And when you have the Heart, do not tidy up. Take it and go.
+
+- [Understood.]()
+
+### [Storm in the yard](heart_yard_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Yard
+Presentation: portrait
+Color: #6cf
+---
+% Stacked. Sorted. Labelled, if I am reading that right. This is not looting, Captain, this is a SALVAGE OPERATION - somebody with a schedule and a manifest and every intention of coming back.
+% Careful. Anything left on guard in a place like this has been sitting in the dark with nothing to do for a very long time.
+
+- [Copy.]()
+
+### [Storm at the trench](heart_trench_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Service Trench
+Presentation: portrait
+Color: #6cf
+---
+% They cut straight down. Whatever the giants put at the bottom of that hull, XORN went through the floor to reach it rather than find the way the builders used.
+% It is narrow. I am sorry. There is no other route and you are not going to be able to turn round in there.
+
+- [Going down.]()
+
+### [Storm in the core room](heart_core_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Core Room
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% There it is. The Heart. And their cutting gear is still sitting around it, Captain, which means they got this far, got a look at what they were cutting, and STOPPED.
+% Four of five. Take it - and take whatever paperwork is in that room. I want to know who told them to come here.
+
+Scan it, tether it, and go. If XORN is anywhere on this trail today, it is above you.
+
+- [Understood.]()
+
+### [Storm at the empty cradle](choir_empty_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Empty Cradle
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% ...it is empty. Captain, I am looking at your feed and the cradle is EMPTY, and it is the wrong size, and I have had you fly four rooms into a building that was never - I was wrong. I want to say that plainly. I was wrong.
+% Nothing. Not taken - never there. Look at the cradle: it is cut to a shape somebody GUESSED at.
+
+Give me a moment.
+
+...Right. Two-thirds scale, and copied from the outside, which means somebody saw a working
+relay and built a shrine to it. And people who build a shrine write down where the holy
+thing went.
+
+There will be a plate. An offering, near the altar - that is what the cradle is to them.
+Bring it to me.
+
+- [On it.]()
+- [You were wrong.](choir_empty_more)
+
+### [Storm, on being wrong](choir_empty_more)
+---
+Speaker: prof_storm
+---
+% I was. Eleven years and I still read what I want to read. Write it down, Captain - the day the professor was wrong - and then help me be right about the next one.
+% Yes. And I will be wrong again before this is finished. The trick is to be wrong somewhere cheap, and a room with nothing in it is about as cheap as it gets.
+
+- [Understood.]()
+
+### [Storm on the Sink](sink_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Sink
+Presentation: portrait
+Color: #6cf
+---
+% One room. That is the whole structure - one room and a hole, and everything that has drifted in for a thousand years is still in there, because nothing has ever drifted out.
+% No piece here, Captain, and I said as much before you burned the fuel. What is here is traffic: XORN has been in this hulk, and they were careless.
+
+Low, near the wall on the side you came in. Things that settle in a room like that settle
+where nobody looks.
+
+- [Copy.]()
+
 // Crazy Eddy's Emporium. The shop is DECLARATIVE dialogue: each deal is a choice gated on
 // `if credits >= N`, charged by `; costs N credits`, and wired to a MAST `//signal/eddy_buy_*`
 // route (story.mast) that applies the REAL ship modifier. Some deals are honest, some are
@@ -875,17 +986,19 @@ Engage and jump there to see his stock in person - hail the station to browse th
 Scope: shared
 State: secret
 When: reach -5, -4
-Then: reveal beacon_arc/ep4_scan
+Then: reveal beacon_arc/ep4_approach
 ---
-The Cipher named the last ruin-piece and where it went: the HEART, the Beacon's power source -
-and XORN hauled it out to a dead salvage yard at (-5, -4). You'll have to pry it loose from
-under their guns. Engage, and be ready to run.
+That votive plate was worth the wasted trip. The people who built the Choir were watching
+when the real relay was broken up, and they wrote down where the pieces went: the HEART,
+the Beacon's power source, hauled out to a dead salvage yard at (-5, -4). XORN has been
+cutting at it ever since. You will have to pry it loose from under their guns. Engage, and
+be ready to run.
 
 #### [The Heart](ep4_scan)
 ---
 Scope: shared
 State: secret
-When: scan 1 derelict
+When: signal heart_taken
 Pays: 300 credits
 ---
 Not a ruin - a kill-yard. XORN dragged the Beacon's HEART, its power source, out to this
@@ -893,12 +1006,136 @@ gutted salvage field and left a heavy screen on it: wrecks, mines, and a wing th
 no flag but its own.
 
 ## Objective
-- Reach the Heart through the yard
-- Scan it, then break for open space and jump
+- Fly the cut - XORN made the hole, so use it
+- Through the yard and the drum, then down the trench
+- Scan the Heart, tether it, and get it out past whatever is still awake
 
 ## Hazard
-XORN is close here and comes fast. This is the last place to be caught lingering - scan the
+XORN is close here and comes fast. This is the last place to be caught lingering - take the
 Heart and RUN. Do not try to hold the field.
+
+And unlike every other ruin on this trail, there is something INSIDE this one: XORN left a
+picket in the yard and another in the trench, where there is no room to turn round.
+
+#### [The Long Approach](ep4_approach)
+---
+Scope: shared
+State: secret
+When: reach entrance 4000
+Then: reveal beacon_arc/ep4_brief
+---
+
+#### [Storm's Briefing](ep4_brief)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails heart_brief
+Then: reveal beacon_arc/ep4_yard
+---
+
+#### [The Yard](ep4_yard)
+---
+Scope: shared
+State: secret
+When: reach heart_yard 1200
+Then: reveal beacon_arc/ep4_worksite
+---
+
+#### [Somebody's Worksite](ep4_worksite)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails heart_yard_scene
+Then: reveal beacon_arc/ep4_trench
+---
+
+#### [The Trench](ep4_trench)
+---
+Scope: shared
+State: secret
+When: reach heart_trench 1000
+Then: reveal beacon_arc/ep4_down
+---
+
+#### [Down the Trench](ep4_down)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails heart_trench_scene
+Then: reveal beacon_arc/ep4_core
+---
+
+#### [The Core Room](ep4_core)
+---
+Scope: shared
+State: secret
+When: reach heart_core_room 1000
+Then: reveal beacon_arc/ep4_take
+---
+
+#### [Take It And Run](ep4_take)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails heart_core_scene
+Then: reveal beacon_arc/ep4_scan
+---
+Scan the Heart, tether it, and carry it out. There is a work order in that room too - take
+that as well; Storm will want to know who has been ahead of us.
+
+#### [The Choir Reading](choir_go)
+---
+Scope: shared
+State: secret
+When: reach 5, -5
+Then: reveal beacon_arc/choir_dive
+---
+Storm has a reading out at (5, -5) that matches the Voice's signature closely enough that
+she is already talking about the fourth piece. Go and look.
+
+#### [Into the Choir](choir_dive)
+---
+Scope: shared
+State: secret
+When: reach choir_bay 900
+Then: reveal beacon_arc/choir_empty
+---
+
+#### [The Empty Cradle](choir_empty)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails choir_empty_scene
+When: signal votive_taken
+---
+There is nothing in the cradle. There is something beside it - take that, and Storm will
+work out what this place actually was.
+
+#### [The Sink](sink_go)
+---
+Scope: shared
+State: secret
+When: reach 1, -6
+Then: reveal beacon_arc/sink_dive
+---
+The votive plate names a flooded hulk at (1, -6) that XORN has been into. No piece of the
+Beacon, and Storm says so up front - but she also says that knowing where XORN has been is
+worth a detour when XORN is what is behind you.
+
+#### [Into the Sink](sink_dive)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails sink_scene
+When: signal traffic_taken
+---
+One room, and something caught low against the wall on the near side.
 
 #### [Storm's Last Lead](origin_go)
 ---
@@ -1030,12 +1267,38 @@ the murk.
 ---
 At: -5, -4
 Kind: derelict
-Terrain: asteroids
+Relic: heart
+Relic file: relics/heart.amd
+Cutscene: arrive_heart
 Guards: skaraan 5
 ---
 Not a ruin - a kill-yard. XORN dragged the Beacon's Heart here and left a heavy screen on it,
 wrecks and mines and a wing that answers to no flag but its own. Scan the Heart and run; this
 is the last place to be caught still.
+
+### [The False Choir](false_choir_lm)
+---
+At: 5, -5
+Kind: derelict
+Relic: false_choir
+Relic file: relics/false_choir.amd
+Cutscene: arrive_choir
+---
+A giant's station, at two-thirds scale and a thousand years too late. Storm's reading says
+the Beacon; the ruin says somebody who had SEEN the Beacon and built a shrine to it. The
+lead is real. The ruin is the wrong ruin.
+
+### [The Sink](sink_lm)
+---
+At: 1, -6
+Kind: derelict
+Relic: sink
+Relic file: relics/sink.amd
+Cutscene: arrive_sink
+---
+One flooded room the size of a fleet anchorage, with a hole in one end and a thousand years
+of drift settled in it. XORN has been here. That is all it is, and knowing it is worth the
+trip.
 
 ### [The Origin Array](origin_array)
 ---
