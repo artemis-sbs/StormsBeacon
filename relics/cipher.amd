@@ -1,0 +1,192 @@
+# [The Cipher Relay](cipher_relic_doc)
+
+The third piece, and the one that was HIDDEN rather than merely left.
+
+**All chambers and passages - a maze, not a building.** The relay was buried in a nebula
+and then buried again inside itself: five bubbles connected by corridors, with two of the
+five connected only by a route nobody would guess from outside. The Ash Warren's chart is
+the difference between finding the Cipher and flying around a rock for an hour.
+
+Every other ruin in this campaign opens out from its mouth. This one folds back on itself.
+
+## [Cutscenes](cutscenes)
+
+### [Arrival at the Relay](arrive_cipher)
+---
+Letterbox: yes
+Skippable: yes
+Bar: 4
+---
+
+### [Something in the murk](arrive_cipher_1)
+---
+Cutscene: arrive_cipher
+Subject: relic_contact
+Lens: 0, 1800, -6000
+Seconds: 5
+Overlay: lower_third
+Name: The Cipher Relay
+---
+Drowned in nebula, and drowned on purpose.
+
+### [The false mouth](arrive_cipher_2)
+---
+Cutscene: arrive_cipher
+Subject: relic_contact
+Move: -1500, 600, -3500 -> -300, 80, -1000
+Seconds: 6
+---
+
+## [Items](items)
+
+### [the Cipher](beacon_cipher)
+---
+Type: item/quest
+Art: unknown
+Tier: 5
+---
+The keying array: the piece that makes the Beacon's line mean something rather than merely
+carry. Without it the Voice and the Lens shout a clear, precise, meaningless note.
+
+### [relay salvage](relay_salvage)
+---
+Type: item/salvage
+Art: unknown
+Price: 200
+---
+
+### [a keying rod](clue_rod)
+---
+Type: item/quest
+Art: unknown
+---
+A rod cut with the same notching as the Cipher's own housing. Storm will know what it is
+for, and she will not like the answer.
+
+## [Relics](relics)
+
+### [The Cipher](cipher)
+---
+Atmosphere: purple
+Containment: tractor
+Scrape band: 160
+Margin: 90
+Forbid jump: yes
+Seed: 68
+Art: plain_asteroid_6, plain_asteroid_8, plain_asteroid_11
+---
+A relay the giants sank in a nebula, and then hid inside. Nothing here is square and
+nothing here is straight.
+
+### [the false mouth](false_mouth)
+---
+Relic: cipher
+Chamber: -2400, 0, 0, 700
+---
+The obvious way in, and it goes nowhere - a bubble with one exit, and the exit is the way
+you came. Whoever hid this expected somebody to find the hole and stop looking.
+
+### [the throat](throat)
+---
+Relic: cipher
+Chamber: -1200, -600, 800, 600
+Passage to: false_mouth 300
+---
+The real route, off the floor of the false mouth and behind it.
+
+### [the coil](coil)
+---
+Relic: cipher
+Chamber: 400, -900, 1600, 1000
+Passage to: throat 320
+---
+The relay's own body. Everything else in here is a corridor to this.
+
+### [the sump](sump)
+---
+Relic: cipher
+Chamber: 900, -2300, 900, 800
+Passage to: coil 280
+---
+Below the coil, and full of whatever settled out of the nebula over a thousand years.
+
+### [the keying chamber](keying)
+---
+Relic: cipher
+Chamber: 1900, -700, 2600, 900
+Passage to: coil 300
+---
+Where the Cipher sits. The only room in the structure with a hard floor.
+
+### [the coil core](coil_solid)
+---
+Relic: cipher
+Solid: sphere, 400, -900, 1600, 380
+---
+The relay's core, dead and still in the middle of its own room.
+
+### [the sump slab](sump_solid)
+---
+Relic: cipher
+Solid: box, 1200, -2500, 600, 300, 160, 300
+---
+
+### [the false mouth](mouth)
+---
+Relic: cipher
+Point: -3300, 0, 0
+Roles: entrance
+---
+
+### [the dead end](at_false)
+---
+Relic: cipher
+Point: -2400, 0, 0
+Roles: cipher_false
+---
+The moment the crew learns this ruin lies to them.
+
+### [the coil floor](at_coil)
+---
+Relic: cipher
+Point: 883, -900, 2083
+Roles: cipher_coil
+---
+Out in the shell of the room, not just off the core. A point 20u clear of a mass is not
+clear of it - a hull is wider than that - so a marker has to sit where a SHIP fits, which
+is a different question from whether the maths says it is outside.
+
+### [the keying chamber](at_keying)
+---
+Relic: cipher
+Point: 1900, -700, 2600
+Roles: cipher_keying
+---
+
+### [the housing](cipher_place)
+---
+Relic: cipher
+Point: 1900, -700, 3100
+Roles: cipher_core, relic_piece
+Item: beacon_cipher
+---
+
+### [the sump floor](sump_cache)
+---
+Relic: cipher
+Point: 900, -2300, 1400
+Roles: cipher_treasure
+Item: relay_salvage
+Qty: 3
+---
+
+### [the spare rod](rod_place)
+---
+Relic: cipher
+Point: 1900, -300, 2600
+Roles: cipher_clue
+Item: clue_rod
+Starts when: reach cipher_coil 1000
+---
+A spare keying rod, racked where a technician would want it. It is cut for a housing this
+size - and there is more than one housing this size.

@@ -291,6 +291,52 @@ paper with the things that mattered.
 
 - [Looking.]()
 
+### [Storm on the relay](cipher_brief)
+---
+Speaker: prof_storm
+When: hail
+Title: The Cipher Relay
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% I have the chart in front of me and I want you to hear this before you go in: the hole you can see is NOT the way in. It is a room with one exit, and the exit is the way you came. They built a dead end and left it where anyone would find it.
+% Read the chart, Captain. The obvious mouth is a decoy. Somebody wanted a search party to find a hole, look inside, and go home.
+
+The real route drops off the floor of that first bubble and doubles back behind it. You
+would not guess it and I would not have found it without the warren.
+
+Everything else you know: no jump solution inside, and the murk holds you to impulse.
+
+- [Understood.]()
+
+### [Storm at the dead end](cipher_false_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The False Mouth
+Presentation: portrait
+Color: #6cf
+---
+% There it is - nothing. One room, no exits, exactly as the chart says. A thousand years and it still works: anyone without that plate turns round here and calls the relay a myth.
+% Empty, and deliberately empty. Look at the floor, Captain. The way on is underneath you and behind you.
+
+- [Taking it slow.]()
+
+### [Storm in the keying chamber](cipher_keying_scene)
+---
+Speaker: prof_storm
+When: hail
+Title: The Keying Chamber
+Presentation: portrait
+Color: #6cf
+Priority: 2
+---
+% That is the Cipher. Three of five, Captain - and I am going to say the quiet part out loud: I do not think we are the first people to come looking this century. Something down there has been disturbed.
+% There. In the housing. Scan it before you take it, and then take it, and then let us both be somewhere else.
+
+- [Understood.]()
+
 // Crazy Eddy's Emporium. The shop is DECLARATIVE dialogue: each deal is a choice gated on
 // `if credits >= N`, charged by `; costs N credits`, and wired to a MAST `//signal/eddy_buy_*`
 // route (story.mast) that applies the REAL ship modifier. Some deals are honest, some are
@@ -499,7 +545,7 @@ Hail Prof. Storm on the Ultra-Beam (no target selected) for your first lead on t
 Scope: shared
 State: secret
 When: reach 2, -1
-Then: reveal beacon_arc/ep1_scan
+Then: reveal beacon_arc/ep1_approach
 ---
 Storm's first heading: an ancient Torgoth channel out at (2, -1), coreward past the old
 marches. Engage the jump drive from your Quests tab and follow it in.
@@ -510,7 +556,6 @@ Scope: shared
 State: secret
 When: signal voice_taken
 Pays: 150 credits
-Then: reveal beacon_arc/ep1_approach
 ---
 The first of the Beacon's five pieces: its transmitter core, buried in the dead heart of a
 Torgoth megastation from the age when the Torgoth were giants - docking throats wide enough
@@ -597,6 +642,7 @@ Scope: shared
 State: secret
 Action:
   - prof_storm hails voice_bay_scene
+Then: reveal beacon_arc/ep1_scan
 ---
 Scan the core, then get a tether on it and carry it out. It has been in that cradle for a
 thousand years; it is not going to walk.
@@ -606,7 +652,7 @@ thousand years; it is not going to walk.
 Scope: shared
 State: secret
 When: reach 4, 1
-Then: reveal beacon_arc/ep2_scan
+Then: reveal beacon_arc/ep2_approach
 ---
 Storm cross-referenced the Voice against the old charts: the next piece lies in the Kralien
 marches at (4, 1). Engage and jump.
@@ -617,7 +663,6 @@ Scope: shared
 State: secret
 When: signal lens_taken
 Pays: 200 credits
-Then: reveal beacon_arc/ep2_approach
 ---
 A cold Kralien megastructure, vast and dark, holding the Beacon's LENS - the focusing array
 that bends the Voice into a single coherent signal. The Kralien built to the same giant scale
@@ -681,7 +726,10 @@ Scope: shared
 State: secret
 Action:
   - prof_storm hails lens_drum_scene
+Then: reveal beacon_arc/ep2_scan
 ---
+Scan the Lens, then tether it out - and do not leave without whatever else is in there.
+Storm's next heading depends on something the Kralien wrote down.
 Scan the Lens, then tether it and carry it out through the aperture.
 
 #### [The Ash Warren](ash_go)
@@ -710,7 +758,6 @@ State: secret
 Action:
   - prof_storm hails ash_bottom_scene
 When: signal chart_taken
-Then: reveal beacon_arc/ep3_go
 ---
 There is a route chart in the last room. Take it: the Cipher is not findable without it.
 
@@ -719,7 +766,7 @@ There is a route chart in the last room. Take it: the Cipher is not findable wit
 Scope: shared
 State: secret
 When: reach 6, -2
-Then: reveal beacon_arc/ep3_scan
+Then: reveal beacon_arc/ep3_approach
 ---
 Two pieces in hand and Storm sees the shape of it now: the Beacon is an ARRAY, not a relic,
 and it needs a CRADLE to seat the pieces - one the giants' heirs looted and lost. Of all
@@ -730,7 +777,7 @@ relay at (6, -2). Engage and jump - and think about paying Eddy a visit.
 ---
 Scope: shared
 State: secret
-When: scan 1 derelict
+When: signal cipher_taken
 Pays: 200 credits
 ---
 A lone relay drowned in bruise-violet nebula, older than the ruins that pointed to it, holding
@@ -738,12 +785,70 @@ the Beacon's CIPHER - the key that aligns Voice and Lens into one signal instead
 Without it, the other pieces are just scrap that hums.
 
 ## Objective
-- Slip through the nebula to the relay
-- Scan the Cipher, then hail Storm
+- Find the relay in the murk
+- The obvious way in is not the way in
+- Work down to the keying chamber, scan the Cipher, and tether it out
 
 ## Note
 The cloud hides more than the relay. Keep the sensors hot and the throttle ready - you are not
 the only one who followed this signal into the murk.
+
+Whoever hid this expected to be looked for. Nothing in that relay is where it looks like it
+should be, and the crew will not work out the route from inside it - the Ash Warren's chart
+is what makes the difference between finding the Cipher and flying around a rock for an hour.
+
+#### [The Long Approach](ep3_approach)
+---
+Scope: shared
+State: secret
+When: reach entrance 4000
+Then: reveal beacon_arc/ep3_brief
+---
+
+#### [Storm's Briefing](ep3_brief)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails cipher_brief
+Then: reveal beacon_arc/ep3_false
+---
+
+#### [The Dead End](ep3_false)
+---
+Scope: shared
+State: secret
+When: reach cipher_false 900
+Then: reveal beacon_arc/ep3_lied
+---
+
+#### [The Ruin Lies](ep3_lied)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails cipher_false_scene
+Then: reveal beacon_arc/ep3_coil
+---
+
+#### [The Coil](ep3_coil)
+---
+Scope: shared
+State: secret
+When: reach cipher_coil 1200
+Then: reveal beacon_arc/ep3_keying
+---
+
+#### [The Keying Chamber](ep3_keying)
+---
+Scope: shared
+State: secret
+Action:
+  - prof_storm hails cipher_keying_scene
+Then: reveal beacon_arc/ep3_scan
+---
+Scan the Cipher and carry it out - back through the throat and the false mouth, the way you
+came, because there is no other way.
 
 #### [The Resonance Cradle](get_cradle)
 ---
@@ -912,7 +1017,9 @@ chart behind them.
 ---
 At: 6, -2
 Kind: derelict
-Terrain: nebula violet
+Relic: cipher
+Relic file: relics/cipher.amd
+Cutscene: arrive_cipher
 Guards: skaraan 4
 ---
 A lone relay drowned in bruise-violet nebula, older than the ruins that pointed here, holding

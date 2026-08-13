@@ -224,7 +224,7 @@ Roles: voice_bay
 ### [the core cradle](core_place)
 ---
 Relic: voice
-Point: 600, -2600, 0
+Point: 1300, -3000, 0
 Roles: voice_core, relic_piece
 Item: beacon_voice
 ---

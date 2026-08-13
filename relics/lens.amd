@@ -161,7 +161,7 @@ Roles: lens_ring
 ### [the drum floor](at_drum)
 ---
 Relic: lens
-Point: 2100, 200, 1800
+Point: 2100, 0, 2400
 Roles: lens_drum
 ---
 Above the mounting core, not inside it.

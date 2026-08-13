@@ -7,6 +7,9 @@
 # `default shared UNIVERSE_SELECT = "Default"`; a mission's own story.mast compiles
 # BEFORE the mastlibs (load order: story.mast -> mastlibs -> local addons), so this
 # `default` runs first and wins - the start screen opens straight into Storm's Beacon.
+# The few questions the story asks that MAST cannot ask in one line.
+import sb_helpers.py
+
 default shared UNIVERSE_SELECT = "Storms Beacon"
 
 # Enable the quest-driven jump. Movement in a story mission is the LM Quests tab's
@@ -120,6 +123,8 @@ Properties:
          "lead": "The Voice points to the Lens - a Kralien ruin at (4, 1). Torgoth reclaimers are sniffing around it too. Get there first.",
          "nudge": "The Lens is at (4, 1), in that Kralien ruin - scan it before the Torgoth strip it."},
         {"go": "ep3_go", "scan": "ep3_scan", "also": "get_cradle,visit_emporium",
+         "needs": "clue_chart",
+         "needs_line": "I can't give you a heading for the Cipher, Captain - not because I'm holding out, because I do not HAVE one. That Kralien slate you brought back names a warren in the ash fields at (3, -4). They stopped there on the way to hiding it. Whatever they wrote down, they wrote it down at the bottom of that hole.",
          "lead": "Two pieces, and I see it now - the Beacon's an ARRAY, and it needs a Cradle to seat the pieces. Eddy of all people fenced the only one; buy it off him - hail him, or drop by his Emporium at (3, 3). Meanwhile the Cipher's in a nebula relay at (6, -2). Go.",
          "nudge": "The Cipher's at (6, -2), drowned in nebula - and don't forget that Cradle. Eddy's Emporium is at (3, 3) if you'd rather shop in person."},
         {"go": "ep4_go", "scan": "ep4_scan",
@@ -134,7 +139,16 @@ Properties:
     _handed = False
     for _idx, _ep in enumerate(_eps):
         if not _handed and quest_shared_state("beacon_arc/" + _ep["scan"]) != 99:
-            if quest_shared_state("beacon_arc/" + _ep["go"]) == 2:
+            # A lead can be GATED on something the crew is carrying. The Cipher is:
+            # Storm cannot derive a heading for it without the route chart out of the Ash
+            # Warren, so the dry hole is load-bearing rather than optional colour. She
+            # says so plainly instead of going quiet, which is the difference between a
+            # gate and a dead end.
+            if _ep.get("needs") is not None and not sb_crew_has(_ep["needs"]):
+                storm_line = _ep["needs_line"]
+                storm_important = True
+                _handed = True
+            elif quest_shared_state("beacon_arc/" + _ep["go"]) == 2:
                 # Reveal this lead (flips the secret chapter active -> Engage jump). Any `also`
                 # side-objectives (comma-separated: the Cradle + the Emporium) reveal with it.
                 quest_reveal(universe_shared_id(), "beacon_arc/" + _ep["go"])
@@ -396,6 +410,17 @@ emits: manifest_taken, slate_taken, chart_taken
     ->END if key is None
     ->END if not str(key).startswith("clue_")
     signal_emit("quest_signal", {"SIGNAL_NAME": str(key)[5:] + "_taken"})
+    # A clue that OPENS something says so here, next to the clue - not in a chapter that
+    # has to be armed BEFORE the clue is found, which is a race the player wins simply by
+    # exploring in an order nobody anticipated. Revealing on PICKUP is order-independent.
+    #
+    # This is the spine of the campaign's middle: the Lens hides the slate that names the
+    # Ash Warren, and the warren - which holds no piece of the Beacon at all - hides the
+    # chart without which the Cipher cannot be found.
+    _unlocks = ~~{"clue_slate": "beacon_arc/ash_go", "clue_chart": "beacon_arc/ep3_go"}~~
+    if str(key) in _unlocks:
+        quest_reveal(universe_shared_id(), _unlocks[str(key)])
+        gui_refresh("repaint")
     ->END
 
 # A CLUE IS A THING YOU CARRY. The manifest is an authored item in the Voice's freight
