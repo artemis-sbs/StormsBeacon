@@ -99,17 +99,25 @@ where it went. Storm will want to see this.
 
 ### [The Voice](voice)
 ---
-Atmosphere: violet
+Atmosphere: purple
 Containment: tractor
-Scrape band: 140
-Margin: 80
+Scrape band: 60
+Margin: 60
 Forbid jump: yes
 Seed: 21
-Art: plain_asteroid_6, plain_asteroid_7, plain_asteroid_8, plain_asteroid_9
+Walls: plates
 ---
 A station from the age when the Torgoth were giants, running dark for a thousand years.
 The Beacon's transmitter core is still in its cradle at the bottom of the shaft, still
 trying to speak.
+
+`Walls: plates` is why it reads as built rather than eroded: the surfaces are laid up out
+of plates, the way a blockout gets built out of wall primitives, and where two rooms meet
+no plate is laid at all - that hole is the doorway.
+
+The tight `Scrape band` is deliberate. The walls are thin, so the band is what decides
+whether the hull stops AT them: 60 units is about a hull length, and anything looser lets
+a ship cross the plating and come out the far side looking back in.
 
 `Forbid jump` is the whole reason this reads as a tomb: once you are in, you fly out the
 way you came.
