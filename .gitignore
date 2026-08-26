@@ -13,3 +13,6 @@
 # Rendered documents from `sbs docs` - build output, not source. An embedded
 # edition can run to several MB because it inlines the face atlases.
 /__docs__/
+
+# Soak run artifacts - regenerated every run; the scenarios are committed, the evidence is not.
+soaks/runs/
