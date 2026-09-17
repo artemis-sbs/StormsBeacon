@@ -110,6 +110,16 @@ Passage to: coil 280
 ---
 Below the coil, and full of whatever settled out of the nebula over a thousand years.
 
+### [the spill](spill)
+---
+Relic: cipher
+Chamber: -150, -1450, 850, 500
+Passage to: throat 260, sump 260
+---
+The long way down. It drops out of the throat before the coil and comes up under the
+sump, which makes this the only structure in the Beacon with a way ROUND its middle - and
+that is the whole of the puzzle here. Everything else the Torgoth built is a chain.
+
 ### [the keying chamber](keying)
 ---
 Relic: cipher
@@ -117,6 +127,28 @@ Chamber: 1900, -700, 2600, 900
 Passage to: coil 300
 ---
 Where the Cipher sits. The only room in the structure with a hard floor.
+
+### [the collapsed throat](throat_fall)
+---
+Relic: cipher
+Barrier: -400, -750, 1200, 420
+Clear with: beam
+---
+A fall of the relay's own shielding, jammed across the short way into the coil. It can be
+cut - it is only a few meters of plate and a suit carries a torch - and while somebody is
+cutting it the rest of the party is standing still.
+
+Or take the spill, down past the sump and up the other side.
+
+**A shut way with no way round is a wait; a shut way with a way round is a decision.**
+Measured on the web this file builds: cutting through is 6404 units to the housing, and
+the spill is 6824 - about nine seconds at cruise, against the twelve a cut costs. The two
+are deliberately close, so neither is the obvious answer.
+
+What separates them is what you SEE. The spill passes within 911 units of the sump floor,
+close enough to light the salvage lying on it; a party that cut their way in stays 1700
+away and never learns the room had anything in it. The reward for the slow way is not a
+shortcut later - it is the thing you would not have found.
 
 ### [the coil core](coil_solid)
 ---
@@ -178,7 +210,14 @@ Point: 900, -2300, 1400
 Roles: cipher_treasure
 Item: relay_salvage
 Qty: 3
+Hidden: yes
 ---
+`Hidden:` keeps it off the crew's list of places until somebody has BEEN down here, which
+is the reward for taking the spill instead of cutting the throat. A party that cut their
+way in never learns this room had anything in it.
+
+It is still on the web - a route may pass straight through the sump - so it is a thing to
+notice rather than a thing to unlock.
 
 ### [the spare rod](rod_place)
 ---
