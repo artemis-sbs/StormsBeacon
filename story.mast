@@ -11,6 +11,22 @@
 import sb_helpers.py
 
 default shared UNIVERSE_SELECT = "Storms Beacon"
+# The hull an EVA boarding suit is drawn as: the crew exosuit, declared by the `boarding`
+# addon from its own media pack.
+#
+# It drew the `unknown` placeholder until 2026-09-16, and the cause was the SHAPE of
+# `lm_eva_ships.yaml`, not the art: the engine parses ship data as HJSON, so the block
+# YAML it was written in was rejected outright while sbs_utils merged it happily. Rewritten
+# JSON-shaped. Fall back to the stock `tsn_shuttle` here if a suit ever comes up blank
+# again - never to "shuttle", which is not a ship-data key at all.
+#
+# UP HERE, with the other top-level state. At the foot of the file - after a label's
+# indented body - a column-0 statement is an indentation DROP, and "Bad indentation" takes
+# the whole story to 0 labels with both logs empty.
+default shared SB_EVA_HULL = "lm_eva_suit"
+# Which ruin the open boarding party is for, so a console that arrives late can be dealt
+# back in without the relic signal being re-sent.
+default shared SB_RELIC_NAME = None
 # Which ruin the "pick a relic" test map starts in.
 default shared SB_RUIN = "The Voice"
 
@@ -585,4 +601,54 @@ craft_time: 40
 desc: Floods the coolant loop to shed heat under fire.
 ```
     modifier_add(UPGRADE_AGENT_ID, "coolant_upgrade_coeff", 2.0, key, duration=duration)
+    ->END
+
+
+# ---------------------------------------------------------------------------------------
+# EVA BOARDING - a ruin is somewhere the crew can go, not only somewhere they fly.
+#
+# A relic has no floor to walk, so a boarding party there wears SUITS: each crew member
+# gets their own, the suit is a player ship assigned to their console, and the xESS Nav app
+# flies it between the places the relic names.
+#
+# AT THE END OF THE FILE, after every other label. Labels fall through, so inserting one
+# between two existing labels is never a safe append.
+# ---------------------------------------------------------------------------------------
+
+# `//shared/signal` because a relic is built ONCE, on the server. On a plain `//signal`
+# this would run per console and offer the same ruin six times.
+//shared/signal/relic_built
+    # The volume NAME, carried by the signal rather than guessed from the key: a relic
+    # built under a name of its own would otherwise leave the router addressing a volume
+    # that does not exist.
+    # `SB_EVA_HULL`, not a label called like a function: a `===` label is a VALUE in MAST,
+    # so `sb_eva_hull()` compiles clean and fails at runtime with "'Label' object is not
+    # callable" - against this line, which looks perfectly ordinary.
+    eva_offer(RELIC_KEY, volume=RELIC_VOLUME, hull=SB_EVA_HULL)
+
+    # AND OPEN A PARTY, or the ePADD has nothing to show. `eva_offer` only says WHICH ruin
+    # is boardable; the Boarding Party app draws a roster, and with no invitation open it
+    # draws "no landing party" and there is no way in from the UI at all.
+    #
+    # The crew ARE the party - `boarding_invite_crew` builds one body per console from the
+    # people already at them, name, rank and face, each reserved to its own console - so
+    # suiting up is a confirmation rather than a casting session.
+    #
+    # `site=None`: a relic has no interior to walk. The door the button opens is chosen by
+    # whether a relic is on offer, so this is the EVA path without saying so twice.
+    #
+    # ONCE IS ENOUGH NOW. A relic is built when the ship reaches the system, which is
+    # usually before anybody has finished picking a station, so this used to cast an
+    # almost empty party and a loop re-cast it every three seconds until somebody went
+    # out. That left the genuinely late console with nothing and leaked a crew per pass.
+    # `boarding_invite_crew` now keeps dealing consoles in by itself, for as long as the
+    # invitation is open - see `boarding_latecomers`.
+    #
+    # `shared` ON THE ASSIGNMENT, not just on the declaration at the top of the file. A
+    # bare write binds a TASK-LOCAL that shadows it, the writing task reads back its own
+    # copy quite happily, and every other task keeps the old value - silently.
+    shared SB_RELIC_NAME = RELIC_NAME
+    sb_relic_ship = next(iter(to_object_list(role("__player__"))), None)
+    if sb_relic_ship is not None:
+        boarding_invite_crew(sb_relic_ship, title=SB_RELIC_NAME)
     ->END

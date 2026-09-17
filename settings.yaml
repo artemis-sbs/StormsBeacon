@@ -1,3 +1,8 @@
 AUTO_START: false
 DIFFICULTY: 5
 PLAYER_COUNT: 1
+
+# The EVA boarding suit is a MOD hull, declared by the `boarding` addon from its media
+# pack. Loading any mod ship data is gated on this, and OFF is the library default - with
+# it off `lm_eva_suit` does not exist and a suit falls back to a stock hull.
+EXTRA_SHIP_DATA: true

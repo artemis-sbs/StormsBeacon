@@ -70,9 +70,15 @@ One room, flooded and enormous, with a hole in one end.
 ### [the inlet](inlet)
 ---
 Relic: sink
-Box: -3300, 0, 0, 900, 350, 350
+Box: -3250, 0, 0, 1000, 350, 350
 ---
 The hole in the end. It is the only way in and it is the only way out.
+
+It has to OVERLAP the basin, not stop against it. At `-3300` with a half-extent of `900`
+the inlet ended at x = -2400 and the basin began at x = -2400, so the two shared a plane
+of zero thickness: a containment test sees one connected space, because a point on that
+plane is inside both, but nothing can fly through a doorway with no width. The relic read
+as flyable and the only way in was sealed.
 
 ### [the sink](basin)
 ---
