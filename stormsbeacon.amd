@@ -30,6 +30,22 @@ Color: #6cf
 Expedition lead and xeno-archaeologist. A host-less advisor - hail her from anywhere on
 the Ultra-Beam (no target selected) for the next lead on the Beacon.
 
+#### [Storm is waiting on the Ultra-Beam](storm_ultra_beam)
+---
+Urge
+Every: 4-7m
+Title: Ultra-Beam
+Whenever: not taught ultra_beam
+Until: taught hail_storm
+Weight: 10
+Escalates: yes
+---
+% Storm here. When you have a moment - open comms with nothing selected and take Ultra-Beam. That is where I am.
+% Professor Storm. I am not on your sensors and I never will be. Clear the comms target, pick Ultra-Beam, and my name is on the list.
+%% Captain, I have a heading for you and no way to hand it over. Comms - deselect the target, Ultra-Beam, then me.
+%% Storm again. No target selected. That is the whole trick. Ultra-Beam, and we can get on with this.
+%%% We are burning daylight out here. Comms - nothing selected, Ultra-Beam, Storm. Please.
+
 ### [Crazy Eddy](crazy_eddy)
 ---
 Face: male
@@ -50,6 +66,17 @@ Color: #8f8
 ---
 Your chief engineer - keeps this under-gunned little ship flying on scavenged parts and
 spite. Hail her on the Ultra-Beam for a read on the ship and a piece of her mind.
+
+#### [Vex mentions the channel](vex_ultra_beam)
+---
+Urge
+Every: 6-9m
+Title: Engineering
+Whenever: not taught ultra_beam
+Weight: 5
+---
+% Vex, engineering. If you want me, comms with nothing selected, then Ultra-Beam. Beats shouting down a tube.
+% Chief Vex here. Same channel as the Professor - no target, Ultra-Beam. I am always on it.
 
 ### [Madame Skarr](madame_skarr)
 ---

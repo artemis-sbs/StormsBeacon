@@ -142,6 +142,11 @@ Properties:
 # flips a `State: secret` narrative chapter ACTIVE, so it appears in the Quests tab with an
 # Engage jump. QuestState ints: 2 = SECRET, 1 = ACTIVE, 99 = COMPLETE.
 //shared/signal/storm_check if UNIVERSE_ACTIVE
+    # They reached her. Storm's standing nudge ("hail me on the Ultra-Beam") retires for
+    # good here - `Until: taught hail_storm` in stormsbeacon.amd. Stamped on the
+    # interaction that MATTERS, not merely on opening the menu: the Ultra-Beam lesson has
+    # its own stamp in LM's //comms/ultra_beam route and only pauses her.
+    urge_teach_note("hail_storm")
     # The Beacon hunt's episodes, IN ORDER. This list is the whole dispatcher: Storm
     # hands out the next lead by walking it, so ADDING AN EPISODE is two mechanical
     # edits and no new logic -> (1) author its go/scan chapters + landmark in
