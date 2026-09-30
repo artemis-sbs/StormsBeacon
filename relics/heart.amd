@@ -45,8 +45,9 @@ Seconds: 6
 ### [the Heart](beacon_heart)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_beacon_heart, unknown
 Tier: 5
+Sprite: pic:beacon_heart
 ---
 The power core: the piece that makes the other four more than furniture. XORN cut a hole in
 a thousand-year-old structure to reach it and then could not get it out.
@@ -54,18 +55,30 @@ a thousand-year-old structure to reach it and then could not get it out.
 ### [cut plate](cut_plate)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_cut_plate, alien_1a
 Price: 260
+Sprite: pic:find_cut_plate
 ---
 Stacked in the yard, ready to be lifted, in a hull that will not be coming back for it.
 
 ### [a work order](clue_order)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_order, alien_1a
+Sprite: pic:find_order
 ---
 XORN's own work order, in XORN's own hand. It says what they were cutting for, and it says
 where they were told to take it.
+
+### [a XORN plasma cutter](clue_cutter)
+---
+Type: item/salvage
+Art: ruins_tg_cache, alien_1a
+Price: 240
+Sprite: pic:tg_cache
+---
+XORN cutting gear, in its case, with spare charges. Better than anything aboard - Vex will
+want it, and Eddy will want it more.
 
 ## [Relics](relics)
 
@@ -78,6 +91,7 @@ Margin: 100
 Forbid jump: yes
 Seed: 85
 Art: plain_asteroid_6, plain_asteroid_7, plain_asteroid_9, plain_asteroid_11
+Walls: hulk, rock
 ---
 A giant's hulk with a breaker's yard cut into the side of it. The rooms are theirs; the
 holes between them are not.
@@ -86,6 +100,7 @@ holes between them are not.
 ---
 Relic: heart
 Box: -2700, 0, 0, 1100, 400, 400
+Scan: A square hole cut through a curved wall, by somebody in a hurry with the right tools.
 ---
 Not a door. A hole, cut square through a curved wall by somebody in a hurry with the right
 tools.
@@ -94,6 +109,7 @@ tools.
 ---
 Relic: heart
 Box: -700, 0, 0, 1100, 500, 1100
+Scan: Stripped plate, spar and cable, sorted and stacked for a lift that never came.
 ---
 Where they stack what they strip. Plate, spar and cable, sorted and waiting for a lift that
 is never coming.
@@ -102,6 +118,7 @@ is never coming.
 ---
 Relic: heart
 Chamber: 1400, -200, 400, 1200
+Scan: A giant's room, round and enormous, with a square hole hacked in the far side.
 ---
 A giant's room, round and enormous, and there is a square hole hacked in the far side of it.
 
@@ -113,6 +130,7 @@ corridor between these two rooms, somebody cut a hole where they met.
 ---
 Relic: heart
 Box: 1400, -1900, 400, 350, 1400, 350
+Scan: A service trench cut straight down out of the drum. Their cut, not the builders'.
 ---
 A service trench opened straight down out of the drum. Their cut, not the builders'.
 
@@ -120,6 +138,7 @@ A service trench opened straight down out of the drum. Their cut, not the builde
 ---
 Relic: heart
 Chamber: 1400, -3400, 400, 900
+Scan: What they came for, and where they stopped.
 ---
 And here is what they came for, and here is where they stopped.
 
@@ -127,6 +146,8 @@ And here is what they came for, and here is where they stopped.
 ---
 Relic: heart
 Solid: box, -700, 0, -700, 400, 300, 200
+Dress: ruins_hk_plate_stack
+Facing: 1, 0, 0
 ---
 Cut plate, stacked against one wall of the yard. Solid enough to fly into.
 
@@ -150,6 +171,8 @@ Point: -700, 0, 500
 Roles: heart_yard
 Spawn: skaraan x2
 Starts when: reach heart_yard 1200
+Scene: heart_yard_look
+Scan: A scrapyard inside a corpse. The cut edges are still bright.
 ---
 A picket in the yard, and it does not wake until the crew is in the room with it. An ambush
 authored where it happens: the `.amd` says what is there and when, and no mission code
@@ -160,6 +183,8 @@ decides either.
 Relic: heart
 Point: 1400, 500, 400
 Roles: heart_drum
+Scene: heart_drum_look
+Scan: Burn scars round the drum wall, and under them, something carved.
 ---
 
 ### [the trench head](at_trench)
@@ -169,6 +194,8 @@ Point: 1400, -1200, 400
 Roles: heart_trench
 Spawn: skaraan
 Starts when: reach heart_trench 1000
+Scene: heart_trench_look
+Scan: The trench drops straight down. Half-way, a blast door is welded half across it.
 ---
 One more, in the trench, where there is no room to turn round.
 
@@ -177,6 +204,8 @@ One more, in the trench, where there is no room to turn round.
 Relic: heart
 Point: 1400, -3400, 0
 Roles: heart_core_room
+Scene: heart_core_look
+Scan: The Heart, still seated, with somebody else's cutting gear abandoned round it.
 ---
 
 ### [the core](heart_place)
@@ -196,6 +225,8 @@ Point: -700, 0, 600
 Roles: heart_treasure
 Item: cut_plate
 Qty: 4
+Scene: heart_plate_look
+Scan: Cut plate, stacked and ready to lift.
 ---
 
 ### [the work order](order_place)
@@ -208,3 +239,361 @@ Starts when: reach heart_core_room 900
 ---
 XORN's work order, left in the core room. The last clue in the campaign, and the one that
 tells Storm who has been a step ahead of her the whole way.
+
+### [the cutter's stash](heart_stash)
+---
+Relic: heart
+Point: -1500, -300, 800
+Roles: heart_stash
+Hidden: yes
+Item: clue_cutter
+Starts when: signal heart_stash_found
+Scene: heart_stash_look
+Scan: A gap behind the plate stack, where the yard lamps do not reach, and a cutter's case in it.
+---
+HIDDEN until somebody works out what the yard's pickets were really guarding.
+
+### [the blast door](trench_bulkhead)
+---
+Relic: heart
+Barrier: 1400, -2400, 400, 360
+Clear with: beam, check engineering 10
+Dress: ruins_hk_wall_b
+Facing: 0, 1, 0
+---
+XORN's own blast door, welded half across the trench and never finished. A ship never
+notices it; a crew in suits has to unpick the weld or cut it.
+
+### [the yard gantry](yard_gantry)
+---
+Relic: heart
+Prop: -1350, -225, -420
+Dress: ruins_hk_gantry
+Facing: at_yard
+---
+
+### [a work lamp](trench_lamp_a)
+---
+Relic: heart
+Prop: 1640, -1500, 400
+Dress: ruins_hk_lamp
+Facing: -1, 0, 0
+---
+
+### [a work lamp](trench_lamp_b)
+---
+Relic: heart
+Prop: 1160, -2800, 400
+Dress: ruins_hk_lamp
+Facing: 1, 0, 0
+---
+
+### [a work lamp](core_lamp)
+---
+Relic: heart
+Prop: 1400, -3800, 900
+Dress: ruins_hk_lamp
+Facing: at_core
+---
+
+## [Dialogue](dialogue)
+
+What the Heart's places say. See the Voice's file for how a place scene works.
+
+### [The Yard](heart_yard_look)
+---
+Backdrop: pic:hk_plate_stack
+---
+% The yard is a scrapyard inside a corpse: cut plate stacked to the ceiling, cable coiled in heaps, a lifter frozen mid-reach. Somebody was working here recently, as ruins go - the cut edges are still bright.
+
+- [Check the cut edges](heart_yard_edges) if engineering ; check engineering 7 else heart_yard_dull
+- [Work out what the pickets were guarding](heart_yard_pickets) if weapons ; check weapons 8 else heart_yard_nothing, reveal heart_stash, signal heart_stash_found
+- [Listen in on XORN's band](heart_yard_band) if comms ; check comms 8 else heart_yard_static, signal heart_band_heard
+- [Move on]()
+
+### [XORN Cutting](heart_yard_edges)
+---
+Backdrop: pic:hk_plate_stack
+---
+% XORN cutting gear - you would know the burn anywhere. Months old at most. They were here, they stripped half a giant, and they left in a hurry without the best of it.
+
+- [Tell Vex](heart_yard_vex)
+
+### [Vex, on the Cutting](heart_yard_vex)
+---
+Speaker: chief_vex
+---
+% Vex. That's XORN pattern cutting, and it's good work - better than ours, and I don't say that often. If they left gear behind, I want it. Look for where they'd have kept it.
+
+- [Will do]()
+
+### [Just Metal](heart_yard_dull)
+---
+Backdrop: pic:hk_plate_stack
+---
+% Cut metal, a great deal of it. Whose, and when, you cannot say.
+
+- [Look again](heart_yard_look)
+- [Move on]()
+
+### [What the Pickets Kept](heart_yard_pickets)
+---
+Backdrop: pic:hk_plate_stack
+---
+% The pickets were not guarding the yard. They were guarding a gap behind the plate stack: somebody's stash, tucked where the yard lamps do not reach.
+
+- [Mark it]()
+
+### [Nothing Worth Guarding](heart_yard_nothing)
+---
+Backdrop: pic:hk_plate_stack
+---
+% Whatever the pickets were watching, it is not obvious from here.
+
+- [Look again](heart_yard_look)
+- [Move on]()
+
+### [Counting Cuts](heart_yard_band)
+---
+Backdrop: pic:hk_lamp
+---
+% XORN's work band, still live on a relay somewhere outside. A voice counting off cuts, flat and bored: "...eleven. Twelve. The Heart comes out whole or the client does not pay. Thirteen..."
+
+- [Log it]()
+
+### [Static](heart_yard_static)
+---
+Backdrop: pic:hk_plate_stack
+---
+% Static, and under it something that might be a voice, or might be the hull settling.
+
+- [Listen again](heart_yard_look)
+- [Move on]()
+
+### [The Cutter's Stash](heart_stash_look)
+---
+Backdrop: pic:hk_lamp
+---
+% A XORN cutter's stash: a plasma cutter in its case, spare charges, and a mug somebody is going to miss. The cutter is worth more than everything else in this yard.
+
+- [Tell Vex](heart_stash_vex)
+- [Reel it in]()
+
+### [Vex, on the Cutter](heart_stash_vex)
+---
+Speaker: chief_vex
+---
+% A XORN cutter? Intact? Bring it. Bring the charges. Don't let Eddy see it before I do.
+
+- [On our way]()
+
+### [The Drum](heart_drum_look)
+---
+Backdrop: pic:hk_wall_a
+---
+% The drum is a giant's room, round and enormous, and XORN hacked a square hole in its far side without a second look at what they were cutting through. Below the hole the trench drops straight down into the dark.
+
+- [Read what they cut through](heart_drum_walls) if science ; check science 8 else heart_drum_char, signal heart_bands_read
+- [Mark a way down the trench](heart_drum_trench) if helm ; check helm 7 else heart_drum_tight, signal heart_trench_marked
+- [Move on]()
+
+### [Rings of a Tree](heart_drum_walls)
+---
+Backdrop: pic:hk_wall_a
+---
+% Between the burn scars, what XORN cut through: a giant's own inscription, band after band of it, running round the drum like the rings of a tree. Most of it is slag now.
+
+- [Tell Storm](heart_drum_storm)
+
+### [Storm, on the Inscription](heart_drum_storm)
+---
+Speaker: prof_storm
+---
+% They cut THROUGH it? Through a - no. Record what is left. All of it, every band. Then go down there and take the Heart back from them.
+
+- [Understood]()
+
+### [Char](heart_drum_char)
+---
+Backdrop: pic:hk_wall_a
+---
+% Char and slag. If there was anything here, the cutting took it.
+
+- [Look again](heart_drum_look)
+- [Move on]()
+
+### [A Line Down](heart_drum_trench)
+---
+Backdrop: pic:hk_gantry
+---
+% XORN hung work lamps down the trench wall every hundred metres - a line to fly by. It is tight, but a suit fits.
+
+- [Down]()
+
+### [Tight](heart_drum_tight)
+---
+Backdrop: pic:hk_gantry
+---
+% The trench is narrower than it looked from up here. Take it slowly.
+
+- [Try again](heart_drum_look)
+- [Move on]()
+
+### [The Trench](heart_trench_look)
+---
+Backdrop: pic:hk_gantry
+---
+% The trench is XORN's cut, straight down out of the drum, and half-way down they welded a blast door across it - half finished, the weld beads still bright.
+
+- [Unpick the weld](heart_door_free) if engineering ; check engineering 10 else heart_door_stuck, open trench_bulkhead
+- [Cut it with the beam](heart_door_cut)
+- [Not yet]()
+
+### [Unpicked](heart_door_free)
+---
+Backdrop: pic:hk_gantry
+---
+% The last weld bead gives. The door swings out of the trench on its one finished hinge. The way down is open.
+
+- [Down]()
+
+### [Welded](heart_door_stuck)
+---
+Backdrop: pic:hk_gantry
+---
+% XORN welds hold. Another pair of hands, or the cutter.
+
+- [Try again](heart_trench_look)
+- [Leave it]()
+
+### [The Cutter](heart_door_cut)
+---
+Backdrop: pic:hk_gantry
+---
+% On the Fire app, arm BEAM and select the door. Their weld, your beam.
+
+- [Understood]()
+
+### [The Core Room](heart_core_look)
+---
+Backdrop: pic:hk_lamp
+---
+% The core room, and the Heart still seated in it, with a thousand years of somebody else's cutting gear abandoned round it. XORN got this close. They did not get it out.
+
+- [Read the Heart](heart_core_read) if science ; check science 8 else heart_core_glare
+- [Find out why XORN stopped](heart_core_why) if weapons ; check weapons 7 else heart_core_nothing
+- [Call Storm](heart_core_storm)
+- [Get to work]()
+
+### [Still Hot](heart_core_read)
+---
+Backdrop: pic:hk_lamp
+---
+% The Heart is running - not full, not even close, but running. It powers nothing and it has not stopped in a thousand years.
+
+- [Log it]()
+
+### [Glare](heart_core_glare)
+---
+Backdrop: pic:hk_lamp
+---
+% The Heart swamps every sensor in the suit. Back off and try again.
+
+- [Try again](heart_core_look)
+- [Leave it]()
+
+### [Why They Stopped](heart_core_why)
+---
+Backdrop: pic:hk_lamp
+---
+% Scorch on the far wall in a spray pattern, and a XORN cutting frame folded in half. The Heart bit back when they cut too close. It is still warm enough to do it again - bring it out on a long tether.
+
+- [Understood]()
+
+### [Nothing Obvious](heart_core_nothing)
+---
+Backdrop: pic:hk_lamp
+---
+% Abandoned gear, and no sign of why. Look closer.
+
+- [Look again](heart_core_look)
+- [Move on]()
+
+### [Storm, in the Core Room](heart_core_storm)
+---
+Speaker: prof_storm
+---
+% The Heart. They cut a hole in a thousand-year-old giant to reach it and it stopped them anyway. Scan it, tether it long, and read that work order - I want to know who they were cutting for.
+
+- [Understood]()
+
+### [The Plate Stack](heart_plate_look)
+---
+Backdrop: pic:hk_plate_stack
+---
+% Cut plate, stacked and ready to lift, in a hull that is not coming back for it.
+
+- [Ask Eddy](heart_plate_eddy) if comms
+- [Haul it later]()
+
+### [Eddy, on XORN Plate](heart_plate_eddy)
+---
+Speaker: crazy_eddy
+---
+% Plate XORN cut and never collected? Oh, I would pay just to see their faces. And for the plate. Mostly for the faces.
+
+- [We'll see]()
+
+## [Side Stories](side_stories)
+
+One per job, for the crew who go inside - see the Voice's file.
+
+### [Their Cut, Not Ours](heart_door)
+---
+For: engineering
+State: active
+Done when: signal trench_bulkhead_opened
+Leads to: at_trench
+Pays: 60 credits
+---
+XORN welded the trench shut behind them. Open it.
+
+### [What the Pickets Kept](heart_stash_quest)
+---
+For: weapons
+State: active
+Done when: signal cutter_taken
+Leads to: at_yard, heart_stash
+Pays: 80 credits
+---
+The pickets in the yard were guarding something. Take it.
+
+### [Counting Cuts](heart_band)
+---
+For: comms
+State: active
+Done when: signal heart_band_heard
+Leads to: at_yard
+Pays: 60 credits
+---
+XORN's work band is still live somewhere. Listen in.
+
+### [Rings of a Tree](heart_bands)
+---
+For: science
+State: active
+Done when: signal heart_bands_read
+Leads to: at_drum
+Pays: 60 credits
+---
+Read what XORN cut through before it is all slag.
+
+### [A Line Down](heart_trench_line)
+---
+For: helm
+State: active
+Done when: signal heart_trench_marked
+Leads to: at_drum
+Pays: 60 credits
+---
+Find a way down the trench that a suit can fly.

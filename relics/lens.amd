@@ -45,8 +45,9 @@ Ease: in_out
 ### [the Lens](beacon_lens)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_beacon_lens, unknown
 Tier: 5
+Sprite: pic:beacon_lens
 ---
 The focusing array: the piece that takes the Voice's noise and bends it into one coherent
 line. Without it the Beacon shouts in every direction at once and reaches nobody.
@@ -54,8 +55,9 @@ line. Without it the Beacon shouts in every direction at once and reaches nobody
 ### [Kralien optics](kralien_optics)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_kralien_optics, alien_1a
 Price: 180
+Sprite: pic:find_kralien_optics
 ---
 Cut glass a thousand years old and still true. Eddy will not know what it is worth, which
 means he will pay too much or too little and be pleased either way.
@@ -63,10 +65,21 @@ means he will pay too much or too little and be pleased either way.
 ### [a survey slate](clue_slate)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_slate, alien_1a
+Sprite: pic:find_slate
 ---
 A Kralien survey slate, scratched rather than printed - the work of somebody in a hurry.
 It marks a warren in the ash fields, and something they were carrying to it.
+
+### [a focusing blank](clue_blank)
+---
+Type: item/salvage
+Art: ruins_find_kralien_optics, alien_1a
+Price: 180
+Sprite: pic:find_kralien_optics
+---
+A disc of Kralien glass nobody finished grinding. True where it was finished, and there is
+nobody left who knows how to finish it.
 
 ## [Relics](relics)
 
@@ -79,6 +92,7 @@ Margin: 80
 Forbid jump: yes
 Seed: 34
 Art: plain_asteroid_7, plain_asteroid_8, plain_asteroid_10, plain_asteroid_11
+Walls: kralien, rock
 ---
 A Kralien megastructure, dark and cold, built to the same giant scale as the Torgoth
 station and by hands that thought about it completely differently.
@@ -87,6 +101,7 @@ station and by hands that thought about it completely differently.
 ---
 Relic: lens
 Box: -3400, 0, 0, 900, 500, 500
+Scan: A square-cut mouth on a structure that is otherwise all curves.
 ---
 The way in - a machined mouth, square-cut, on the end of a structure that is otherwise all
 curves. The Kralien squared off whatever had to be exact.
@@ -95,6 +110,7 @@ curves. The Kralien squared off whatever had to be exact.
 ---
 Relic: lens
 Chamber: -1700, 0, 0, 1100
+Scan: Bored, not built - the walls are smooth in a way no tool leaves. A pillar runs floor to ceiling.
 ---
 Bored, not built. The walls are smooth in a way no tool leaves.
 
@@ -103,6 +119,7 @@ Bored, not built. The walls are smooth in a way no tool leaves.
 Relic: lens
 Chamber: 200, 0, 600, 1300
 Passage to: gallery 320
+Scan: The structure turns here, and every surface past the turn is aimed at one spot.
 ---
 The structure turns here. Everything past this point is aimed at the same spot.
 
@@ -111,6 +128,7 @@ The structure turns here. Everything past this point is aimed at the same spot.
 Relic: lens
 Chamber: 2100, -300, 1800, 1000
 Passage to: ring 300
+Scan: A spherical focusing chamber. The mount is still set in its heart.
 ---
 The focusing chamber. It is a sphere because it had to be a sphere.
 
@@ -126,6 +144,7 @@ two ways of building, in the one room that mattered.
 ---
 Relic: lens
 Solid: capsule, -1700, -900, 0, -1700, 900, 0, 220
+Dress: ruins_kr_pillar_a
 ---
 A column through the gallery, floor to ceiling. Fly around it.
 
@@ -133,6 +152,8 @@ A column through the gallery, floor to ceiling. Fly around it.
 ---
 Relic: lens
 Solid: sphere, 2100, -300, 1800, 300
+Dress: ruins_kr_collar
+Facing: at_drum
 ---
 Whatever the Lens was focusing onto. It is not there any more; the mounting is.
 
@@ -148,6 +169,8 @@ Roles: entrance
 Relic: lens
 Point: -1700, 0, 700
 Roles: lens_gallery
+Scene: lens_gallery_look
+Scan: Smooth-bored walls, and the pillar through the middle. Something is scratched into its base.
 ---
 Off the pillar, which runs through the middle of this room.
 
@@ -156,6 +179,8 @@ Off the pillar, which runs through the middle of this room.
 Relic: lens
 Point: 200, 0, 600
 Roles: lens_ring
+Scene: lens_ring_look
+Scan: Every panel in the ring is canted at the same point, somewhere past the far wall.
 ---
 
 ### [the drum floor](at_drum)
@@ -163,6 +188,8 @@ Roles: lens_ring
 Relic: lens
 Point: 2100, 0, 2400
 Roles: lens_drum
+Scene: lens_drum_look
+Scan: The collar that holds the Lens is still aligned - to nothing.
 ---
 Above the mounting core, not inside it.
 
@@ -182,6 +209,8 @@ Point: -1700, 0, -700
 Roles: lens_treasure
 Item: kralien_optics
 Qty: 2
+Scene: lens_optics_look
+Scan: A shelf of cut glass, racked by size.
 ---
 
 ### [the slate](slate_place)
@@ -194,3 +223,290 @@ Starts when: reach lens_gallery 900
 ---
 The survey slate. It names the Ash Warren - which is how the crew ever hears of a ruin
 nobody has a lead to.
+
+### [the ring niche](lens_blank)
+---
+Relic: lens
+Point: 900, -600, 900
+Roles: lens_blank
+Hidden: yes
+Item: clue_blank
+Starts when: signal lens_blank_found
+Scene: lens_blank_look
+Scan: A storage niche low in the ring wall, and a disc of glass nobody finished.
+---
+HIDDEN until the science officer finds the seam (`lens_ring_look`), and the blank is not
+in it until then either.
+
+### [the optics bench](optics_bench)
+---
+Relic: lens
+Prop: -1700, -520, -880
+Dress: ruins_kr_optics
+Facing: at_gallery
+---
+
+### [a ring column](ring_column_a)
+---
+Relic: lens
+Prop: -500, -600, 1200
+Dress: ruins_kr_column
+Facing: at_ring
+---
+
+### [a ring column](ring_column_b)
+---
+Relic: lens
+Prop: 900, -600, 0
+Dress: ruins_kr_column
+Facing: at_ring
+---
+
+## [Dialogue](dialogue)
+
+What the Lens's places say. See the Voice's file for how a place scene works.
+
+### [The Gallery](lens_gallery_look)
+---
+Backdrop: pic:kr_column
+---
+% The gallery is a tube bored through the dark, walls so smooth the suit lamps slide off them. One pillar runs floor to ceiling, and at its base somebody has scratched a line of Kralien survey marks - recent, as these things go.
+
+- [Read the survey marks](lens_marks) if science ; check science 7 else lens_marks_blank, signal lens_marks_read
+- [Sound the pillar](lens_pillar_sound) if engineering ; check engineering 8 else lens_pillar_dead
+- [Move on]()
+
+### [The Surveyor's Tally](lens_marks)
+---
+Backdrop: pic:kr_column
+---
+% A surveyor's tally: a heading, a count of days, and one word the translator gives as "warren". Whoever made these marks was going somewhere else next.
+
+- [Tell Storm](lens_marks_storm)
+- [Move on]()
+
+### [Storm, on the Marks](lens_marks_storm)
+---
+Speaker: prof_storm
+---
+% A warren. Kralien surveyors did not waste marks on places they meant to forget - if they wrote it down, they meant to come back. Keep your eyes open for anything else they left behind them.
+
+- [Understood]()
+
+### [Scratches](lens_marks_blank)
+---
+Backdrop: pic:kr_column
+---
+% Scratches. Deliberate, but not in any notation the suit can parse.
+
+- [Look again](lens_gallery_look)
+- [Move on]()
+
+### [A Tuned Pillar](lens_pillar_sound)
+---
+Backdrop: pic:kr_column
+---
+% The pillar rings like a bell under the suit's knuckle - hollow, and tuned. It is not holding anything up. It is a waveguide, and it points at the ring.
+
+- [Move on]()
+
+### [A Dull Knock](lens_pillar_dead)
+---
+Backdrop: pic:kr_column
+---
+% A dull knock. Stone, or something pretending very well.
+
+- [Move on]()
+
+### [The Ring](lens_ring_look)
+---
+Backdrop: pic:kr_wall_a
+---
+% The structure turns here. Every panel in the ring is canted at the same point somewhere past the far wall, as if the whole room were leaning in to listen.
+
+- [Find what it is aimed at](lens_ring_aim) if helm ; check helm 7 else lens_ring_lost, signal lens_heading_taken
+- [Look for what the surveyors missed](lens_ring_blank) if science ; check science 8 else lens_ring_nothing, reveal lens_blank, signal lens_blank_found
+- [Move on]()
+
+### [The Sightline](lens_ring_aim)
+---
+Backdrop: pic:kr_wall_a
+---
+% Line the suit up with the canted panels and fly the sightline in your head: straight through the drum, out the far side of the structure, towards a star that is not there any more.
+
+- [Log the heading]()
+
+### [Lost](lens_ring_lost)
+---
+Backdrop: pic:kr_wall_a
+---
+% Every panel agrees on a direction, and none of them agree with you. Try again from the middle of the room.
+
+- [Try again](lens_ring_look)
+- [Move on]()
+
+### [The Seam](lens_ring_blank)
+---
+Backdrop: pic:kr_wall_a
+---
+% A seam in the ring wall, low down, that the surveyors walked straight past: a storage niche, and in it a disc of glass nobody ever finished grinding.
+
+- [Mark it]()
+
+### [Frost](lens_ring_nothing)
+---
+Backdrop: pic:kr_wall_a
+---
+% Panels, seams, and a thousand years of frost. Nothing that was not meant to be seen.
+
+- [Move on]()
+
+### [The Blank](lens_blank_look)
+---
+Backdrop: pic:kr_wall_a
+---
+% A focusing blank, half ground - Kralien glass, still true where it was finished. Eddy will not know what it is worth, which means he will pay too much for it.
+
+- [Ask Eddy](lens_blank_eddy) if comms
+- [Reel it in]()
+
+### [Eddy, on the Blank](lens_blank_eddy)
+---
+Speaker: crazy_eddy
+---
+% Unfinished Kralien glass? UNFINISHED? That means nobody has ever looked through it. Do you know what collectors pay for a first look? Neither do I - that is how much.
+
+- [We'll see]()
+
+### [The Drum](lens_drum_look)
+---
+Backdrop: pic:kr_collar
+---
+% The drum is a sphere because it had to be a sphere. In the collar at its heart the Lens sits exactly where it was set - aimed, with perfect patience, at nothing.
+
+- [Read the alignment](lens_drum_align) if science ; check science 8 else lens_drum_glare
+- [Plot what it would hit](lens_drum_arc) if weapons ; check weapons 7 else lens_drum_glare, signal lens_arc_plotted
+- [Free the collar clamps](lens_drum_clamps) if engineering ; check engineering 8 else lens_drum_stuck, signal lens_clamps_free
+- [Call Storm](lens_drum_storm)
+- [Get to work]()
+
+### [Storm, on the Alignment](lens_drum_align)
+---
+Speaker: prof_storm
+---
+% It is still aligned? After a thousand years? Then the Voice's line ran straight through this room and out the other side... Record the collar's angles to the second. When all five pieces are together, that is how they will want to sit.
+
+- [Understood]()
+
+### [The Arc](lens_drum_arc)
+---
+Backdrop: pic:kr_collar
+---
+% Plot the Lens's line out through the far side and it hits nothing at all - an empty stretch of sky. Check it against the old charts, though, and that stretch held a star once.
+
+- [Log it]()
+
+### [White Out](lens_drum_glare)
+---
+Backdrop: pic:kr_collar
+---
+% The Lens throws the sensor pulse straight back, focused. Every visor goes white for a moment. Try again from off the axis.
+
+- [Try again](lens_drum_look)
+- [Leave it]()
+
+### [Vex, on the Clamps](lens_drum_clamps)
+---
+Speaker: chief_vex
+---
+% Vex. Kralien clamps unscrew the wrong way round - you'll have worked that out by now. With the collar loose it'll come out clean on a tether instead of taking the whole mount with it. Nice work.
+
+- [Good]()
+
+### [Wrong-Handed](lens_drum_stuck)
+---
+Backdrop: pic:kr_collar
+---
+% The clamp holds: Kralien threads, wrong-handed, a thousand years cold.
+
+- [Try again](lens_drum_look)
+- [Leave it]()
+
+### [Storm, at the Drum](lens_drum_storm)
+---
+Speaker: prof_storm
+---
+% The Lens. Oh, look at it. Scan it - suit or ship - then tether it and carry it out, and do not let it point at anything you are fond of on the way.
+
+- [Understood]()
+
+### [The Optics Shelf](lens_optics_look)
+---
+Backdrop: pic:kr_optics
+---
+% A shelf of cut glass, racked by size: optics ground by people who had all the time in the world.
+
+- [Ask Eddy](lens_optics_eddy) if comms
+- [Haul it out later]()
+
+### [Eddy, on Kralien Glass](lens_optics_eddy)
+---
+Speaker: crazy_eddy
+---
+% Kralien glass? Real Kralien glass, not the stuff the Ximni fake? I have buyers who would sell their own mothers for it. Bring it. Carefully. CAREFULLY.
+
+- [We'll see]()
+
+## [Side Stories](side_stories)
+
+One per job, for the crew who go inside - see the Voice's file.
+
+### [The Surveyor's Tally](lens_tally)
+---
+For: science
+State: active
+Done when: signal lens_marks_read
+Leads to: at_gallery
+Pays: 60 credits
+---
+Somebody surveyed this structure before you. Find out what they were looking for.
+
+### [Sightline](lens_sightline)
+---
+For: helm
+State: active
+Done when: signal lens_heading_taken
+Leads to: at_ring
+Pays: 60 credits
+---
+The whole structure is aimed at something. Find the line.
+
+### [Wrong-Handed](lens_clamps)
+---
+For: engineering
+State: active
+Done when: signal lens_clamps_free
+Leads to: at_drum
+Pays: 60 credits
+---
+The Lens is clamped into its collar. Get it loose without breaking either.
+
+### [Aimed at Nothing](lens_arc)
+---
+For: weapons
+State: active
+Done when: signal lens_arc_plotted
+Leads to: at_drum
+Pays: 60 credits
+---
+Work out what the Lens was pointed at.
+
+### [True Glass](lens_true_glass)
+---
+For: comms
+State: active
+Done when: signal blank_taken
+Leads to: at_ring, lens_blank
+Pays: 80 credits
+---
+Eddy will pay for Kralien glass nobody has looked through. Find some.

@@ -73,7 +73,8 @@ spawns as a question mark.
 ### [the Voice](beacon_voice)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_beacon_voice, unknown
+Sprite: pic:beacon_voice
 Tier: 5
 ---
 The Beacon's transmitter core: the piece that speaks. Cold for a thousand years and still
@@ -82,7 +83,8 @@ trying.
 ### [Torgoth salvage](torgoth_salvage)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_torgoth_salvage, alien_1a
+Sprite: pic:find_torgoth_salvage
 Price: 120
 ---
 Structural alloy from an age that could afford to build like this. Eddy will take it.
@@ -90,10 +92,25 @@ Structural alloy from an age that could afford to build like this. Eddy will tak
 ### [a cargo manifest](clue_manifest)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_manifest, alien_1a
+Sprite: pic:find_manifest
 ---
 A freight manifest, still legible. It lists what left this station in its last hour - and
 where it went. Storm will want to see this.
+
+### [the dispatcher's log](clue_dispatch)
+---
+Type: item/quest
+Art: ruins_tg_slate, alien_1a
+Sprite: pic:tg_slate
+Price: 60
+---
+The last dispatcher's own log, kept off the station's records in an alcove nobody was meant
+to find. The final entries are not freight. They are a count of who was still aboard.
+
+`Art:` is a FALLBACK CHAIN: the ruins pack's slate when the mission has the pack, and the
+stock alien pickup when it does not - either way something a hull can scoop up, which the
+bare `unknown` placeholder never was (it has no interaction radius at all).
 
 ## [Relics](relics)
 
@@ -105,15 +122,16 @@ Scrape band: 60
 Margin: 60
 Forbid jump: yes
 Seed: 21
-Walls: plates
+Walls: torgoth, plates
 ---
 A station from the age when the Torgoth were giants, running dark for a thousand years.
 The Beacon's transmitter core is still in its cradle at the bottom of the shaft, still
 trying to speak.
 
-`Walls: plates` is why it reads as built rather than eroded: the surfaces are laid up out
-of plates, the way a blockout gets built out of wall primitives, and where two rooms meet
-no plate is laid at all - that hole is the doorway.
+`Walls: torgoth, plates` is why it reads as built rather than eroded: the rooms are laid up
+out of the ruins pack's Torgoth kit - floor, ceiling, walls, the trim where they meet and a
+pillar in every corner - and where two rooms meet nothing is laid at all, which is the
+doorway. Without the pack the same rooms are laid in plain plates.
 
 The tight `Scrape band` is deliberate. The walls are thin, so the band is what decides
 whether the hull stops AT them: 60 units is about a hull length, and anything looser lets
@@ -134,27 +152,82 @@ ship, a keyhole to theirs.
 ---
 Relic: voice
 Box: -600, 0, 0, 1300, 500, 1300
+Scan: A freight concourse the size of a hangar deck, dark end to end. A structural spar lies across the middle of it.
 ---
 Where the throat opens out. Four ways on from here; three of them are still standing.
+
+### [the inner gate](inner_gate)
+---
+Relic: voice
+Prop: -1860, 0, 0
+Dress: ruins_tg_gate 1.6
+Facing: 1, 0, 0
+---
+The arch at the top of the throat - scenery, not a place (`Prop:`), so it is nowhere the
+crew is sent and it takes nothing out of the space. A suit flies straight through it.
+
+### [the console bank](console_bank)
+---
+Relic: voice
+Solid: box, -600, -400, -1170, 170, 100, 120
+Dress: ruins_tg_console
+Facing: at_concourse
+---
+The dispatchers' consoles along the concourse wall. A SOLID, so a route goes round it
+rather than through it, dressed with the piece fitted inside it.
+
+### [the east watcher](watcher_east)
+---
+Relic: voice
+Solid: box, 600, -250, 720, 150, 250, 110
+Dress: ruins_tg_statue
+Facing: at_shaft
+---
+
+### [the west watcher](watcher_west)
+---
+Relic: voice
+Solid: box, 600, -250, -720, 150, 250, 110
+Dress: ruins_tg_statue
+Facing: at_shaft
+---
+Two giants either side of the shaft mouth, looking down it.
 
 ### [the freight hall](freight)
 ---
 Relic: voice
 Box: 1800, 0, -1500, 1250, 380, 900
+Scan: Cargo cradles the size of frigates, all empty. The locking arms are bent outward.
 ---
 Cargo cradles the size of frigates, all of them empty, all of them opened from the
 inside.
+
+### [a freight cradle](freight_cradle_a)
+---
+Relic: voice
+Solid: box, 1150, -230, -2220, 170, 150, 150
+Dress: ruins_tg_cradle
+---
+
+### [a freight cradle](freight_cradle_b)
+---
+Relic: voice
+Solid: box, 2450, -230, -2220, 170, 150, 150
+Dress: ruins_tg_cradle
+---
 
 ### [the sorting floor](sorting)
 ---
 Relic: voice
 Box: 1800, 0, 1500, 1150, 340, 800
+Scan: Sorting lines, conveyor stubs, and a drift of loose alloy nobody came back for.
 ---
 
 ### [the shaft](shaft)
 ---
 Relic: voice
 Box: 600, -1600, 0, 380, 1400, 380
+Scan: A service shaft straight down through the station, a hull's width across.
 ---
 Straight down from the concourse. On a top-down plan a vertical shaft is a dot - read the
 second number.
@@ -163,6 +236,7 @@ second number.
 ---
 Relic: voice
 Box: 600, -3000, 0, 1000, 500, 1000
+Scan: The dead heart of the station. Something at the far end is warmer than it has any right to be.
 ---
 The dead heart. Whatever the Torgoth built the rest of this station around, they built it
 around this room.
@@ -171,9 +245,19 @@ around this room.
 ---
 Relic: voice
 Solid: box, 600, -3000, 0, 320, 200, 320
+Dress: ruins_tg_cradle
+Facing: at_bay
 ---
 A subtracted mass in the middle of the bay - the machine's own mounting block, hanging in
 the room you have to fly around it in.
+
+### [the transmitter controls](bay_controls)
+---
+Relic: voice
+Solid: box, -250, -3380, 0, 120, 110, 180
+Dress: ruins_tg_console
+Facing: 1, 0, 0
+---
 
 ### [the fallen span](span_solid)
 ---
@@ -196,11 +280,13 @@ Roles: entrance
 The way in, and what your sensors see first. `Roles: entrance` is what puts a contact
 here on arrival and what Storm's briefing measures its range against.
 
-### [the concourse marker](at_concourse)
+### [the concourse](at_concourse)
 ---
 Relic: voice
 Point: -1200, 0, 600
 Roles: voice_concourse
+Scene: voice_concourse_look
+Scan: The spar came down across the concourse long ago. The console bank on the far wall still shows a faint amber trace.
 ---
 A named place is a quest target: a chamber the story wants to react to gets a point with
 a role, and a beat reaches for it. Nothing else is needed.
@@ -208,25 +294,59 @@ a role, and a beat reaches for it. Nothing else is needed.
 Off the room's centre on purpose - the fallen span runs through the middle of it, and a
 marker inside a subtracted mass is a place no ship can ever reach.
 
-### [the freight marker](at_freight)
+### [the freight hall](at_freight)
 ---
 Relic: voice
 Point: 1800, 0, -1500
 Roles: voice_freight
+Scene: voice_freight_look
+Scan: Every cradle in the hall is open, and every one of them was opened from the inside.
 ---
+
+### [the dispatcher's alcove](voice_dispatch)
+---
+Relic: voice
+Point: 2850, -200, -850
+Roles: voice_dispatch
+Hidden: yes
+Item: clue_dispatch
+Starts when: signal voice_console_woken
+Scene: voice_dispatch_look
+Scan: A dispatcher's alcove, sealed off the station's own plans. One seat, one slate, and a view of the whole freight floor.
+---
+HIDDEN until the concourse consoles are woken (the engineer's check in
+`voice_concourse_look` reveals it), and the log in it does not exist until then either -
+`Starts when:` on the same signal. A route may still pass through; it is only off the
+list.
 
 ### [the shaft head](at_shaft)
 ---
 Relic: voice
 Point: 600, -600, 0
 Roles: voice_shaft
+Scene: voice_shaft_look
+Scan: The shaft drops straight down into the dark. A maintenance grate is seized across it a little way below.
 ---
 
-### [the bay floor](at_bay)
+### [the maintenance grate](shaft_grate)
+---
+Relic: voice
+Barrier: 600, -1100, 0, 380
+Clear with: beam, check engineering 9
+Dress: ruins_tg_wall_c
+Facing: 0, 1, 0
+---
+Seized across the shaft, a way below its head. A SHIP never notices it - a barrier only
+severs the suits' rail web - but a crew in suits has to deal with it to get down: work it
+free by hand (the engineer, with help), or cut it with the beam.
+
+### [the transmitter bay](at_bay)
 ---
 Relic: voice
 Point: 600, -3000, 650
 Roles: voice_bay
+Scene: voice_bay_look
+Scan: The cradle at the far end is still drawing power. The core in it is still transmitting - to nobody.
 ---
 
 ### [the core cradle](core_place)
@@ -250,6 +370,8 @@ Point: 1800, 0, 1500
 Roles: voice_treasure
 Item: torgoth_salvage
 Qty: 3
+Scene: voice_sorting_look
+Scan: A heap of structural alloy somebody sorted and never came back for.
 ---
 Left behind by whoever emptied the freight hall. Treasure, not plot: taking it is worth
 credits and nothing else.
@@ -265,3 +387,352 @@ Starts when: reach voice_concourse 900
 A cargo manifest, still readable. The CLUE - and it does not exist until the crew is
 inside, because a clue that can be scooped from outside the ruin is not a discovery, it
 is a pickup.
+
+## [Dialogue](dialogue)
+
+What the places SAY. A place's `Scene:` opens here, in the Act app of the first crew
+member whose suit arrives, with anyone floating nearby pulled in. `Backdrop:` is the
+picture beside a narrated line (a ruins pack portrait); a beat with a `Speaker:` shows
+that person's face instead - Storm, Vex and Eddy are all on the suit radio.
+
+Checks roll the crew member's job skill plus a d10 plus one for every suit alongside with
+the same job, so two engineers at a stuck grate is a better plan than one. A FAILED check
+stops the rest of the choice's outcomes: `check engineering 9 else voice_grate_stuck, open
+shaft_grate` opens the grate only on a success.
+
+### [The Concourse](voice_concourse_look)
+---
+Backdrop: pic:tg_console
+---
+% The concourse opens out like a hangar deck with the lights gone. A structural spar lies across it corner to corner, and along the far wall a bank of Torgoth consoles still holds a faint amber trace - a thousand years on standby.
+
+- [Wake the console bank](voice_console_awake) if engineering ; check engineering 8 else voice_console_sparks, signal voice_console_woken, reveal voice_dispatch
+- [Read the script on the walls](voice_wall_script) if science ; check science 7 else voice_wall_blank
+- [Listen on the old channels](voice_carrier_heard) if comms ; check comms 7 else voice_channels_static
+- [Look at the giants by the shaft](voice_watchers) if weapons
+- [Move on]()
+
+### [The Consoles Wake](voice_console_awake)
+---
+Backdrop: pic:tg_console
+---
+% The bank coughs, flickers and draws the station in thin amber lines. One room on the plan is on no plan you have: an alcove off the far end of the freight hall, sealed from the outside.
+
+- [Ask Vex what she makes of it](voice_console_vex)
+- [Mark it and move on]()
+
+### [Vex, on the Alcove](voice_console_vex)
+---
+Speaker: chief_vex
+---
+% Vex here. That's a dispatcher's post - somebody whose job was counting what came in and what went out. Sealed from the OUTSIDE means somebody wanted the count kept where nobody would read it. Go and read it.
+
+- [On our way]()
+
+### [Sparks](voice_console_sparks)
+---
+Backdrop: pic:tg_console
+---
+% A relay spits blue and dies. Whatever the bank was going to say, it has said it to the floor. There are other panels.
+
+- [Let somebody else try](voice_concourse_look)
+- [Leave it]()
+
+### [The Wall Script](voice_wall_script)
+---
+Backdrop: pic:tg_wall_b
+---
+% Torgoth freight notation, painted at a height nobody alive could read from the deck. It is a routing chart, and every arrow on it points the same way: down.
+
+- [Down it is]()
+
+### [Just Script](voice_wall_blank)
+---
+Backdrop: pic:tg_wall_b
+---
+% Script, certainly. Freight, probably. The rest wants somebody who reads Torgoth, or a steadier light.
+
+- [Try again](voice_concourse_look)
+- [Move on]()
+
+### [Four Notes](voice_carrier_heard)
+---
+Backdrop: pic:tg_console
+---
+% Under a thousand years of hiss there is a carrier - faint, patient, the same four notes over and over. It is coming from somewhere below you.
+
+- [Log it]()
+
+### [Static](voice_channels_static)
+---
+Backdrop: pic:tg_console
+---
+% Static on every band you know and several you do not. If anything is talking in here, it is not talking to you. Yet.
+
+- [Listen again](voice_concourse_look)
+- [Move on]()
+
+### [The Watchers](voice_watchers)
+---
+Backdrop: pic:tg_statue
+---
+% Two giants in armour flank the shaft, spears grounded, faces turned down into the dark. The spear heads are not stone. They are emitters, and their mounts are still charged.
+
+- [Safe them](voice_watchers_safe) if weapons ; check weapons 8 else voice_watchers_live, signal voice_watchers_safed
+- [Give them a wide berth]()
+
+### [Cold Spears](voice_watchers_safe)
+---
+Backdrop: pic:tg_statue
+---
+% Two isolators later the emitters are cold. Whoever set the giants to watch this shaft was expecting company - from below.
+
+- [Move on]()
+
+### [Still Live](voice_watchers_live)
+---
+Backdrop: pic:tg_statue
+---
+% The mount bites back: a crack of discharge and a numb arm inside the glove. They stay live. Everyone keeps clear of the spears.
+
+- [Try the other mount](voice_watchers)
+- [Leave them]()
+
+### [The Freight Hall](voice_freight_look)
+---
+Backdrop: pic:tg_cradle
+---
+% Cradles the size of frigates line the hall, every one of them open. The locking arms are bent OUTWARD.
+
+- [Look closer at the arms](voice_freight_arms) if science ; check science 7 else voice_freight_dust
+- [Sweep the floor](voice_freight_sweep)
+- [Move on]()
+
+### [Scored From Inside](voice_freight_arms)
+---
+Backdrop: pic:tg_cradle
+---
+% Scored from the inside, in sets of four. Whatever was carried in these was alive when it was loaded, and it did not want to stay.
+
+- [Tell Storm](voice_freight_storm)
+- [Keep it to yourself]()
+
+### [Storm, on the Cradles](voice_freight_storm)
+---
+Speaker: prof_storm
+---
+% Alive? No - the Torgoth did not ship anything alive at that scale, they... Record every mark. Every one. If the manifest is still in that hall, it will say what was in those cradles, and I need to know before you go any deeper.
+
+- [Understood]()
+
+### [Dust](voice_freight_dust)
+---
+Backdrop: pic:tg_cradle
+---
+% A thousand years of dust and a great deal of bent metal. Nothing else.
+
+- [Move on]()
+
+### [The Sweep](voice_freight_sweep)
+---
+Backdrop: pic:tg_slate
+---
+% One small, flat return among the cradles - a slate, face up where somebody dropped it and did not come back for it.
+
+- [Move on]()
+
+### [The Dispatcher's Alcove](voice_dispatch_look)
+---
+Backdrop: pic:tg_slate
+---
+% One seat, one slate, and a window over the whole freight floor. The dispatcher's log is still on the desk. The last page is not a cargo count. It is a head count, and it is going down.
+
+- [Read the last entry aloud](voice_dispatch_read) if comms
+- [Take the log - it is light enough to reel in]()
+
+### [The Last Entry](voice_dispatch_read)
+---
+Backdrop: pic:tg_slate
+---
+% "Forty-one aboard. Core still speaking. They will not let us take it down. I have sealed myself in so the count is kept." There is nothing after that.
+
+- [Take the log]()
+
+### [The Shaft Head](voice_shaft_look)
+---
+Backdrop: pic:tg_wall_c
+---
+% The shaft drops straight down through the station. A little way below the lip a maintenance grate is seized across it, wall to wall.
+
+- [Work the grate free](voice_grate_free) if engineering ; check engineering 9 else voice_grate_stuck, open shaft_grate
+- [Ask Vex](voice_grate_vex)
+- [Cut it with the beam](voice_grate_cut)
+- [Not yet]()
+
+### [Vex, on the Grate](voice_grate_vex)
+---
+Speaker: chief_vex
+---
+% Torgoth maintenance grate. Don't fight the hinge, it'll outlast you - pull the four locking pins round the rim and it drops. And take somebody with you. It's a two-pairs-of-hands job.
+
+- [Back to the grate](voice_shaft_look)
+
+### [Open](voice_grate_free)
+---
+Backdrop: pic:tg_wall_c
+---
+% The last pin shears. The grate swings down on its hinge and hangs there, ringing. The way down is open.
+
+- [Down]()
+
+### [Stuck](voice_grate_stuck)
+---
+Backdrop: pic:tg_wall_c
+---
+% The pins will not move. Another pair of hands, or the cutter.
+
+- [Try again](voice_shaft_look)
+- [Leave it]()
+
+### [The Cutter](voice_grate_cut)
+---
+Backdrop: pic:tg_wall_c
+---
+% Clear the shaft and put the cutter on it: on the Fire app, arm BEAM and select the grate. It will take a while.
+
+- [Understood]()
+
+### [The Transmitter Bay](voice_bay_look)
+---
+Backdrop: pic:tg_cradle
+---
+% The bay is a cathedral built around one machine. In the cradle at the far end the core sits exactly where the Torgoth left it - and it is warm, and it is still transmitting.
+
+- [Read the core where it sits](voice_core_read) if science ; check science 7 else voice_core_glare, signal voice_core_read
+- [Trace the carrier](voice_carrier_traced) if comms ; signal voice_carrier_traced
+- [Brace the cradle for the haul](voice_core_braced) if engineering ; check engineering 7 else voice_core_shifts
+- [Call Storm](voice_bay_storm)
+- [Get to work]()
+
+### [Storm, on the Readings](voice_core_read)
+---
+Speaker: prof_storm
+---
+% Send those again. Again. That is not a beacon signal, it is a HANDSHAKE - it has been waiting a thousand years for something to answer. Do not answer it. Scan it properly and bring it home.
+
+- [Understood]()
+
+### [Glare](voice_core_glare)
+---
+Backdrop: pic:tg_cradle
+---
+% The core floods every sensor you point at it. You will want a steadier hand, or the ship's array.
+
+- [Try again](voice_bay_look)
+- [Leave it]()
+
+### [The Source](voice_carrier_traced)
+---
+Backdrop: pic:tg_cradle
+---
+% It is the core. The four notes from the concourse are coming out of that cradle, as patient as ever.
+
+- [Log it]()
+
+### [Braced](voice_core_braced)
+---
+Backdrop: pic:tg_cradle
+---
+% Braces set. When the tether takes it, the cradle will let the core go cleanly instead of taking its housing with it.
+
+- [Good]()
+
+### [It Shifts](voice_core_shifts)
+---
+Backdrop: pic:tg_cradle
+---
+% The cradle shifts a finger's width and settles again. Nobody breathes for a while. Leave the bracing to somebody steadier.
+
+- [Back off]()
+
+### [Storm, in the Bay](voice_bay_storm)
+---
+Speaker: prof_storm
+---
+% That is it. That is the Voice. Scan it first - from the suit, from the ship, I do not care which - then tether it and bring it out the way you came in. Gently.
+
+- [Understood]()
+
+### [The Sorting Floor](voice_sorting_look)
+---
+Backdrop: pic:tg_cache
+---
+% Somebody sorted what could be carried from what could not, and left the second pile here: structural alloy, cut to Torgoth sizes. Somebody will pay for it.
+
+- [Ask Eddy what it is worth](voice_sorting_eddy) if comms
+- [Haul it out later]()
+
+### [Eddy, on Torgoth Alloy](voice_sorting_eddy)
+---
+Speaker: crazy_eddy
+---
+% Torgoth alloy? From the VOICE station? Bring me all of it. All of it! Regulars get a price, and you, my friend, are about to become a regular.
+
+- [We'll see]()
+
+## [Side Stories](side_stories)
+
+One per job, granted to the crew member who has that job when they suit up - a
+`boarding_quests_grant` of THIS section, so each ruin's stories go only to the crew who
+go inside it. A story nobody aboard can take goes to the whole party once the first place
+has been reached. `Leads to:` names places in this relic, and marks them on the Nav list.
+
+### [Every Arrow Points Down](voice_arrows)
+---
+For: science
+State: active
+Done when: signal voice_core_read
+Leads to: at_concourse, at_bay
+Pays: 60 credits
+---
+Read the station's own signs, then read what they point at.
+
+### [The Seized Grate](voice_grate)
+---
+For: engineering
+State: active
+Done when: signal shaft_grate_opened
+Leads to: at_shaft
+Pays: 60 credits
+---
+Something seized across the service shaft is between the crew and the bottom of the station.
+
+### [Four Notes](voice_carrier)
+---
+For: comms
+State: active
+Done when: signal voice_carrier_traced
+Leads to: at_concourse, at_bay
+Pays: 60 credits
+---
+There is something under the hiss. Find it, then find where it is coming from.
+
+### [The Dispatcher's Count](voice_count)
+---
+For: helm
+State: active
+Done when: signal dispatch_taken
+Leads to: at_concourse, voice_dispatch
+Pays: 80 credits
+---
+The station kept a record somewhere it was not meant to be read. Find the room, and bring the record home.
+
+### [The Watchers](voice_watchers_quest)
+---
+For: weapons
+State: active
+Done when: signal voice_watchers_safed
+Leads to: at_shaft
+Pays: 60 credits
+---
+Two giants stand guard over the shaft. Find out whether they still can.

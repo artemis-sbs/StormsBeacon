@@ -29,6 +29,7 @@
         "artemis-sbs.OpenUniverse.universe_core.v1.4.0.mastlib"
     ],
     "shared_media": [
-        "artemis-sbs.LegendaryMissions.media.v1.4.0.zip"
+        "artemis-sbs.LegendaryMissions.media.v1.4.0.zip",
+        "artemis-sbs.Cosmos-Tiles.ruins.v0.4.2.zip"
     ]
 }

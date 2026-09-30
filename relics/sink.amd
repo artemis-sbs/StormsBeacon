@@ -40,18 +40,30 @@ Whatever this was, it is a container now.
 ### [deep haul](sink_salvage)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_sink_salvage, alien_1a
 Price: 320
+Sprite: pic:find_sink_salvage
 ---
 A thousand years of things that drifted in and never drifted out. Eddy will empty his till.
 
 ### [a XORN traffic scrap](clue_traffic)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_traffic, alien_1a
+Sprite: pic:find_traffic
 ---
 Half a XORN routing order, water-ruined and still legible in the places that matter. It
 names the yard at (-5, -4), and it names what they were told to cut out of it.
+
+### [a drowned flight recorder](clue_recorder)
+---
+Type: item/quest
+Art: ruins_tg_cache, alien_1a
+Price: 90
+Sprite: pic:tg_cache
+---
+A XORN picket boat's recorder, still pinging for a ship that sank in here a long time ago.
+Its nav log ends in this room.
 
 ## [Relics](relics)
 
@@ -64,6 +76,7 @@ Margin: 120
 Forbid jump: yes
 Seed: 113
 Art: plain_asteroid_6, plain_asteroid_8, plain_asteroid_9
+Walls: cave, rock
 ---
 One room, flooded and enormous, with a hole in one end.
 
@@ -71,6 +84,7 @@ One room, flooded and enormous, with a hole in one end.
 ---
 Relic: sink
 Box: -3250, 0, 0, 1000, 350, 350
+Scan: The only way in, and the only way out.
 ---
 The hole in the end. It is the only way in and it is the only way out.
 
@@ -84,6 +98,7 @@ as flyable and the only way in was sealed.
 ---
 Relic: sink
 Box: 200, 0, 0, 2600, 900, 2600
+Scan: Five kilometres of room, no floor plan at all, and murk you could stand on.
 ---
 Five kilometres of room and no floor plan at all. Fly it however you like - there is
 nothing in here that cares which way you came.
@@ -92,6 +107,7 @@ nothing in here that cares which way you came.
 ---
 Relic: sink
 Solid: sphere, 200, 0, 0, 700
+Dress: ruins_cv_rubble
 ---
 A mass of settled debris hanging in the middle of the room, big enough to hide the far wall
 from the near one.
@@ -115,6 +131,8 @@ Roles: entrance
 Relic: sink
 Point: -1600, 0, 0
 Roles: sink_near
+Scene: sink_near_look
+Scan: A drift of debris hangs in the middle of the room, hiding the far wall.
 ---
 
 ### [the far side](at_far)
@@ -122,6 +140,8 @@ Roles: sink_near
 Relic: sink
 Point: 2000, 0, 1600
 Roles: sink_far
+Scene: sink_far_look
+Scan: The heaviest of everything that ever settled here, heaped against the far wall.
 ---
 Behind the drift, which is the only reason there is a "far side" at all.
 
@@ -144,3 +164,185 @@ Starts when: reach sink_near 1200
 ---
 Caught against the wall, low and off to one side, where a crew that flew straight down the
 middle would never look.
+
+### [the picket boat](sink_wreck)
+---
+Relic: sink
+Point: 1300, -300, 0
+Roles: sink_wreck
+Hidden: yes
+Item: clue_recorder
+Starts when: signal sink_wreck_found
+Scene: sink_wreck_look
+Scan: A small hull crushed against the wrack, half buried in murk. Its recorder is still pinging.
+---
+HIDDEN until somebody hears the recorder from the near side.
+
+### [the picket boat's hull](wreck_hull)
+---
+Relic: sink
+Prop: 1500, -350, 100
+Dress: ruins_hk_wall_c
+Facing: at_near
+---
+
+## [Dialogue](dialogue)
+
+What the Sink's places say. See the Voice's file for how a place scene works.
+
+### [The Near Side](sink_near_look)
+---
+Backdrop: pic:cv_rubble
+---
+% The Sink is one room, flooded with murk and enormous, and it has no floor plan at all: a drift of debris hangs in the middle, big enough to hide the far wall from the near one, and past it something long and dark lies right across the room.
+
+- [Take a sounding](sink_sounding) if science ; check science 7 else sink_sounding_mud, signal sink_sounding_taken
+- [Pick a line past the drift](sink_line) if helm ; check helm 7 else sink_line_lost, signal sink_line_found
+- [Listen to the murk](sink_listen) if comms ; check comms 8 else sink_listen_nothing, reveal sink_wreck, signal sink_wreck_found
+- [Move on]()
+
+### [Sorted by Weight](sink_sounding)
+---
+Backdrop: pic:cv_rubble
+---
+% Everything in here drifted in through the inlet and never drifted out - a thousand years of it, sorted by weight. The heaviest things are all on the far side.
+
+- [Log it]()
+
+### [Mud](sink_sounding_mud)
+---
+Backdrop: pic:cv_rubble
+---
+% The sounding comes back as mud, and more mud.
+
+- [Try again](sink_near_look)
+- [Move on]()
+
+### [A Lane](sink_line)
+---
+Backdrop: pic:cv_rubble
+---
+% A lane through the murk, past the drift on its low side, marked by nothing but the suit's own count.
+
+- [Mark it]()
+
+### [Turned Round](sink_line_lost)
+---
+Backdrop: pic:cv_rubble
+---
+% The murk turns the suit round twice before you notice. Start again from the inlet.
+
+- [Try again](sink_near_look)
+- [Move on]()
+
+### [A Locator](sink_listen)
+---
+Backdrop: pic:cv_rubble
+---
+% A locator, weak and slow, from near the long dark thing across the room - a flight recorder, still pinging for a ship that sank in here a long time ago.
+
+- [Mark it]()
+
+### [Hiss](sink_listen_nothing)
+---
+Backdrop: pic:cv_rubble
+---
+% Hiss, and the murk ticking against the suit.
+
+- [Listen again](sink_near_look)
+- [Move on]()
+
+### [The Picket Boat](sink_wreck_look)
+---
+Backdrop: pic:cv_rubble
+---
+% A small hull, crushed against the wrack and half buried in settled murk. Its recorder is still pinging. The hull markings are XORN's.
+
+- [Read the markings](sink_wreck_marks) if weapons ; check weapons 7 else sink_wreck_blur, signal sink_marks_read
+- [Reel the recorder in]()
+
+### [Lost in the Chase](sink_wreck_marks)
+---
+Backdrop: pic:cv_rubble
+---
+% A XORN picket boat, lost in here chasing somebody - the plot on its nav log ends in this room. Whoever they were chasing got out again.
+
+- [Tell Storm](sink_wreck_storm)
+
+### [Storm, on the Picket](sink_wreck_storm)
+---
+Speaker: prof_storm
+---
+% XORN, chasing somebody through a flooded ruin a long time before we ever heard of the Beacon? Then they have been on this trail longer than I have. Bring the recorder. I want the rest of that plot.
+
+- [Understood]()
+
+### [Scoured](sink_wreck_blur)
+---
+Backdrop: pic:cv_rubble
+---
+% The murk has scoured the hull markings to shadows.
+
+- [Look again](sink_wreck_look)
+- [Reel the recorder in]()
+
+### [The Far Side](sink_far_look)
+---
+Backdrop: pic:cv_rubble
+---
+% Behind the drift: the far side, and the heaviest of everything that ever settled here, heaped against the wall. A haul, if anyone can shift it.
+
+- [Tell Eddy what you have found](sink_far_eddy) if comms
+- [Move on]()
+
+### [Eddy, on the Haul](sink_far_eddy)
+---
+Speaker: crazy_eddy
+---
+% A thousand years of drift and nobody has picked it over? Take all of it. Empty that room. I will empty my till.
+
+- [We'll see]()
+
+## [Side Stories](side_stories)
+
+One per job, for the crew who go inside - see the Voice's file.
+
+### [Sorted by Weight](sink_weight)
+---
+For: science
+State: active
+Done when: signal sink_sounding_taken
+Leads to: at_near
+Pays: 60 credits
+---
+The Sink has kept everything that ever drifted in. Work out where.
+
+### [A Lane Through the Murk](sink_lane)
+---
+For: helm
+State: active
+Done when: signal sink_line_found
+Leads to: at_near
+Pays: 60 credits
+---
+Find a way through the room that does not end against the drift.
+
+### [Still Pinging](sink_pinging)
+---
+For: comms
+State: active
+Done when: signal recorder_taken
+Leads to: at_near, sink_wreck
+Pays: 80 credits
+---
+Something in the murk is still calling for help. Bring it home.
+
+### [The Picket Boat](sink_picket)
+---
+For: weapons
+State: active
+Done when: signal sink_marks_read
+Leads to: sink_wreck
+Pays: 60 credits
+---
+A small hull is crushed against the wrack. Find out whose.

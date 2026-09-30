@@ -47,7 +47,8 @@ Seconds: 6
 ### [a Kralien route chart](clue_chart)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_chart, alien_1a
+Sprite: pic:find_chart
 ---
 A route chart, cut into a plate that has outlasted everyone who read it. It marks the relay
 they ran to - and the way IN to it, which is not the way anything approaches from open
@@ -56,11 +57,22 @@ space.
 ### [deep salvage](ash_salvage)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_ash_salvage, alien_1a
 Price: 240
+Sprite: pic:find_ash_salvage
 ---
 Whatever they were mining here, they were mining it a long way down and they left in a
 hurry. Eddy will ask where you got it.
+
+### [a miner's tally](clue_tally)
+---
+Type: item/quest
+Art: ruins_find_rod, alien_1a
+Price: 40
+Sprite: pic:find_rod
+---
+A notched stick from the tally-keeper's niche: days worked, loads out, and names crossed
+off. The last notch is cut deeper than the rest.
 
 ## [Relics](relics)
 
@@ -73,6 +85,7 @@ Margin: 90
 Forbid jump: yes
 Seed: 51
 Art: plain_asteroid_6, plain_asteroid_9, plain_asteroid_10
+Walls: cave, rock
 ---
 A warren bored into a rock in the ash fields. No hand squared anything off in here; every
 room is round because round is what you get when you dig.
@@ -81,6 +94,7 @@ room is round because round is what you get when you dig.
 ---
 Relic: ash_warren
 Chamber: -2600, 0, 0, 700
+Scan: The way in. Wide enough, if you are careful and slow.
 ---
 The way in. Wide enough, if you are careful and slow.
 
@@ -89,6 +103,7 @@ The way in. Wide enough, if you are careful and slow.
 Relic: ash_warren
 Chamber: -900, 0, 0, 1100
 Passage to: bore 320
+Scan: The first hollow - round, because round is what you get when you dig.
 ---
 
 ### [the crossing](crossing)
@@ -96,6 +111,7 @@ Passage to: bore 320
 Relic: ash_warren
 Chamber: 700, -400, 0, 1000
 Passage to: hollow 300
+Scan: Three ways on. Two of them are full of rock where the roof came down.
 ---
 Three ways on. Two of them are full of rock.
 
@@ -104,6 +120,7 @@ Three ways on. Two of them are full of rock.
 Relic: ash_warren
 Chamber: 1800, -1600, 900, 900
 Passage to: crossing 400
+Scan: Down and over, following something in the rock.
 ---
 Down and over. Whatever they were following, they followed it here.
 
@@ -112,6 +129,7 @@ Down and over. Whatever they were following, they followed it here.
 Relic: ash_warren
 Chamber: 2600, -2600, 1900, 800
 Passage to: deep 380
+Scan: Where they stopped, turned round, and left.
 ---
 And this is where they stopped, turned round, and left.
 
@@ -119,6 +137,7 @@ And this is where they stopped, turned round, and left.
 ---
 Relic: ash_warren
 Solid: sphere, 300, -100, -600, 420
+Dress: ruins_cv_rubble
 ---
 The roof of the crossing came down. Off to one side of the room, deliberately: a slab on
 the CENTRE would sit exactly where every passage into the room meets, and that is not an
@@ -144,6 +163,8 @@ Roles: entrance
 Relic: ash_warren
 Point: -900, 0, 0
 Roles: ash_hollow
+Scene: ash_hollow_look
+Scan: Tool marks spiral the walls, and in one place they stop and become writing.
 ---
 
 ### [the crossing](at_crossing)
@@ -151,6 +172,8 @@ Roles: ash_hollow
 Relic: ash_warren
 Point: 700, -400, 700
 Roles: ash_crossing
+Scene: ash_crossing_look
+Scan: The one way still open is choked with a slump of rubble.
 ---
 Off the fallen roof, which fills the middle of this room.
 
@@ -159,6 +182,8 @@ Off the fallen roof, which fills the middle of this room.
 Relic: ash_warren
 Point: 2600, -2600, 1900
 Roles: ash_last
+Scene: ash_last_look
+Scan: A bench, a rack of worn-out drill heads, and a chart cut into a plate on the wall.
 ---
 
 ### [the chart](chart_place)
@@ -179,4 +204,284 @@ Point: 1500, -1700, 600
 Roles: ash_treasure
 Item: ash_salvage
 Qty: 2
+Scene: ash_seam_look
+Scan: A seam of a dense metal, cut back and left where the tools were dropped.
 ---
+
+### [the tally-keeper's niche](ash_tally)
+---
+Relic: ash_warren
+Point: -900, -700, 600
+Roles: ash_tally
+Hidden: yes
+Item: clue_tally
+Starts when: signal ash_tally_found
+Scene: ash_tally_look
+Scan: A niche cut at head height for a miner, with a notched stick in it.
+---
+HIDDEN until somebody reads the writing on the hollow's wall.
+
+### [the choked way](ash_rockfall)
+---
+Relic: ash_warren
+Barrier: 1250, -1000, 450, 420
+Clear with: beam, check engineering 9
+Dress: ruins_cv_rubble
+---
+A slump of rubble in the only way on from the crossing. The chart is past it, so it has to
+open: by hand, or with the beam - which always works. A ship never notices it.
+
+### [the marker stone](hollow_stone)
+---
+Relic: ash_warren
+Prop: -900, -500, -700
+Dress: ruins_cv_obelisk
+Facing: at_hollow
+---
+
+### [a broken figure](last_statue)
+---
+Relic: ash_warren
+Prop: 2900, -2950, 1700
+Dress: ruins_cv_statue 2
+Facing: at_last
+---
+
+## [Dialogue](dialogue)
+
+What the Ash Warren's places say. See the Voice's file for how a place scene works.
+
+### [The First Hollow](ash_hollow_look)
+---
+Backdrop: pic:cv_wall_a
+---
+% The first hollow is a bubble in the rock, round because round is what you get when you dig. Tool marks spiral the walls, and in one place they stop and become writing.
+
+- [Read the writing](ash_hollow_writing) if science ; check science 7 else ash_hollow_scratches, reveal ash_tally, signal ash_tally_found
+- [Test the rock](ash_hollow_rock) if engineering ; check engineering 7 else ash_hollow_dull
+- [Move on]()
+
+### [A Tally](ash_hollow_writing)
+---
+Backdrop: pic:cv_wall_a
+---
+% A tally, cut into the rock at head height for a miner: days worked, loads out, and names crossed off one by one. Beside it, a niche where the tally-keeper kept the stick.
+
+- [Mark it]()
+
+### [Scratches](ash_hollow_scratches)
+---
+Backdrop: pic:cv_wall_a
+---
+% Scratches in rows. Somebody meant something by them.
+
+- [Look again](ash_hollow_look)
+- [Move on]()
+
+### [What Ran Through the Rock](ash_hollow_rock)
+---
+Backdrop: pic:cv_wall_a
+---
+% The rock rings wrong: not ash-field basalt but something denser, threaded with a metal the suits have no name for. They were not mining the rock. They were mining what ran through it.
+
+- [Tell Vex](ash_hollow_vex)
+- [Log it]()
+
+### [Vex, on the Rock](ash_hollow_vex)
+---
+Speaker: chief_vex
+---
+% Vex. A metal the suit can't name? Get me a sample, even a flake. If it's what I think it is, the refinery would pay for the whole rock.
+
+- [We'll look]()
+
+### [Just Rock](ash_hollow_dull)
+---
+Backdrop: pic:cv_wall_a
+---
+% Rock. Hard, dark, and saying nothing.
+
+- [Move on]()
+
+### [The Tally-Keeper's Niche](ash_tally_look)
+---
+Backdrop: pic:cv_rubble
+---
+% The tally-keeper's niche: a notched stick, a cup, a lamp gone dark. The last notch is cut deeper than all the rest.
+
+- [Reel the tally in]()
+
+### [The Crossing](ash_crossing_look)
+---
+Backdrop: pic:cv_rubble
+---
+% Three ways on from the crossing, and two of them are full of rock where the roof came down. The third drops away towards the deep cut - and a slump of rubble is choking even that.
+
+- [Clear the rubble by hand](ash_rubble_free) if engineering ; check engineering 9 else ash_rubble_stuck, open ash_rockfall
+- [Blast it with the beam](ash_rubble_cut)
+- [Read the demolition scars](ash_crossing_fall) if weapons ; check weapons 7 else ash_crossing_dust, signal ash_fall_read
+- [Not yet]()
+
+### [Clear](ash_rubble_free)
+---
+Backdrop: pic:cv_rubble
+---
+% The last of the slump slides away into the dark. The way down is open.
+
+- [Down]()
+
+### [It Will Not Shift](ash_rubble_stuck)
+---
+Backdrop: pic:cv_rubble
+---
+% Every rock you move, two more settle into its place. More hands, or the beam.
+
+- [Try again](ash_crossing_look)
+- [Leave it]()
+
+### [The Beam](ash_rubble_cut)
+---
+Backdrop: pic:cv_rubble
+---
+% On the Fire app, arm BEAM and select the rubble. It will not argue with the beam.
+
+- [Understood]()
+
+### [Brought Down](ash_crossing_fall)
+---
+Backdrop: pic:cv_rubble
+---
+% The roof did not fall. It was brought down: the drill scars run right to the break. Whoever left last closed two of the ways behind them.
+
+- [Tell Storm](ash_crossing_storm)
+
+### [Storm, on the Fall](ash_crossing_storm)
+---
+Speaker: prof_storm
+---
+% They collapsed their own tunnels on the way out? Then whatever they found down there, they did not want it followed. Which, forgive me, is the best possible reason to follow it.
+
+- [Understood]()
+
+### [Dust](ash_crossing_dust)
+---
+Backdrop: pic:cv_rubble
+---
+% Rock dust, settled a long time. It could have fallen any time.
+
+- [Move on]()
+
+### [The Last Room](ash_last_look)
+---
+Backdrop: pic:cv_obelisk
+---
+% The last room is where they stopped, turned round, and left: a bench, a rack of worn-out drill heads, and on the wall a chart cut into a plate that has outlasted everyone who ever read it.
+
+- [Read the chart where it hangs](ash_last_chart) if helm ; check helm 7 else ash_last_blur, signal ash_chart_read
+- [Search the bench](ash_last_bench) if comms ; check comms 7 else ash_last_empty, signal ash_letter_found
+- [Take the chart and go]()
+
+### [Hidden Twice](ash_last_chart)
+---
+Backdrop: pic:cv_obelisk
+---
+% A route chart: the warren, the ash fields, and a line out to a relay somebody has marked with a word the translator gives as "hidden twice".
+
+- [Log it]()
+
+### [Blur](ash_last_blur)
+---
+Backdrop: pic:cv_obelisk
+---
+% Lines and marks, and none of them lining up with anything you know. Try it from further back.
+
+- [Try again](ash_last_look)
+- [Move on]()
+
+### [A Letter](ash_last_bench)
+---
+Backdrop: pic:cv_obelisk
+---
+% A letter, never sent, under the drill heads: "We found where it runs. We are closing the ways behind us. If you are reading this, leave it where it is."
+
+- [Leave the letter]()
+
+### [Drill Heads](ash_last_empty)
+---
+Backdrop: pic:cv_obelisk
+---
+% Drill heads, worn to stubs. Nothing else on the bench.
+
+- [Look again](ash_last_look)
+- [Move on]()
+
+### [The Seam](ash_seam_look)
+---
+Backdrop: pic:cv_rubble
+---
+% A seam of the dense metal, cut back and left where they dropped their tools.
+
+- [Ask Eddy](ash_seam_eddy) if comms
+- [Haul it later]()
+
+### [Eddy, on Deep Ore](ash_seam_eddy)
+---
+Speaker: crazy_eddy
+---
+% Deep ore? From the ash fields? My friend, nobody mines the ash fields, which is why nobody has any, which is why I will pay you anything. Within reason. Mostly.
+
+- [We'll see]()
+
+## [Side Stories](side_stories)
+
+One per job, for the crew who go inside - see the Voice's file.
+
+### [The Tally](ash_tally_quest)
+---
+For: science
+State: active
+Done when: signal tally_taken
+Leads to: at_hollow, ash_tally
+Pays: 60 credits
+---
+Somebody kept count down here. Find their tally.
+
+### [The Choked Way](ash_choked)
+---
+For: engineering
+State: active
+Done when: signal ash_rockfall_opened
+Leads to: at_crossing
+Pays: 60 credits
+---
+The only way on from the crossing is choked with rubble. Clear it.
+
+### [Hidden Twice](ash_hidden_twice)
+---
+For: helm
+State: active
+Done when: signal ash_chart_read
+Leads to: at_last
+Pays: 60 credits
+---
+They left a chart. Read where it goes.
+
+### [The Letter](ash_letter)
+---
+For: comms
+State: active
+Done when: signal ash_letter_found
+Leads to: at_last
+Pays: 60 credits
+---
+The last miners out left something behind for whoever came next.
+
+### [Brought Down](ash_brought_down)
+---
+For: weapons
+State: active
+Done when: signal ash_fall_read
+Leads to: at_crossing
+Pays: 60 credits
+---
+The roof of the crossing came down. Find out whether it fell or was dropped.

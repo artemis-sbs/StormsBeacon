@@ -24,6 +24,14 @@ default shared UNIVERSE_SELECT = "Storms Beacon"
 # indented body - a column-0 statement is an indentation DROP, and "Bad indentation" takes
 # the whole story to 0 labels with both logs empty.
 default shared SB_EVA_HULL = "lm_eva_suit"
+
+# THE RUINS ART PACK (Cosmos-Tiles `ruins`): the Torgoth, Kralien, choir, hulk and cave wall
+# kits the relics name in `Walls:`, their set pieces and finds, and the portraits the Act
+# app shows beside a place's lines. At the TOP, before any console connects - ship data
+# has to reach the engine before anything is drawn. Without the pack pinned every relic
+# wears the fallback its `Walls:` chain ends in, and the pictures are simply absent.
+volume_kit_load("ruins")
+tilemap_art_use("ruins")
 # Which ruin the open boarding party is for, so a console that arrives late can be dealt
 # back in without the relic signal being re-sent.
 default shared SB_RELIC_NAME = None
@@ -451,7 +459,7 @@ brain:
 # a static scan.
 //shared/signal/item_collected if UNIVERSE_ACTIVE
 metadata: ``` yaml
-emits: manifest_taken, slate_taken, chart_taken, votive_taken, traffic_taken, order_taken
+emits: manifest_taken, slate_taken, chart_taken, votive_taken, traffic_taken, order_taken, dispatch_taken, rod_taken, blank_taken, tally_taken, cutter_taken, hymn_taken, recorder_taken
 ```
     ->END if key is None
     ->END if not str(key).startswith("clue_")
@@ -503,16 +511,7 @@ emits: manifest_taken, slate_taken, chart_taken, votive_taken, traffic_taken, or
 # The scan. `relic_piece` is the role every beacon piece carries, so this is written once
 # for all four.
 //science if UNIVERSE_ACTIVE and has_role(SCIENCE_SELECTED_ID, "relic_piece")
-    ->END if get_inventory_value(SCIENCE_SELECTED_ID, "sb_piece_scanned", 0) == 1
-    set_inventory_value(SCIENCE_SELECTED_ID, "sb_piece_scanned", 1)
-    # The piece knows which ruin it is in and which item it is: a thing placed at an
-    # authored point carries that point's roles and its relic's key, so nothing here has
-    # to be told per-episode.
-    _pk = get_inventory_value(SCIENCE_SELECTED_ID, "item_key", "")
-    _rk = get_inventory_value(SCIENCE_SELECTED_ID, "relic_key", "")
-    comms_message("Readings coming through - I have it. It is loose in the cradle now, Captain. Get a tether on it and carry it out; it will not survive a jump and neither will you if you try one in there.", role("storm"), role("__player__"), color="#6cf")
-    universe_info_card("The core reads as loose in its cradle. Tether it and carry it out of the structure.", "Science", "#8cf")
-    task_schedule(sb_watch_extraction, {"piece_id": SCIENCE_SELECTED_ID, "piece_key": _pk, "relic_key": _rk})
+    task_schedule(sb_piece_loose, {"piece_id": SCIENCE_SELECTED_ID})
     ->END
 
 # Watch a scanned piece until it is OUT of the ruin. Ends if the piece is destroyed, or if
@@ -656,4 +655,87 @@ desc: Floods the coolant loop to shed heat under fire.
     sb_relic_ship = next(iter(to_object_list(role("__player__"))), None)
     if sb_relic_ship is not None:
         boarding_invite_crew(sb_relic_ship, title=SB_RELIC_NAME)
+    ->END
+
+
+# ---------------------------------------------------------------------------------------
+# INSIDE THE RUINS - what the crew in suits do, beyond flying.
+#
+# Each relic file carries its own `## Dialogue` (what its places say, opened in the Act
+# app when a suit arrives) and its own `## Side Stories` (one per job). Nothing here is
+# per-ruin: the relic says it, this routes it.
+#
+# AT THE END OF THE FILE, after every other label. Labels fall through, so inserting one
+# between two existing labels is never a safe append.
+# ---------------------------------------------------------------------------------------
+
+# A SUIT CAN SCAN THE PIECE TOO. The xESS Scan app's "Read" on a find emits `eva_scanned`;
+# on a Beacon piece that is the same act as the ship's science scan, so it goes the same
+# way - a crew floating beside the core should not have to ask the bridge.
+//shared/signal/eva_scanned
+    ->END if not UNIVERSE_ACTIVE
+    ->END if not has_role(EVA_TARGET, "relic_piece")
+    task_schedule(sb_piece_loose, {"piece_id": EVA_TARGET})
+    ->END
+
+# The crew who go inside pick up that ruin's side stories - each crew member the one for
+# their job. `relic_section` reads the relic's own file, so the Voice's stories go to the
+# crew in the Voice and nobody else.
+//shared/signal/eva_went_out
+    ->END if EVA_RELIC is None
+    boarding_quests_grant(relic_section(EVA_RELIC, "side_stories"))
+    ->END
+
+# Once the crew has reached the first place with something to say, the party is settled:
+# a story nobody aboard has the job for goes to all of them rather than to nobody.
+//shared/signal/eva_place_scene
+    ->END if EVA_RELIC is None
+    boarding_quests_open_unclaimed(relic_section(EVA_RELIC, "side_stories"))
+    ->END
+
+# A WAY OPENED is a story beat: `<barrier>_opened`, whichever way it was done - worked by
+# hand in a scene, cut with the beam, or opened by its own `Opens when:`. A side story
+# waits on it with `Done when: signal shaft_grate_opened`.
+//shared/signal/rail_opened
+metadata: ``` yaml
+emits: shaft_grate_opened, throat_fall_opened, trench_bulkhead_opened, ash_rockfall_opened
+```
+    ->END if RAIL_BARRIER is None
+    signal_emit("quest_signal", {"SIGNAL_NAME": str(RAIL_BARRIER) + "_opened"})
+    ->END
+
+# THE PIECE COMES LOOSE - scanned from the ship's science station or read from a suit.
+# Once per piece: the piece remembers it was scanned.
+=== sb_piece_loose
+    default piece_id = 0
+    ->END if piece_id == 0
+    ->END if get_inventory_value(piece_id, "sb_piece_scanned", 0) == 1
+    set_inventory_value(piece_id, "sb_piece_scanned", 1)
+    # The piece knows which ruin it is in and which item it is: a thing placed at an
+    # authored point carries that point's roles and its relic's key, so nothing here has
+    # to be told per-episode.
+    _pk = get_inventory_value(piece_id, "item_key", "")
+    _rk = get_inventory_value(piece_id, "relic_key", "")
+    comms_message("Readings coming through - I have it. It is loose in the cradle now, Captain. Get a tether on it and carry it out; it will not survive a jump and neither will you if you try one in there.", role("storm"), role("__player__"), color="#6cf")
+    universe_info_card("The piece reads as loose in its cradle. Tether it and carry it out of the structure.", "Science", "#8cf")
+    task_schedule(sb_watch_extraction, {"piece_id": piece_id, "piece_key": _pk, "relic_key": _rk})
+    ->END
+
+
+# AUTHORING PROBE. `sb_probe=inside` on the engine command line parks the ship in a room of
+# the ruin the moment it is built (`sb_place=<point>` or `sb_place=x,y,z` relative to the
+# relic; default the Voice's concourse), facing the middle of the room, so
+# a ruin's walls and set pieces can be looked at without flying the throat every time.
+# Does nothing without the argument.
+//shared/signal/relic_built
+    ->END if command_line_get("sb_probe", "") != "inside"
+    sb_probe_park(RELIC_KEY, command_line_get("sb_place", "at_concourse"))
+    await delay_sim(8)
+    sb_probe_report(RELIC_KEY)
+    # HELD THERE. A player ship's helm climbs back towards its own altitude, so a ship
+    # parked deep in a ruin rises through the ceiling within seconds and the main screen
+    # shows the back of a slab. Re-park it for a couple of minutes of looking.
+    for _probe_i in range(600):
+        sb_probe_park(RELIC_KEY, command_line_get("sb_place", "at_concourse"))
+        await delay_sim(0.2)
     ->END

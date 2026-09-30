@@ -48,7 +48,8 @@ Seconds: 6
 ### [a votive plate](clue_votive)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_votive, alien_1a
+Sprite: pic:find_votive
 ---
 Not a machine part. A plate, cut with a copy of the giants' notation by somebody who did
 not understand it - the work of people who found a working Beacon relay, built a shrine
@@ -57,11 +58,22 @@ around what they thought it was, and wrote down where the real one had gone.
 ### [shrine metal](choir_salvage)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_choir_salvage, alien_1a
 Price: 140
+Sprite: pic:find_choir_salvage
 ---
 Soft alloy, beaten thin, a thousand offerings' worth. Worth something to Eddy and nothing
 to anyone else.
+
+### [a hymn plate](clue_hymn)
+---
+Type: item/quest
+Art: ruins_find_votive, alien_1a
+Price: 30
+Sprite: pic:find_votive
+---
+A thin plate of soft alloy, scratched with a hymn in the giants' notation - copied by
+someone who could not read it, and copied perfectly.
 
 ## [Relics](relics)
 
@@ -74,6 +86,7 @@ Margin: 80
 Forbid jump: yes
 Seed: 96
 Art: plain_asteroid_7, plain_asteroid_10, plain_asteroid_11
+Walls: choir, rock
 ---
 A copy of a giant's station, built to two-thirds scale by hands that were working from
 memory and reverence rather than from plans.
@@ -82,6 +95,7 @@ memory and reverence rather than from plans.
 ---
 Relic: false_choir
 Box: -2200, 0, 0, 900, 300, 300
+Scan: Narrower than the Voice's throat - made by smaller hands.
 ---
 Narrower than the Voice's, and the crew will notice.
 
@@ -89,18 +103,21 @@ Narrower than the Voice's, and the crew will notice.
 ---
 Relic: false_choir
 Box: -400, 0, 0, 950, 380, 950
+Scan: A concourse copied from memory, the proportions almost right.
 ---
 
 ### [the shaft](shaft)
 ---
 Relic: false_choir
 Box: 300, -1100, 0, 300, 950, 300
+Scan: A shaft copied because the original had one. A rope of beaten metal hangs down it.
 ---
 
 ### [the bay](bay)
 ---
 Relic: false_choir
 Box: 300, -2100, 0, 800, 400, 800
+Scan: The Voice's transmitter bay, two-thirds the size, and empty.
 ---
 The same room in the same place as the Voice's transmitter bay, and about two-thirds of
 the size. Whatever they were copying, they had seen it from the outside.
@@ -109,6 +126,8 @@ the size. Whatever they were copying, they had seen it from the outside.
 ---
 Relic: false_choir
 Solid: box, 300, -2100, 0, 260, 160, 260
+Dress: ruins_ch_false_voice
+Facing: at_bay
 ---
 A cradle, cut to hold something the size of the Voice's core. There is nothing in it and
 there never was.
@@ -125,6 +144,8 @@ Roles: entrance
 Relic: false_choir
 Point: -400, 0, 500
 Roles: choir_concourse
+Scene: choir_concourse_look
+Scan: Stone consoles, carved rather than built, in the places the Voice's stood.
 ---
 
 ### [the empty bay](at_bay)
@@ -132,6 +153,8 @@ Roles: choir_concourse
 Relic: false_choir
 Point: 300, -2100, 530
 Roles: choir_bay
+Scene: choir_bay_look
+Scan: A cradle cut to hold something the size of the Voice's core. There is nothing in it.
 ---
 Where the crew learns this was never it.
 
@@ -153,4 +176,282 @@ Point: -400, 0, -500
 Roles: choir_treasure
 Item: choir_salvage
 Qty: 3
+Scene: choir_offerings_look
+Scan: Offerings - shrine metal beaten thin, stacked with care.
 ---
+
+### [the rope shaft](at_choir_shaft)
+---
+Relic: false_choir
+Point: 300, -700, 0
+Roles: choir_shaft
+Scene: choir_shaft_look
+Scan: A rope of beaten metal hangs down the middle of the shaft, tied with a thousand years of votive tags.
+---
+
+### [the reliquary](choir_reliquary)
+---
+Relic: false_choir
+Point: -300, -2300, 500
+Roles: choir_reliquary
+Hidden: yes
+Item: clue_hymn
+Starts when: signal choir_reliquary_found
+Scene: choir_reliquary_look
+Scan: A stone box behind the empty cradle, sealed with wax gone black.
+---
+HIDDEN until somebody looks behind the cradle for what they left instead of the god.
+
+### [a votive](votive_a)
+---
+Relic: false_choir
+Prop: -1000, -250, -700
+Dress: ruins_ch_votive 1.5
+Facing: at_concourse
+---
+
+### [a votive](votive_b)
+---
+Relic: false_choir
+Prop: 200, -250, -700
+Dress: ruins_ch_votive 1.5
+Facing: at_concourse
+---
+
+### [the mural](choir_mural)
+---
+Relic: false_choir
+Prop: -400, -50, 880
+Dress: ruins_ch_mural 2
+Facing: 0, 0, -1
+---
+
+### [a brazier](brazier_a)
+---
+Relic: false_choir
+Prop: -250, -2390, -400
+Dress: ruins_ch_brazier 2
+Facing: at_bay
+---
+
+### [a brazier](brazier_b)
+---
+Relic: false_choir
+Prop: 850, -2390, -400
+Dress: ruins_ch_brazier 2
+Facing: at_bay
+---
+
+## [Dialogue](dialogue)
+
+What the False Choir's places say. See the Voice's file for how a place scene works.
+
+### [The Concourse](choir_concourse_look)
+---
+Backdrop: pic:ch_mural
+---
+% It is the Voice's concourse, near enough - the same four ways on, the same console bank - but smaller, and made of stone, and every console is carved rather than built. Someone copied this room from memory, with love.
+
+- [Read the carvings](choir_carvings) if science ; check science 7 else choir_carvings_blank, signal choir_carvings_read
+- [Try a carved console](choir_console) if engineering
+- [Listen](choir_listen) if comms ; check comms 7 else choir_listen_nothing, signal choir_hum_heard
+- [Move on]()
+
+### [Copied From Memory](choir_carvings)
+---
+Backdrop: pic:ch_mural
+---
+% The carvings copy Torgoth freight notation perfectly and get every word of it wrong: the shapes are right and the meaning has been replaced with prayer. Every arrow still points down.
+
+- [Tell Storm](choir_carvings_storm)
+
+### [Storm, on the Carvings](choir_carvings_storm)
+---
+Speaker: prof_storm
+---
+% They copied the Voice's station. They must have SEEN it - been inside it - and come away and built it again out of stone, to... Oh. It is a shrine. Captain, whatever they worshipped here, I think we are carrying it.
+
+- [Understood]()
+
+### [Worn Smooth](choir_carvings_blank)
+---
+Backdrop: pic:ch_mural
+---
+% Hands have worn the carvings smooth - a thousand years of people touching them on the way past.
+
+- [Look again](choir_concourse_look)
+- [Move on]()
+
+### [A Stone Console](choir_console)
+---
+Backdrop: pic:ch_votive
+---
+% The console is stone all the way through. Its "screens" are polished obsidian, and behind one, where the power bus should be, somebody has left a pinch of ash and a single bead.
+
+- [Leave it as it is]()
+
+### [Four Notes, Again](choir_listen)
+---
+Backdrop: pic:ch_brazier
+---
+% Not a carrier - a hum, from below, in four notes. It is not coming from any machine. It is the room itself, tuned, the way the Voice's carrier was. They copied the SOUND.
+
+- [Log it]()
+
+### [Quiet](choir_listen_nothing)
+---
+Backdrop: pic:ch_brazier
+---
+% Quiet. The kind of quiet a room keeps on purpose.
+
+- [Listen again](choir_concourse_look)
+- [Move on]()
+
+### [The Rope](choir_shaft_look)
+---
+Backdrop: pic:ch_brazier
+---
+% The shaft goes down because the Voice's shaft went down. There is no grate. There is a rope of beaten metal hung down the middle of it, for climbing, and a thousand years of votive tags tied all along it.
+
+- [Fly the rope and read the tags](choir_tags) if helm ; check helm 7 else choir_tags_faded, signal choir_tags_read
+- [Follow it down]()
+
+### [The Tags](choir_tags)
+---
+Backdrop: pic:ch_brazier
+---
+% Names, mostly. Requests. And one tag in a steadier hand than the rest: "The voice is down there. It will speak again when the five are one."
+
+- [Log it]()
+
+### [Faded](choir_tags_faded)
+---
+Backdrop: pic:ch_brazier
+---
+% Too many tags, too close, and the suit drifts off the rope before you can read one. Steadier.
+
+- [Try again](choir_shaft_look)
+- [Follow it down]()
+
+### [The Empty Bay](choir_bay_look)
+---
+Backdrop: pic:ch_false_voice
+---
+% The bay is the Voice's bay, two-thirds the size, and the cradle at its heart is cut to hold something exactly the size of the Voice's core. There is nothing in it. There never was.
+
+- [Look for what they left instead](choir_bay_search) if science ; check science 8 else choir_bay_nothing, reveal choir_reliquary, signal choir_reliquary_found
+- [Call Storm](choir_bay_storm)
+- [Move on]()
+
+### [The Reliquary](choir_bay_search)
+---
+Backdrop: pic:ch_false_voice
+---
+% Behind the empty cradle, where the Voice's bay has its transmitter controls, this one has a reliquary - a stone box, sealed with wax gone black.
+
+- [Mark it]()
+
+### [Nothing](choir_bay_nothing)
+---
+Backdrop: pic:ch_false_voice
+---
+% Nothing that you can see. Which, in a room built this carefully, is not the same as nothing.
+
+- [Look again](choir_bay_look)
+- [Move on]()
+
+### [Storm, in the Empty Bay](choir_bay_storm)
+---
+Speaker: prof_storm
+---
+% Empty. Of course it is empty - they never had it. They built the room and waited for the god to come home. Bring me the votive plate. And Captain - be kind to this place.
+
+- [We will]()
+
+### [The Hymn Plate](choir_reliquary_look)
+---
+Backdrop: pic:ch_votive
+---
+% Inside the reliquary: a thin plate beaten from soft alloy, scratched with a hymn in the giants' notation by somebody who could not read it - and copied perfectly.
+
+- [Reel it in]()
+
+### [The Offerings](choir_offerings_look)
+---
+Backdrop: pic:ch_votive
+---
+% Offerings: shrine metal, beaten thin, a thousand gifts' worth, stacked with care beside the way in.
+
+- [Leave them for whoever comes back](choir_offerings_left) ; signal choir_offerings_left
+- [Ask Eddy](choir_offerings_eddy) if comms
+- [Haul them later]()
+
+### [Left](choir_offerings_left)
+---
+Speaker: prof_storm
+---
+% You left them? ...Good. Thank you. I know what Eddy would have paid. Some things are worth more where they are.
+
+- [Move on]()
+
+### [Eddy, on Shrine Metal](choir_offerings_eddy)
+---
+Speaker: crazy_eddy
+---
+% Shrine metal? Soft, thin, worth about as much as it weighs. Nobody will miss it. Probably. I do not ask where things come from, you understand. I just pay for them.
+
+- [We'll see]()
+
+## [Side Stories](side_stories)
+
+One per job, for the crew who go inside - see the Voice's file.
+
+### [Copied From Memory](choir_copied)
+---
+For: science
+State: active
+Done when: signal choir_carvings_read
+Leads to: at_concourse
+Pays: 60 credits
+---
+Somebody built the Voice's station again, out of stone. Find out why.
+
+### [Four Notes, Again](choir_hum)
+---
+For: comms
+State: active
+Done when: signal choir_hum_heard
+Leads to: at_concourse
+Pays: 60 credits
+---
+The room is making a sound you have heard before.
+
+### [The Rope](choir_rope)
+---
+For: helm
+State: active
+Done when: signal choir_tags_read
+Leads to: at_choir_shaft
+Pays: 60 credits
+---
+A thousand years of pilgrims tied their names to a rope. Read them.
+
+### [The Hymn](choir_hymn)
+---
+For: engineering
+State: active
+Done when: signal hymn_taken
+Leads to: at_bay, choir_reliquary
+Pays: 80 credits
+---
+They left something in the empty bay in place of the god. Bring it home.
+
+### [Be Kind to This Place](choir_kind)
+---
+For: weapons
+State: active
+Done when: signal choir_offerings_left
+Leads to: choir_cache
+Pays: 40 credits
+---
+A thousand years of offerings sit by the way in. Decide what to do with them.

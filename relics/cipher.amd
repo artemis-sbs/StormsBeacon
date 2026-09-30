@@ -42,8 +42,9 @@ Seconds: 6
 ### [the Cipher](beacon_cipher)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_beacon_cipher, unknown
 Tier: 5
+Sprite: pic:beacon_cipher
 ---
 The keying array: the piece that makes the Beacon's line mean something rather than merely
 carry. Without it the Voice and the Lens shout a clear, precise, meaningless note.
@@ -51,14 +52,16 @@ carry. Without it the Voice and the Lens shout a clear, precise, meaningless not
 ### [relay salvage](relay_salvage)
 ---
 Type: item/salvage
-Art: unknown
+Art: ruins_find_relay_salvage, alien_1a
 Price: 200
+Sprite: pic:find_relay_salvage
 ---
 
 ### [a keying rod](clue_rod)
 ---
 Type: item/quest
-Art: unknown
+Art: ruins_find_rod, alien_1a
+Sprite: pic:find_rod
 ---
 A rod cut with the same notching as the Cipher's own housing. Storm will know what it is
 for, and she will not like the answer.
@@ -74,6 +77,7 @@ Margin: 90
 Forbid jump: yes
 Seed: 68
 Art: plain_asteroid_6, plain_asteroid_8, plain_asteroid_11
+Walls: cave, rock
 ---
 A relay the giants sank in a nebula, and then hid inside. Nothing here is square and
 nothing here is straight.
@@ -82,6 +86,7 @@ nothing here is straight.
 ---
 Relic: cipher
 Chamber: -2400, 0, 0, 700
+Scan: A bubble with one way out, and the way out is the way you came in.
 ---
 The obvious way in, and it goes nowhere - a bubble with one exit, and the exit is the way
 you came. Whoever hid this expected somebody to find the hole and stop looking.
@@ -91,6 +96,7 @@ you came. Whoever hid this expected somebody to find the hole and stop looking.
 Relic: cipher
 Chamber: -1200, -600, 800, 600
 Passage to: false_mouth 300
+Scan: The real way on, low down behind the false mouth.
 ---
 The real route, off the floor of the false mouth and behind it.
 
@@ -99,6 +105,7 @@ The real route, off the floor of the false mouth and behind it.
 Relic: cipher
 Chamber: 400, -900, 1600, 1000
 Passage to: throat 320
+Scan: The relay's body. Its dead core hangs in the middle of the room.
 ---
 The relay's own body. Everything else in here is a corridor to this.
 
@@ -107,6 +114,7 @@ The relay's own body. Everything else in here is a corridor to this.
 Relic: cipher
 Chamber: 900, -2300, 900, 800
 Passage to: coil 280
+Scan: Below the coil, deep in a thousand years of settled murk.
 ---
 Below the coil, and full of whatever settled out of the nebula over a thousand years.
 
@@ -115,6 +123,7 @@ Below the coil, and full of whatever settled out of the nebula over a thousand y
 Relic: cipher
 Chamber: -150, -1450, 850, 500
 Passage to: throat 260, sump 260
+Scan: The long way round - down out of the throat and up under the sump.
 ---
 The long way down. It drops out of the throat before the coil and comes up under the
 sump, which makes this the only structure in the Beacon with a way ROUND its middle - and
@@ -125,6 +134,7 @@ that is the whole of the puzzle here. Everything else the Torgoth built is a cha
 Relic: cipher
 Chamber: 1900, -700, 2600, 900
 Passage to: coil 300
+Scan: The only room in the relay with a hard floor. The housing is here.
 ---
 Where the Cipher sits. The only room in the structure with a hard floor.
 
@@ -132,7 +142,8 @@ Where the Cipher sits. The only room in the structure with a hard floor.
 ---
 Relic: cipher
 Barrier: -400, -750, 1200, 420
-Clear with: beam
+Clear with: beam, check engineering 10
+Dress: ruins_cv_rubble
 ---
 A fall of the relay's own shielding, jammed across the short way into the coil. It can be
 cut - it is only a few meters of plate and a suit carries a torch - and while somebody is
@@ -161,6 +172,7 @@ The relay's core, dead and still in the middle of its own room.
 ---
 Relic: cipher
 Solid: box, 1200, -2500, 600, 300, 160, 300
+Dress: ruins_cv_rubble
 ---
 
 ### [the false mouth](mouth)
@@ -175,6 +187,8 @@ Roles: entrance
 Relic: cipher
 Point: -2400, 0, 0
 Roles: cipher_false
+Scene: cipher_false_look
+Scan: A dead end. Or something that very much wants to look like one.
 ---
 The moment the crew learns this ruin lies to them.
 
@@ -183,6 +197,8 @@ The moment the crew learns this ruin lies to them.
 Relic: cipher
 Point: 883, -900, 2083
 Roles: cipher_coil
+Scene: cipher_coil_look
+Scan: The core is dead. The sediment under it is heaped wrong.
 ---
 Out in the shell of the room, not just off the core. A point 20u clear of a mass is not
 clear of it - a hull is wider than that - so a marker has to sit where a SHIP fits, which
@@ -193,6 +209,8 @@ is a different question from whether the maths says it is outside.
 Relic: cipher
 Point: 1900, -700, 2600
 Roles: cipher_keying
+Scene: cipher_keying_look
+Scan: A hard floor, a housing with the Cipher in it, and a rack for rods.
 ---
 
 ### [the housing](cipher_place)
@@ -211,6 +229,8 @@ Roles: cipher_treasure
 Item: relay_salvage
 Qty: 3
 Hidden: yes
+Scene: cipher_sump_look
+Scan: Relay salvage, dropped when the builders stripped this place and never picked up.
 ---
 `Hidden:` keeps it off the crew's list of places until somebody has BEEN down here, which
 is the reward for taking the spill instead of cutting the throat. A party that cut their
@@ -229,3 +249,300 @@ Starts when: reach cipher_coil 1000
 ---
 A spare keying rod, racked where a technician would want it. It is cut for a housing this
 size - and there is more than one housing this size.
+
+### [the real throat](at_throat)
+---
+Relic: cipher
+Point: -1200, -600, 800
+Roles: cipher_throat
+Hidden: yes
+Scene: cipher_throat_look
+Scan: The throat drops under the false mouth and bends away. A fall of shielding is jammed across the short way on.
+---
+HIDDEN until somebody finds the way out of the false mouth (science or helm, in
+`cipher_false_look`). Hidden is a property of the LIST: a crew that stumbles down here
+on the way somewhere else has found it anyway.
+
+### [the keying stone](keying_stone)
+---
+Relic: cipher
+Prop: 1500, -900, 3200
+Dress: ruins_cv_obelisk
+Facing: at_keying
+---
+
+## [Dialogue](dialogue)
+
+What the Cipher's places say. See the Voice's file for how a place scene works.
+
+### [The Dead End](cipher_false_look)
+---
+Backdrop: pic:cv_wall_a
+---
+% The false mouth is a smooth bubble with one way out, and the way out is the way you came in. The murk is thick enough to lean on. Somebody built this room to be given up on.
+
+- [Sweep the walls for a seam](cipher_false_seam) if science ; check science 7 else cipher_false_smooth, reveal at_throat, signal cipher_throat_found
+- [Feel for a draught in the murk](cipher_false_draught) if helm ; check helm 8 else cipher_false_still, reveal at_throat, signal cipher_throat_found
+- [Call Storm](cipher_false_storm)
+- [Give up on it]()
+
+### [A Seam](cipher_false_seam)
+---
+Backdrop: pic:cv_wall_a
+---
+% Low on the floor, behind a lip of shielding, the wall is not a wall: a throat, angled back under the way you came. The real way in.
+
+- [Take it]()
+
+### [A Draught](cipher_false_draught)
+---
+Backdrop: pic:cv_wall_a
+---
+% The murk is moving - slowly, but moving - down and back, towards the floor behind you. Something below is open.
+
+- [Follow it]()
+
+### [Smooth](cipher_false_smooth)
+---
+Backdrop: pic:cv_wall_a
+---
+% Smooth, all the way round. Whoever finished these walls finished them well.
+
+- [Look again](cipher_false_look)
+- [Leave it]()
+
+### [Still](cipher_false_still)
+---
+Backdrop: pic:cv_wall_a
+---
+% The murk hangs dead still round the suit. Or the suit is not still enough to tell.
+
+- [Try again](cipher_false_look)
+- [Leave it]()
+
+### [Storm, on the Dead End](cipher_false_storm)
+---
+Speaker: prof_storm
+---
+% A dead end in a relay? No. Relays do not have dead ends, they have DECOYS. The builders hid this once in a nebula and once again inside itself - look for the second hiding place, and look low.
+
+- [Understood](cipher_false_look)
+
+### [The Real Throat](cipher_throat_look)
+---
+Backdrop: pic:cv_rubble
+---
+% The throat drops under the false mouth and bends away. A little way on, a fall of the relay's own shielding is jammed across the short way into the coil. There is a longer way down, if you would rather not cut.
+
+- [Work the fall loose](cipher_fall_free) if engineering ; check engineering 10 else cipher_fall_stuck, open throat_fall
+- [Cut it with the beam](cipher_fall_cut)
+- [Take the long way](cipher_fall_long)
+
+### [Loose](cipher_fall_free)
+---
+Backdrop: pic:cv_rubble
+---
+% The plate shifts, grinds, and slides away into the murk. The short way is open.
+
+- [On]()
+
+### [Jammed](cipher_fall_stuck)
+---
+Backdrop: pic:cv_rubble
+---
+% It will not move - not by one pair of hands. Another suit alongside, or the cutter.
+
+- [Try again](cipher_throat_look)
+- [Leave it]()
+
+### [The Cutter](cipher_fall_cut)
+---
+Backdrop: pic:cv_rubble
+---
+% On the Fire app, arm BEAM and select the fall. It is only a few metres of plate.
+
+- [Understood]()
+
+### [The Long Way](cipher_fall_long)
+---
+Backdrop: pic:cv_rubble
+---
+% The spill drops out of the throat before the fall and comes up under the sump - longer, darker, and nobody has been down it in a thousand years. Anything down there has been waiting.
+
+- [Understood]()
+
+### [The Coil](cipher_coil_look)
+---
+Backdrop: pic:cv_wall_b
+---
+% The coil is the relay's body: a round room with its dead core hanging in the middle and a thousand years of sediment on everything below it. The sediment is heaped wrong - as if something underneath had been pushing up through it.
+
+- [Read the sediment](cipher_coil_sediment) if science ; check science 8 else cipher_coil_mud, reveal sump_cache, signal cipher_sump_read
+- [Listen to the core](cipher_coil_listen) if comms ; check comms 8 else cipher_coil_dead, signal cipher_core_heard
+- [Move on]()
+
+### [Hollow Underneath](cipher_coil_sediment)
+---
+Backdrop: pic:cv_wall_b
+---
+% Hollow underneath. There is a room below this one that the murk has been hiding, and something in it is heavier than silt.
+
+- [Mark it]()
+
+### [Mud](cipher_coil_mud)
+---
+Backdrop: pic:cv_wall_b
+---
+% Mud, a thousand years deep. It is not telling you anything today.
+
+- [Try again](cipher_coil_look)
+- [Move on]()
+
+### [A Tick](cipher_coil_listen)
+---
+Backdrop: pic:cv_wall_b
+---
+% The core is dead, but its housing still rings when something further in does - a tick, very faint, very regular. Whatever keys this relay is still keeping time.
+
+- [Log it]()
+
+### [Silence](cipher_coil_dead)
+---
+Backdrop: pic:cv_wall_b
+---
+% Silence, and the sound of your own suit.
+
+- [Listen again](cipher_coil_look)
+- [Move on]()
+
+### [The Sump Floor](cipher_sump_look)
+---
+Backdrop: pic:cv_rubble
+---
+% Relay salvage, under a thousand years of murk - dropped when the builders were stripping this place and never picked up again.
+
+- [Ask Eddy](cipher_sump_eddy) if comms
+- [Haul it later]()
+
+### [Eddy, on Relay Windings](cipher_sump_eddy)
+---
+Speaker: crazy_eddy
+---
+% Relay core windings? Nobody has seen relay windings since my grandmother's day. What do you mean, you do not know what they are worth? I am TELLING you what they are worth!
+
+- [We'll see]()
+
+### [The Keying Chamber](cipher_keying_look)
+---
+Backdrop: pic:cv_obelisk
+---
+% The keying chamber has the only hard floor in the relay, and in the housing at the far end the Cipher sits in its notches, ticking. A rack beside it holds one spare rod.
+
+- [Match the rod to the housing](cipher_keying_match) if engineering ; check engineering 7 else cipher_keying_wrong, signal cipher_rod_matched
+- [Read the notching](cipher_keying_read) if science ; check science 8 else cipher_keying_blank
+- [Call Storm](cipher_keying_storm)
+- [Get to work]()
+
+### [A Second Housing](cipher_keying_match)
+---
+Backdrop: pic:cv_obelisk
+---
+% The spare rod slides into a notch that is not the Cipher's. There is a second housing cut into the floor, and it is empty. This rod was made for another relay.
+
+- [Tell Vex](cipher_keying_vex)
+
+### [Vex, on the Rod](cipher_keying_vex)
+---
+Speaker: chief_vex
+---
+% Vex. Two housings, one rod, one Cipher. So there were two of these relays - or somebody meant there to be. Bring the rod home. Storm will want to know where its twin went.
+
+- [Will do]()
+
+### [It Will Not Seat](cipher_keying_wrong)
+---
+Backdrop: pic:cv_obelisk
+---
+% The rod will not seat in any notch you try. Not yet.
+
+- [Try again](cipher_keying_look)
+- [Leave it]()
+
+### [A Count](cipher_keying_read)
+---
+Backdrop: pic:cv_obelisk
+---
+% The notching is a count, not a key: every notch a day this relay kept time. The last one was cut a thousand years ago, and the tick has gone on counting with nobody to cut the next.
+
+- [Move on]()
+
+### [Notches](cipher_keying_blank)
+---
+Backdrop: pic:cv_obelisk
+---
+% Notches, and more notches. The pattern is there. You are not seeing it.
+
+- [Look again](cipher_keying_look)
+- [Move on]()
+
+### [Storm, at the Housing](cipher_keying_storm)
+---
+Speaker: prof_storm
+---
+% The Cipher. Still keeping time - of course it is. Scan it, tether it, and bring the spare rod too. I have a feeling it opens something we have not found yet.
+
+- [Understood]()
+
+## [Side Stories](side_stories)
+
+One per job, for the crew who go inside - see the Voice's file.
+
+### [The Real Way In](cipher_way_in)
+---
+For: helm
+State: active
+Done when: signal cipher_throat_found
+Leads to: at_false
+Pays: 60 credits
+---
+The obvious way in goes nowhere. Find the one that does.
+
+### [The Second Hiding Place](cipher_hiding)
+---
+For: science
+State: active
+Done when: signal cipher_sump_read
+Leads to: at_coil
+Pays: 60 credits
+---
+The relay was hidden twice. Something inside it was hidden a third time.
+
+### [The Fall](cipher_fall)
+---
+For: engineering
+State: active
+Done when: signal throat_fall_opened
+Leads to: at_throat
+Pays: 60 credits
+---
+A fall of shielding blocks the short way in. Open it.
+
+### [Still Keeping Time](cipher_time)
+---
+For: comms
+State: active
+Done when: signal cipher_core_heard
+Leads to: at_coil
+Pays: 60 credits
+---
+Something in the relay is still ticking. Listen for it.
+
+### [Two Housings](cipher_housings)
+---
+For: engineering
+State: active
+Done when: signal cipher_rod_matched
+Leads to: at_keying
+Pays: 80 credits
+---
+The spare rod in the keying chamber fits something. Find out what.
