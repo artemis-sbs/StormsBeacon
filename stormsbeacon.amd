@@ -1237,7 +1237,7 @@ deepest dark. Nebulae everywhere, few ports, and something always a jump behind 
 ### [Torgoth Megastation](giants_house)
 ---
 At: 2, -1
-Kind: derelict
+Prefab: derelict
 Relic: voice
 Relic file: relics/voice.amd
 Cutscene: arrive_voice
@@ -1255,7 +1255,7 @@ structure, and a second envelope would be two nebulae fighting over one ruin.
 ### [Kralien Ruin](kralien_ruin)
 ---
 At: 4, 1
-Kind: derelict
+Prefab: derelict
 Relic: lens
 Relic file: relics/lens.amd
 Cutscene: arrive_lens
@@ -1267,7 +1267,7 @@ Lens. A Torgoth reclamation party gutted the outer decks and lingers - they want
 ### [The Ash Warren](ash_warren_lm)
 ---
 At: 3, -4
-Kind: derelict
+Prefab: derelict
 Relic: ash_warren
 Relic file: relics/ash_warren.amd
 Cutscene: arrive_ash
@@ -1280,7 +1280,7 @@ chart behind them.
 ### [The Cipher Relay](cipher_relay)
 ---
 At: 6, -2
-Kind: derelict
+Prefab: derelict
 Relic: cipher
 Relic file: relics/cipher.amd
 Cutscene: arrive_cipher
@@ -1293,7 +1293,7 @@ the murk.
 ### [XORN Salvage Yard](heart_yard)
 ---
 At: -5, -4
-Kind: derelict
+Prefab: derelict
 Relic: heart
 Relic file: relics/heart.amd
 Cutscene: arrive_heart
@@ -1306,7 +1306,7 @@ is the last place to be caught still.
 ### [The False Choir](false_choir_lm)
 ---
 At: 5, -5
-Kind: derelict
+Prefab: derelict
 Relic: false_choir
 Relic file: relics/false_choir.amd
 Cutscene: arrive_choir
@@ -1318,7 +1318,7 @@ lead is real. The ruin is the wrong ruin.
 ### [The Sink](sink_lm)
 ---
 At: 1, -6
-Kind: derelict
+Prefab: derelict
 Relic: sink
 Relic file: relics/sink.amd
 Cutscene: arrive_sink
@@ -1330,7 +1330,7 @@ trip.
 ### [The Origin Array](origin_array)
 ---
 At: 0, -7
-Kind: derelict
+Prefab: derelict
 Terrain: nebula red
 Guards: skaraan 4
 ---
@@ -1341,7 +1341,7 @@ will arrive fast to see it never sings again.
 ### [Crazy Eddy's Spaceship Emporium](eddy_emporium)
 ---
 At: 3, 3
-Kind: station
+Prefab: station
 Art: starbase_industry
 Terrain: asteroids
 ---
